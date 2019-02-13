@@ -1,0 +1,24 @@
+<ng-sidebar-container style="height: 100vh;">
+    <ng-sidebar [(opened)]="_opened" mode="push" closeOnClickBackdrop="true">
+      <header class="demo-header-sidebar">
+        <h2>CG-Comps</h2>
+      </header>
+
+      <ul class="list-unstyled">
+        <li><a href="">Calendar Month</a></li>
+        <li><a href="">Calendar Year</a></li>
+      </ul>
+    </ng-sidebar>
+
+
+  <div ng-sidebar-content>
+    <header class="demo-header">
+      <button class="demo-header__toggle" (click)="_toggleSidebar()">Toggle sidebar</button>
+      <img width="230" src="../assets/centralgest-logo-white.png">
+    </header>
+
+    <section class="demo-contents">
+      <h1>Componentes CG</h1>
+    </section>
+  </div>
+</ng-sidebar-container>
