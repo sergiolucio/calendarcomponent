@@ -5,8 +5,8 @@
       </header>
 
       <ul class="list-unstyled">
-        <li><a href="">Calendar Month</a></li>
-        <li><a href="">Calendar Year</a></li>
+        <li><a routerLink="/" routerLinkActive="active">Calendar Month</a></li>
+        <li><a routerLink="/year-view" routerLinkActive="active">Calendar Year</a></li>
       </ul>
     </ng-sidebar>
 
@@ -18,7 +18,7 @@
     </header>
 
     <section class="demo-contents">
-      <h1>Componentes CG</h1>
+      <router-outlet></router-outlet>
     </section>
   </div>
 </ng-sidebar-container>
