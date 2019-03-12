@@ -1,0 +1,17 @@
+.days-content {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+td.bg-weekend {
+  background-color: #d9dada;
+}
+
+td.bg-currentMonth {
+  background-color: #d9dada;
+}
+
+td.days-content:hover {
+  cursor: pointer;
+  background-color: rgba(49, 115, 205, 0.65);
+}

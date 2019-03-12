@@ -1,0 +1,85 @@
+<div class="card mt-3 p-2">
+
+  <div class="container-fluid">
+    <div class="row mb-3 numbers-details">
+
+      <div class="col-12">
+
+        <div class="row">
+          <div class="col p-3 bg-light rounded my-1 mx-2 d-flex align-items-center justify-content-center shadow">
+            <span>0 Férias Anual</span>
+          </div>
+
+          <div class="col p-3 bg-success rounded my-1 mx-2 d-flex text-white align-items-center justify-content-center shadow">
+            <span>20 Aprovados</span>
+          </div>
+
+          <div class="col p-3 bg-warning rounded my-1 mx-2 d-flex text-white align-items-center justify-content-center shadow">
+            <span>10 Pendentes</span>
+          </div>
+
+          <div class="col p-3 bg-info rounded my-1 mx-2 d-flex text-white align-items-center justify-content-center shadow">
+            <span>30 Livres</span>
+          </div>
+
+        </div>
+
+
+
+      </div>
+    </div>
+
+    <div class="row">
+
+      <div class="col-2">
+
+
+        <form action="">
+          <div class="form-group row">
+
+            <div class="col-sm-12">
+              <select name="year" class="form-control" id="select-year" [ngModel]="year"
+                      (ngModelChange)="changedYear($event)">
+                <option *ngFor="let item of generateYearsList()" [ngValue]="item">
+                  {{item}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </form>
+
+      </div>
+
+      <div class="col-10">
+        <div class="row d-flex justify-content-end">
+          <div class="col-auto py-1 d-flex align-content-center">
+            <div class="color-marker bg-warning shadow"></div>
+            <span>Pendente</span>
+          </div>
+          <div class="col-auto py-1 d-flex align-content-center">
+            <div class="color-marker bg-secondary shadow"></div>
+            <span>Pref. não marcar</span>
+          </div>
+          <div class="col-auto py-1 d-flex align-content-center">
+            <div class="color-marker bg-success shadow"></div>
+            <span>Aprovado</span>
+          </div>
+          <div class="col-auto py-1 d-flex align-content-center">
+            <div class="color-marker bg-dark shadow"></div>
+            <span>Feriado</span>
+          </div>
+          <div class="col-auto py-1 d-flex align-content-center">
+            <div class="color-marker bg-danger shadow"></div>
+            <span>Não aprovado</span>
+          </div>
+          <div class="col-auto py-1 d-flex align-content-center">
+            <div class="color-marker bg-info shadow"></div>
+            <span>Bloqueada</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

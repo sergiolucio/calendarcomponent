@@ -1,0 +1,11 @@
+<div class="calendar" [ngSwitch]="state">
+  <div *ngSwitchCase="'month'">
+    <app-month-view></app-month-view>
+  </div>
+
+  <div *ngSwitchCase="'year'">
+    <app-year-view [(activeYear)]="selectedYear"></app-year-view>
+  </div>
+
+  {{selectedYear}}
+</div>

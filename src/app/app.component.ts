@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import {Component} from '@angular/core';
 
 
 @Component({
@@ -11,7 +10,9 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
   private _opened = false;
-  title = 'cg-Calendar';
+
+  constructor() {
+  }
 
   private _toggleSidebar() {
     this._opened = !this._opened;

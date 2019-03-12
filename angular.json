@@ -32,7 +32,7 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
-              "node_modules/popper.js/dist/popper.js",
+              "node_modules/popper.js/dist/esm/popper.js",
               "node_modules/bootstrap/dist/js/bootstrap.js"
             ]
           },
@@ -69,6 +69,9 @@
             "browserTarget": "cg-Calendar:build"
           },
           "configurations": {
+            "serve": {
+              "aot": true
+            },
             "production": {
               "browserTarget": "cg-Calendar:build:production"
             }
