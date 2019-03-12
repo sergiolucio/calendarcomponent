@@ -1,3 +1,85 @@
-<p>
-  year-view works!
-</p>
+<div class="card my-5">
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th class="border-right" scope="col">
+            Meses
+          </th>
+          <th class="days-content text-center" scope="col">Seg</th>
+          <th class="days-content text-center" scope="col">Ter</th>
+          <th class="days-content text-center" scope="col">Qua</th>
+          <th class="days-content text-center" scope="col">Qui</th>
+          <th class="days-content text-center" scope="col">Sex</th>
+          <th class="days-content text-center" scope="col">Sab</th>
+          <th class="days-content text-center" scope="col">Dom</th>
+          <th class="days-content text-center" scope="col">Seg</th>
+          <th class="days-content text-center" scope="col">Ter</th>
+          <th class="days-content text-center" scope="col">Qua</th>
+          <th class="days-content text-center" scope="col">Qui</th>
+          <th class="days-content text-center" scope="col">Sex</th>
+          <th class="days-content text-center" scope="col">Sab</th>
+          <th class="days-content text-center" scope="col">Dom</th>
+          <th class="days-content text-center" scope="col">Seg</th>
+          <th class="days-content text-center" scope="col">Ter</th>
+          <th class="days-content text-center" scope="col">Qua</th>
+          <th class="days-content text-center" scope="col">Qui</th>
+          <th class="days-content text-center" scope="col">Sex</th>
+          <th class="days-content text-center" scope="col">Sab</th>
+          <th class="days-content text-center" scope="col">Dom</th>
+          <th class="days-content text-center" scope="col">Seg</th>
+          <th class="days-content text-center" scope="col">Ter</th>
+          <th class="days-content text-center" scope="col">Qua</th>
+          <th class="days-content text-center" scope="col">Qui</th>
+          <th class="days-content text-center" scope="col">Sex</th>
+          <th class="days-content text-center" scope="col">Sab</th>
+          <th class="days-content text-center" scope="col">Dom</th>
+          <th class="days-content text-center" scope="col">Seg</th>
+          <th class="days-content text-center" scope="col">Ter</th>
+          <th class="days-content text-center" scope="col">Qua</th>
+          <th class="days-content text-center" scope="col">Qui</th>
+          <th class="days-content text-center" scope="col">Sex</th>
+          <th class="days-content text-center" scope="col">Sab</th>
+          <th class="days-content text-center" scope="col">Dom</th>
+          <th class="days-content text-center" scope="col">Seg</th>
+          <th class="days-content text-center" scope="col">Ter</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let month of months; let i = index">
+          <td
+            class="border-right"
+            [class.bg-currentMonth]="isCurrentMonth(i)"
+          >
+            {{month}}
+          </td>
+
+          <td
+            *ngFor="let dayOff of verifyFirstDayOfMonth(i+1); let dayOfWeek = index"
+            [class.bg-weekend]="dayOfWeek==5"
+          >
+          </td>
+
+          <!-- dayOfMonth para a App começa na segunda-feira -->
+          <td
+            class="text-center days-content"
+            *ngFor="let day of generateDaysOfMonth(i+1); let dayOfMonth = index"
+            [class.bg-weekend]="isWeekend(dayOfMonth+1, i+1)"
+          >
+            {{day}}
+          </td>
+
+          <td
+            *ngFor="let d of [].constructor(37-generateDaysOfMonth(i+1).length-verifyFirstDayOfMonth(i+1).length); let dayOfMonth = index"
+            [class.bg-weekend]="
+            generateDaysOfMonth(i+1).length+verifyFirstDayOfMonth(i+1).length + dayOfMonth == 33 ||
+            generateDaysOfMonth(i+1).length+verifyFirstDayOfMonth(i+1).length + dayOfMonth == 34"
+          ></td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

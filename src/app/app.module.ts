@@ -5,7 +5,6 @@ import {RouterModule, Routes} from '@angular/router';
 import { AppComponent } from './app.component';
 import {SidebarModule} from 'ng-sidebar';
 import { YearViewComponent } from './year-view/year-view.component';
-import { TestComponent } from './test/test.component';
 
 
 
@@ -18,8 +17,7 @@ const appRoutes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    YearViewComponent,
-    TestComponent
+    YearViewComponent
   ],
   imports: [
     BrowserModule,
