@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {moment} from '../../../../environments/environment';
 import {ModalService} from '../../../services/modal/modal.service';
 import {YearViewModalComponent} from '../year-view-modal/year-view-modal.component';
+import {ICalendarItemClicked} from '../calendar.component.interface';
 
 
 @Component({
@@ -11,14 +12,14 @@ import {YearViewModalComponent} from '../year-view-modal/year-view-modal.compone
 })
 export class YearViewComponent implements OnInit, OnChanges {
   @Input() activeYear: number;
-  @Output() activeYearChange: EventEmitter<number>;
+  @Output() evtMonthClicked: EventEmitter<ICalendarItemClicked>;
 
   public months: Array<string>;
 
   constructor(
     private readonly _modalService: ModalService
   ) {
-    this.activeYearChange = new EventEmitter<number>();
+    this.evtMonthClicked = new EventEmitter<ICalendarItemClicked>();
   }
 
   ngOnInit() {
@@ -36,15 +37,24 @@ export class YearViewComponent implements OnInit, OnChanges {
       'Novembro',
       'Dezembro'
     ];
-    if (!this.activeYear) {
-      this.updateYear(moment().year());
-    }
+
+    // Define o primeiro dia da semana como segunda
+    moment.updateLocale('en', {
+      week: {
+        dow: 1, // First day of week is Monday
+        doy: 4  // First week of year must contain 4 January (7 + 1 - 4)
+      }
+    });
   }
 
   public ngOnChanges({activeYear}: SimpleChanges): void {
     if (activeYear && !activeYear.isFirstChange()) {
       this.updateYear(activeYear.currentValue);
     }
+  }
+
+  updateYear(value: number) {
+    this.activeYear = value;
   }
 
   generateDaysOfMonth(month: number): Array<number> {
@@ -104,14 +114,6 @@ export class YearViewComponent implements OnInit, OnChanges {
       stringDay = String(day);
     }
 
-    // Define o primeiro dia da semana como segunda
-    moment.updateLocale('en', {
-      week: {
-        dow: 1, // First day of week is Monday
-        doy: 4  // First week of year must contain 4 January (7 + 1 - 4)
-      }
-    });
-
     WeekDay = moment(stringDay + '-' + stringMonth + '-' + this.activeYear, 'DD-MM-YYYY').weekday();
 
     if (WeekDay === 5 || WeekDay === 6) {
@@ -134,10 +136,10 @@ export class YearViewComponent implements OnInit, OnChanges {
     });
   }
 
-  updateYear(value: number) {
-    this.activeYear = value;
-    this.activeYearChange.emit(this.activeYear);
+  monthClicked(month: number): void {
+    this.evtMonthClicked.emit({
+      year: this.activeYear,
+      month: month
+    });
   }
-
-
 }

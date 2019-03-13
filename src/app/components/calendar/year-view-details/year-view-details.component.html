@@ -1,4 +1,4 @@
-<div class="card mt-3 p-2">
+<div class="card mt-3 p-2 shadow">
 
   <div class="container-fluid">
     <div class="row mb-3 numbers-details">
@@ -32,25 +32,43 @@
     <div class="row">
 
       <div class="col-2">
-
-
-        <form action="">
-          <div class="form-group row">
-
-            <div class="col-sm-12">
-              <select name="year" class="form-control" id="select-year" [ngModel]="year"
-                      (ngModelChange)="changedYear($event)">
-                <option *ngFor="let item of generateYearsList()" [ngValue]="item">
-                  {{item}}
-                </option>
-              </select>
+          <div class="row no-gutters">
+            <div class="col-auto d-flex align-items-center pr-1">
+              <i class="fa fa-chevron-left" (click)="decrementYear()"></i>
+            </div>
+            <div class="col-7">
+              <input type="text"
+                     class="form-control text-center bg-white"
+                     name="year"
+                     [ngModel]="year"
+                     readonly>
+            </div>
+            <div class="col-auto d-flex align-items-center pl-1">
+              <i class="fa fa-chevron-right" (click)="incrementYear()"></i>
             </div>
           </div>
-        </form>
-
       </div>
 
-      <div class="col-10">
+      <div class="col-2">
+        <div class="row no-gutters" *ngIf="!monthSelectorDisabled">
+          <div class="col-auto d-flex align-items-center pr-1">
+            <i class="fa fa-chevron-left" (click)="decrementMonth()"></i>
+          </div>
+          <div class="col-7">
+            <input type="text"
+                   class="form-control text-center"
+                   name="year"
+                   [ngModel]="getMonthName()"
+                   [class.bg-white]="!monthSelectorDisabled"
+                   readonly>
+          </div>
+          <div class="col-auto d-flex align-items-center pl-1">
+            <i class="fa fa-chevron-right" (click)="incrementMonth()"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-8">
         <div class="row d-flex justify-content-end">
           <div class="col-auto py-1 d-flex align-content-center">
             <div class="color-marker bg-warning shadow"></div>

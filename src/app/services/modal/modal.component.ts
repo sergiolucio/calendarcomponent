@@ -1,13 +1,19 @@
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {IModalComponent} from './modal.interface';
+import {AfterViewInit, ChangeDetectorRef} from '@angular/core';
 
-export class ModalComponent implements IModalComponent {
+export class ModalComponent implements AfterViewInit, IModalComponent {
   public closeDisabled: boolean;
 
   constructor(
-    protected readonly _modalInstance: NgbActiveModal
+    protected readonly _modalInstance: NgbActiveModal,
+    protected readonly _changeDetectorRef: ChangeDetectorRef
   ) {
     this.closeDisabled = false;
+  }
+
+  public ngAfterViewInit(): void {
+    this._changeDetectorRef.detectChanges();
   }
 
   public close(result?: any): void {

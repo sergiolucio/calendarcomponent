@@ -18,7 +18,13 @@ import {CalendarComponent} from './components/calendar/calendar.component';
 
 const appRoutes: Routes = [
   {path: 'year-view', component: CalendarYearStateComponent},
-  {path: 'month-view', component: CalendarMonthStateComponent}
+  {path: 'year-view/:year', component: CalendarYearStateComponent},
+  {path: 'month-view', component: CalendarMonthStateComponent},
+  {path: 'month-view/:year', component: CalendarMonthStateComponent},
+  {path: 'month-view/:year/:month', component: CalendarMonthStateComponent},
+  {path: '', redirectTo: 'year-view', pathMatch: 'full'},
+  {path: '**', redirectTo: 'year-view', pathMatch: 'full'}
+
 ];
 
 

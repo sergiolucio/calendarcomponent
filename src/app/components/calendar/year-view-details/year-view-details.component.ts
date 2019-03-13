@@ -10,29 +10,58 @@ import {moment} from '../../../../environments/environment';
 export class YearViewDetailsComponent implements OnInit {
   @Input() year: number;
   @Output() yearChange: EventEmitter<number>;
+  @Input() month: number;
+  @Output() monthChange: EventEmitter<number>;
+  @Input() monthSelectorDisabled: boolean;
+  public  stringMonths: Array<string>;
 
   constructor() {
     this.yearChange = new EventEmitter<number>();
+    this.monthChange = new EventEmitter<number>();
   }
 
   ngOnInit() {
-
+    this.stringMonths = [
+      'Janeiro',
+      'Fevereiro',
+      'Março',
+      'Abril',
+      'Maio',
+      'Junho',
+      'Julho',
+      'Agosto',
+      'Setembro',
+      'Outubro',
+      'Novembro',
+      'Dezembro'
+    ];
   }
 
-  generateYearsList(): Array<number> {
-
-    const yearsList: Array<number> = [];
-    const actualYear: number = moment().year();
-
-    for (let i = -8; i < 2; i++) {
-      yearsList.push(actualYear + i);
-    }
-
-    return yearsList;
-  }
-
-  changedYear(value: number): void {
-    this.year = value;
+  decrementYear(): void {
+    this.year--;
     this.yearChange.emit(this.year);
+  }
+
+  incrementYear(): void {
+    this.year++;
+    this.yearChange.emit(this.year);
+  }
+
+  decrementMonth(): void {
+    if (!this.monthSelectorDisabled && this.month > 1) {
+      this.month--;
+      this.monthChange.emit(this.month);
+    }
+  }
+
+  incrementMonth(): void {
+    if (!this.monthSelectorDisabled && this.month < 12) {
+      this.month++;
+      this.monthChange.emit(this.month);
+    }
+  }
+
+  getMonthName(): string {
+    return this.stringMonths[this.month - 1];
   }
 }
