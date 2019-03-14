@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {YearViewDetailsComponent} from './year-view-details.component';
+import {DetailsBarComponent} from './details-bar.component';
 
-describe('YearViewDetailsComponent', () => {
-  let component: YearViewDetailsComponent;
-  let fixture: ComponentFixture<YearViewDetailsComponent>;
+describe('DetailsBarComponent', () => {
+  let component: DetailsBarComponent;
+  let fixture: ComponentFixture<DetailsBarComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [YearViewDetailsComponent]
+      declarations: [DetailsBarComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(YearViewDetailsComponent);
+    fixture = TestBed.createComponent(DetailsBarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

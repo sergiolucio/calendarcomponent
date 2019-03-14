@@ -3,11 +3,11 @@ import {moment} from '../../../../environments/environment';
 
 
 @Component({
-  selector: 'app-year-view-details',
-  templateUrl: './year-view-details.component.html',
-  styleUrls: ['./year-view-details.component.scss']
+  selector: 'app-details-bar',
+  templateUrl: './details-bar.component.html',
+  styleUrls: ['./details-bar.component.scss']
 })
-export class YearViewDetailsComponent implements OnInit {
+export class DetailsBarComponent implements OnInit {
   @Input() year: number;
   @Output() yearChange: EventEmitter<number>;
   @Input() month: number;

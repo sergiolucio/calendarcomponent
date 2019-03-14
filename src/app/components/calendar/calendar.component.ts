@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ECalendarState, ICalendarItemClicked} from './calendar.component.interface';
+import {ECalendarState, IAnualCalendar, ICalendar, ICalendarItemClicked} from './calendar.component.interface';
 import {moment} from '../../../environments/environment';
 
 @Component({
@@ -12,10 +12,10 @@ export class CalendarComponent implements OnInit{
   @Output() evtMonthClicked: EventEmitter<ICalendarItemClicked>;
   @Input() selectedYear: number;
   @Input() selectedMonth: number;
+  @Input() monthlyCalendarData: ICalendar<any>;
+  @Input() anualCalendarData: IAnualCalendar<any>;
 
   constructor() {
-
-
     this.evtMonthClicked = new EventEmitter<ICalendarItemClicked>();
   }
 

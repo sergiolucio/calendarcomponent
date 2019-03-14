@@ -1,6 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {moment} from '../../../../environments/environment';
-import {months} from 'moment';
+import {CalendarUtilsService} from '../../../services/calendar.utils.service';
+import {ICalendar} from '../calendar.component.interface';
+
 
 @Component({
   selector: 'app-month-view',
@@ -11,8 +13,10 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   @Input() activeMonth: number;
   @Input() activeYear: number;
-  private activeData: string;
-  private months: Array<string>;
+  private _activeData: string;
+  private _months: Array<string>;
+  @Input() monthlyCalendarData: ICalendar<any>;
+
 
   constructor() {
     // Define o primeiro dia da semana como segunda
@@ -27,11 +31,11 @@ export class MonthViewComponent implements OnInit, OnChanges {
   ngOnInit() {
     if (this.activeMonth < 10) {
       const stringMonth: string = '0' + this.activeMonth;
-      this.activeData = stringMonth + '-' + this.activeYear;
+      this._activeData = stringMonth + '-' + this.activeYear;
     } else {
-      this.activeData = this.activeMonth + '-' + this.activeYear;
+      this._activeData = this.activeMonth + '-' + this.activeYear;
     }
-    this.months = [
+    this._months = [
       'Janeiro',
       'Fevereiro',
       'Março',
@@ -57,16 +61,16 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
     if (this.activeMonth < 10) {
       const stringMonth: string = '0' + this.activeMonth;
-      this.activeData = stringMonth + '-' + this.activeYear;
+      this._activeData = stringMonth + '-' + this.activeYear;
     } else {
-      this.activeData = this.activeMonth + '-' + this.activeYear;
+      this._activeData = this.activeMonth + '-' + this.activeYear;
     }
   }
 
 
 
   generateDaysOfMonth(): Array<number> {
-    const daysAux = moment(this.activeData, 'MM-YYYY').daysInMonth();
+    const daysAux = moment(this._activeData, 'MM-YYYY').daysInMonth();
     let dayAux: Array<number>;
     dayAux = [];
 
@@ -78,15 +82,15 @@ export class MonthViewComponent implements OnInit, OnChanges {
   }
 
   findCurrentMonth(): string {
-    return this.months[this.activeMonth - 1];
+    return this._months[this.activeMonth - 1];
   }
 
   findCurrentDay(day: number): string {
     let dayOfWeek: number;
     if (day < 10) {
-      dayOfWeek = moment('0' + day + '-' + this.activeData, 'DD-MM-YYYY').weekday();
+      dayOfWeek = moment('0' + day + '-' + this._activeData, 'DD-MM-YYYY').weekday();
     } else {
-      dayOfWeek = moment(day + '-' + this.activeData, 'DD-MM-YYYY').weekday();
+      dayOfWeek = moment(day + '-' + this._activeData, 'DD-MM-YYYY').weekday();
     }
 
     switch (dayOfWeek) {
@@ -118,7 +122,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
       stringDay = String(day);
     }
 
-    WeekDay = moment(stringDay + '-' + this.activeData, 'DD-MM-YYYY').weekday();
+    WeekDay = moment(stringDay + '-' + this._activeData, 'DD-MM-YYYY').weekday();
 
     if (WeekDay === 5 || WeekDay === 6) {
       return true;

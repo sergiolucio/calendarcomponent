@@ -14,37 +14,25 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>João Fonseca Santos</td>
-          <td *ngFor="let day of generateDaysOfMonth()"
-              [class.bg-weekend]="isWeekend(day)"></td>
-        </tr>
-        <tr>
-          <td>B</td>
-          <td *ngFor="let day of generateDaysOfMonth()"
-              [class.bg-weekend]="isWeekend(day)"></td>
-        </tr>
-        <tr>
-          <td>C</td>
-          <td *ngFor="let day of generateDaysOfMonth()"
-              [class.bg-weekend]="isWeekend(day)"></td>
-        </tr>
-        <tr>
-          <td>D</td>
-          <td *ngFor="let day of generateDaysOfMonth()"
-              [class.bg-weekend]="isWeekend(day)"></td>
-        </tr>
-        <tr>
-          <td>E</td>
-          <td *ngFor="let day of generateDaysOfMonth()"
-              [class.bg-weekend]="isWeekend(day)"></td>
-        </tr>
-        <tr>
-          <td>F</td>
-          <td *ngFor="let day of generateDaysOfMonth()"
-              [class.bg-weekend]="isWeekend(day)"></td>
+        <tr *ngFor="let item of monthlyCalendarData.items | keyvalue">
+          <td>{{item.key}}</td>
+          <td class="text-center"
+              *ngFor="let day of generateDaysOfMonth()"
+              [class.bg-weekend]="isWeekend(day)">
+            <div *ngFor="let eventDay of item.value.days | keyvalue">
+              <i class="fa fa-circle shadow"
+                 aria-hidden="true"
+                 *ngIf="eventDay.key==day"
+                 [ngClass]="eventDay.value.events[0].type.color"></i>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+<pre>
+{{monthlyCalendarData | json}}
+</pre>
+
+

@@ -6,7 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {SidebarModule} from 'ng-sidebar';
 import {YearViewComponent} from './components/calendar/year-view/year-view.component';
-import {YearViewDetailsComponent} from './components/calendar/year-view-details/year-view-details.component';
+import {DetailsBarComponent} from './components/calendar/details-bar/details-bar.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {YearViewModalComponent} from './components/calendar/year-view-modal/year-view-modal.component';
@@ -46,7 +46,7 @@ const appRoutes: Routes = [
     CalendarYearStateComponent,
     CalendarMonthStateComponent,
     YearViewComponent,
-    YearViewDetailsComponent,
+    DetailsBarComponent,
     YearViewModalComponent,
     MonthViewComponent
   ],
