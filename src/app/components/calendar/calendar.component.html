@@ -1,11 +1,18 @@
 <div class="calendar" [ngSwitch]="state">
   <div *ngSwitchCase="'month'">
-    <app-details-bar [(year)]="selectedYear" [monthSelectorDisabled]="false" [(month)]="selectedMonth"></app-details-bar>
-    <app-month-view [activeMonth]="selectedMonth" [activeYear]="selectedYear" [monthlyCalendarData]="monthlyCalendarData"></app-month-view>
+    <app-details-bar [(year)]="selectedYear"
+                     [(month)]="selectedMonth"
+                     (evtDateChanged)="dateChanged($event)"
+                     [monthSelectorDisabled]="false"></app-details-bar>
+    <app-month-view [activeMonth]="selectedMonth"
+                    [activeYear]="selectedYear"
+                    [monthlyCalendarData]="monthlyCalendarData"></app-month-view>
   </div>
 
   <div *ngSwitchCase="'year'">
-    <app-details-bar [(year)]="selectedYear" [monthSelectorDisabled]="true"></app-details-bar>
-    <app-year-view [activeYear]="selectedYear" (evtMonthClicked)="monthClicked($event)"></app-year-view>
+    <app-details-bar [(year)]="selectedYear"
+                     [monthSelectorDisabled]="true"></app-details-bar>
+    <app-year-view [activeYear]="selectedYear"
+                   (evtMonthClicked)="monthClicked($event)"></app-year-view>
   </div>
 </div>

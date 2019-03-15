@@ -37,7 +37,6 @@ export class YearViewComponent implements OnInit, OnChanges {
       'Novembro',
       'Dezembro'
     ];
-
     // Define o primeiro dia da semana como segunda
     moment.updateLocale('en', {
       week: {

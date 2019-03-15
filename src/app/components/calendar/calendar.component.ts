@@ -6,17 +6,23 @@ import {moment} from '../../../environments/environment';
   selector: 'app-calendar',
   templateUrl: 'calendar.component.html'
 })
-export class CalendarComponent implements OnInit{
+export class CalendarComponent implements OnInit {
   @Input() state: ECalendarState;
   @Output() stateChange: EventEmitter<ECalendarState>;
   @Output() evtMonthClicked: EventEmitter<ICalendarItemClicked>;
   @Input() selectedYear: number;
+  @Output() selectedYearChange: EventEmitter<number>;
   @Input() selectedMonth: number;
+  @Output() selectedMonthChange: EventEmitter<number>;
   @Input() monthlyCalendarData: ICalendar<any>;
   @Input() anualCalendarData: IAnualCalendar<any>;
+  @Output() evtDateChanged: EventEmitter<ICalendarItemClicked>;
 
   constructor() {
     this.evtMonthClicked = new EventEmitter<ICalendarItemClicked>();
+    this.selectedMonthChange = new EventEmitter<number>();
+    this.selectedYearChange = new EventEmitter<number>();
+    this.evtDateChanged = new EventEmitter<ICalendarItemClicked>();
   }
 
   public ngOnInit(): void {
@@ -36,4 +42,9 @@ export class CalendarComponent implements OnInit{
   monthClicked (value: ICalendarItemClicked) {
     this.evtMonthClicked.emit(value);
   }
+
+  dateChanged(value: ICalendarItemClicked) {
+    this.evtDateChanged.emit(value);
+  }
+
 }

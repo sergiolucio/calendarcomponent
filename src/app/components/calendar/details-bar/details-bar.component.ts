@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {moment} from '../../../../environments/environment';
+import {ICalendarItemClicked} from '../calendar.component.interface';
 
 
 @Component({
@@ -13,11 +14,13 @@ export class DetailsBarComponent implements OnInit {
   @Input() month: number;
   @Output() monthChange: EventEmitter<number>;
   @Input() monthSelectorDisabled: boolean;
+  @Output() evtDateChanged: EventEmitter<ICalendarItemClicked>;
   public  stringMonths: Array<string>;
 
   constructor() {
     this.yearChange = new EventEmitter<number>();
     this.monthChange = new EventEmitter<number>();
+    this.evtDateChanged = new EventEmitter<ICalendarItemClicked>();
   }
 
   ngOnInit() {
@@ -40,17 +43,20 @@ export class DetailsBarComponent implements OnInit {
   decrementYear(): void {
     this.year--;
     this.yearChange.emit(this.year);
+    this.dateChanged();
   }
 
   incrementYear(): void {
     this.year++;
     this.yearChange.emit(this.year);
+    this.dateChanged();
   }
 
   decrementMonth(): void {
     if (!this.monthSelectorDisabled && this.month > 1) {
       this.month--;
       this.monthChange.emit(this.month);
+      this.dateChanged();
     }
   }
 
@@ -58,10 +64,19 @@ export class DetailsBarComponent implements OnInit {
     if (!this.monthSelectorDisabled && this.month < 12) {
       this.month++;
       this.monthChange.emit(this.month);
+      this.dateChanged();
     }
   }
 
   getMonthName(): string {
     return this.stringMonths[this.month - 1];
   }
+
+  dateChanged() {
+    this.evtDateChanged.emit({
+      year: this.year,
+      month: this.month
+    });
+  }
+
 }
