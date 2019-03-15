@@ -2,7 +2,14 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {moment} from '../../../../environments/environment';
 import {ModalService} from '../../../services/modal/modal.service';
 import {YearViewModalComponent} from '../year-view-modal/year-view-modal.component';
-import {ICalendarItemClicked} from '../calendar.component.interface';
+import {
+  ECalendarMonths,
+  IAnualCalendar,
+  IAnualCalendarMonth,
+  IAnualCalendarMonths,
+  ICalendarItemClicked
+} from '../calendar.component.interface';
+import {forEach} from 'lodash';
 
 
 @Component({
@@ -13,7 +20,7 @@ import {ICalendarItemClicked} from '../calendar.component.interface';
 export class YearViewComponent implements OnInit, OnChanges {
   @Input() activeYear: number;
   @Output() evtMonthClicked: EventEmitter<ICalendarItemClicked>;
-
+  @Input() anualCalendarData: IAnualCalendar<any>;
   public months: Array<string>;
 
   constructor(
@@ -129,10 +136,15 @@ export class YearViewComponent implements OnInit, OnChanges {
     return false;
   }
 
-  openModal(): void {
-    this._modalService.show(YearViewModalComponent, {
-      modalSize: 'lg'
-    });
+  openModal(day: number, month: number): void {
+
+    if (this.generateEvtsByDay(day, month).length > 0) {
+      const instance = this._modalService.showVanilla(YearViewModalComponent, { modalSize: 'lg'});
+      instance.componentInstance.eventsData = this.generateEvtsByDay(day, month);
+      instance.componentInstance.day = day;
+      instance.componentInstance.month = month;
+      instance.componentInstance.year = this.activeYear;
+    }
   }
 
   monthClicked(month: number): void {
@@ -141,4 +153,39 @@ export class YearViewComponent implements OnInit, OnChanges {
       month: month
     });
   }
+
+  generateEvtsByDay(day: number, month: number): Array<object> {
+    const evtsArray: Array<object> = [];
+
+    forEach(this.anualCalendarData.items, itemValue => {
+      if (itemValue.month === ECalendarMonths[month] ) {
+        forEach(itemValue.days, daysValue => {
+          if (daysValue.day === day) {
+            forEach(daysValue.events, evtsValue => {
+              evtsArray.push(evtsValue);
+            });
+          }
+        });
+      }
+    });
+
+    return evtsArray;
+  }
+
+  countEvtsByDay(day: number, month: number): number {
+    return this.generateEvtsByDay(day, month).length;
+  }
+
+  getEvtColor(day: number, month: number): string {
+    let evtColor: string;
+
+    if (this.generateEvtsByDay(day, month).length > 0) {
+      evtColor = 'bg-' + this.generateEvtsByDay(day, month)[0].type.color;
+    }
+
+    return evtColor;
+  }
 }
+
+
+

@@ -1,1 +1,5 @@
-<app-calendar state="year" (evtMonthClicked)="yearClicked($event.year, $event.month)"></app-calendar>
+<app-calendar state="year"
+              [(selectedYear)]="activeYear"
+              [anualCalendarData]="anualCalendarData"
+              (evtDateChanged)="dateChanged($event)"
+              (evtMonthClicked)="yearClicked($event.year, $event.month)"></app-calendar>

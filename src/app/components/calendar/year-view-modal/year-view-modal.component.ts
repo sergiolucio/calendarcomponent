@@ -8,7 +8,10 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./year-view-modal.component.scss']
 })
 export class YearViewModalComponent extends ModalComponent implements OnInit {
-  @Input() name: string;
+  @Input() eventsData: Array<object>;
+  @Input() day: number;
+  @Input() month: number;
+  @Input() year: number;
 
   constructor(
     protected readonly _modalInstance: NgbActiveModal,
@@ -18,5 +21,6 @@ export class YearViewModalComponent extends ModalComponent implements OnInit {
   }
 
   public ngOnInit() {
+
   }
 }

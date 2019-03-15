@@ -2,7 +2,7 @@ import {cloneDeep} from 'lodash';
 import {Injectable} from '@angular/core';
 import {
   ECalendarMonths,
-  ECalendarWeekDays,
+  ECalendarWeekDays, EPriority,
   IAnualCalendar,
   ICalendar,
   ICalendarItems
@@ -60,27 +60,32 @@ export class CalendarUtilsService {
 
       for (let j = 1; j <= Math.floor((Math.random() * 10) + 1); j++) {
         const randomDay: number = Math.floor((Math.random() * this._generateDaysOfMonth()) + 1 );
-        const code: number = Math.floor((Math.random() * 4) + 1);
-        const color: Array<string> = ['red', 'orange', 'blue', 'gray'];
+        const eventsArray: Array<object> = [];
 
         if (findIndex(daysOff, randomDay) === -1) {
-          const evento = 'Evento ' + j;
-          const colorOfCode = color[code - 1];
+          for (let k = 1; k <= Math.floor((Math.random() * 2) + 1); k++) {
+            const eventDesc = 'Evento ' + k;
+            const code: number = Math.floor((Math.random() * 4) + 1);
+            const color: Array<string> = ['red', 'orange', 'blue', 'gray'];
+            const colorOfCode = color[code - 1];
+            const event: object = {
+              body: undefined,
+              type: {
+                codigo: code,
+                color: colorOfCode,
+                descricao: eventDesc,
+                prioridade: EPriority[k]
+              }
+            };
+            eventsArray.push(event);
+          }
+
           const daysAux = {
             [randomDay]: {
               day: randomDay,
               isHoliday: false,
               isWeekend: false,
-              events: [
-                {
-                  body: undefined,
-                  type: {
-                    codigo: code,
-                    color: colorOfCode,
-                    descricao: evento
-                  }
-                }
-              ]
+              events: eventsArray
             }
 
           };
@@ -126,32 +131,39 @@ export class CalendarUtilsService {
       const daysArray: Array<object> = [];
       const days: object = {};
 
+
       for (let j = 1; j <= Math.floor((Math.random() * 10) + 1); j++) {
         const randomDay: number = Math.floor((Math.random() * this._generateDaysOfMonth()) + 1 );
-        const code: number = Math.floor((Math.random() * 4) + 1);
-        const color: Array<string> = ['red', 'orange', 'blue', 'gray'];
+        const eventsArray: Array<object> = [];
 
         if (findIndex(daysOff, randomDay) === -1) {
-          const evento = 'Evento ' + j;
-          const colorOfCode = color[code - 1];
-          const daysAux = {
+
+          for (let k = 1; k <= Math.floor((Math.random() * 10) + 1); k++) {
+            const eventDesc = 'Evento ' + k;
+            const code: number = Math.floor((Math.random() * 4) + 1);
+            const color: Array<string> = ['green', 'orange', 'blue', 'gray'];
+            const colorOfCode = color[code - 1];
+            const event: object = {
+              body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
+              type: {
+                codigo: code,
+                color: colorOfCode,
+                descricao: eventDesc,
+                prioridade: EPriority[k]
+              }
+            };
+            eventsArray.push(event);
+          }
+
+          const daysAux: object = {
             [randomDay]: {
               day: randomDay,
               isHoliday: false,
               isWeekend: false,
-              events: [
-                {
-                  body: undefined,
-                  type: {
-                    codigo: code,
-                    color: colorOfCode,
-                    descricao: evento
-                  }
-                }
-              ]
+              events: eventsArray
             }
-
           };
+
           daysArray.push(daysAux);
           daysOff.push(randomDay);
         }

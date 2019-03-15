@@ -47,4 +47,9 @@ export class CalendarComponent implements OnInit {
     this.evtDateChanged.emit(value);
   }
 
+  yearChanged(value: number): void {
+    this.selectedYear = value;
+    this.selectedYearChange.emit(value);
+  }
+
 }

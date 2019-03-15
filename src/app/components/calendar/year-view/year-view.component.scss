@@ -11,7 +11,20 @@ td.bg-currentMonth {
   background-color: #d9dada;
 }
 
+td.bg-orange {
+  background-color: orange;
+}
+td.bg-green {
+  background-color: green;
+}
+td.bg-blue {
+  background-color: orange;
+}
+td.bg-gray {
+  background-color: gray;
+}
+
 td:hover {
   cursor: pointer;
-  background-color: rgba(49, 115, 205, 0.65);
+  background-color: rgba(49, 115, 205, 0.5);
 }

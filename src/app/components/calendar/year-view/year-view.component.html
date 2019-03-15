@@ -51,7 +51,7 @@
       <tbody>
       <tr *ngFor="let month of months; let i = index">
         <td
-          class="border-right months-content"
+          class="border-right months-content p-1 py-2"
           [class.bg-currentMonth]="isCurrentMonth(i)"
           (click)="monthClicked(i+1)"
         >
@@ -68,15 +68,17 @@
 
         <!-- dayOfMonth para a App começa na segunda-feira -->
         <td
-          class="text-center days-content"
+          class="text-center days-content p-1"
           *ngFor="let day of generateDaysOfMonth(i+1); let dayOfMonth = index"
-          [class.bg-weekend]="isWeekend(dayOfMonth+1, i+1)"
-        (click)="openModal()">
-          {{day}}
+          [class]="getEvtColor(dayOfMonth+1,i+1)"
+          [ngClass]="{'bg-weekend': isWeekend(dayOfMonth+1, i+1), 'bg-danger': countEvtsByDay(dayOfMonth+1, i+1)>1}"
+          (click)="openModal(dayOfMonth+1, i+1)">
+            {{day}}
         </td>
 
         <!-- Espaços em branco depois do mês terminar -->
         <td
+          class="p-1"
           *ngFor="let d of [].constructor(37-generateDaysOfMonth(i+1).length-verifyFirstDayOfMonth(i+1).length); let dayOfMonth = index"
           [class.bg-weekend]="
             generateDaysOfMonth(i+1).length+verifyFirstDayOfMonth(i+1).length + dayOfMonth == 33 ||
@@ -89,3 +91,6 @@
   </div>
 
 </div>
+<pre>
+  {{anualCalendarData | json}}
+</pre>

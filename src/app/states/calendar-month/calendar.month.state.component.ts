@@ -4,6 +4,7 @@ import {ICalendar, ICalendarItemClicked} from '../../components/calendar/calenda
 import {CalendarUtilsService} from '../../services/calendar.utils.service';
 import {Location} from '@angular/common';
 import {first} from 'rxjs/operators';
+import {moment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-calendar-month-state',
@@ -30,12 +31,20 @@ export class CalendarMonthStateComponent implements OnInit {
         this.activeYear = +params.get('year');
       });
 
+    if (this.activeMonth === 0) {
+      this.activeMonth = moment().month() + 1;
+    }
+
+    if (this.activeYear === 0) {
+      this.activeYear = moment().year();
+    }
+
     this._calendarUtilsService.monthRequested = this.activeMonth;
     this._calendarUtilsService.yearRequested = this.activeYear;
     this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
   }
 
-  dateChanged(value: ICalendarItemClicked) {
+  public dateChanged(value: ICalendarItemClicked): void {
     this.activeYear = value.year;
     this.activeMonth = value.month;
     this._calendarUtilsService.monthRequested = this.activeMonth;

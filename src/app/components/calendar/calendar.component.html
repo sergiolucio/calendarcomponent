@@ -10,9 +10,12 @@
   </div>
 
   <div *ngSwitchCase="'year'">
-    <app-details-bar [(year)]="selectedYear"
+    <app-details-bar [year]="selectedYear"
+                     (yearChange)="yearChanged($event)"
+                     (evtDateChanged)="dateChanged($event)"
                      [monthSelectorDisabled]="true"></app-details-bar>
     <app-year-view [activeYear]="selectedYear"
+                   [anualCalendarData]="anualCalendarData"
                    (evtMonthClicked)="monthClicked($event)"></app-year-view>
   </div>
 </div>

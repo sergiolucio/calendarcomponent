@@ -1,0 +1,24 @@
+.modal-header {
+  height: 10vh;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow: auto;
+  span.green {
+    color: green;
+  }
+  span.gray {
+    color: gray;
+  }
+  span.blue {
+    color: blue;
+  }
+  span.orange {
+    color: orange;
+  }
+}
+
+.modal-footer {
+  height: 10vh;
+}

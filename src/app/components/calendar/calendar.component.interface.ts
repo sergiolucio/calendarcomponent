@@ -12,6 +12,13 @@ export interface ICalendarItemClicked {
 
 // -------------------------------------
 
+export enum EPriority {
+  '01' = 1,
+  '02',
+  '03',
+  '04',
+  '05'
+}
 
 // Generic calendar
 export enum ECalendarMonths {
@@ -106,6 +113,7 @@ export interface ICalendarEventDayType {
   codigo: number;
   descricao: string;
   color: string;
+  prioridade: EPriority;
 }
 
 
