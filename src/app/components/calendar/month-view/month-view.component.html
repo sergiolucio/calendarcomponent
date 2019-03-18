@@ -14,17 +14,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of monthlyCalendarData.items | keyvalue">
+        <tr *ngFor="let item of monthlyCalendarData.items | keyvalue; let i = index">
           <td>{{item.key}}</td>
           <td class="text-center"
               *ngFor="let day of generateDaysOfMonth()"
-              [class.bg-weekend]="isWeekend(day)">
-            <div *ngFor="let eventDay of item.value.days | keyvalue">
-              <i class="fa fa-circle shadow"
-                 aria-hidden="true"
-                 *ngIf="eventDay.key==day"
-                 [ngClass]="eventDay.value.events[0].type.color"></i>
-            </div>
+              (mousedown)="activateMouseDown(day, i);"
+              (mouseenter)="mouseEnter(day)"
+              (mouseup)="desactivateMouseDown()"
+              [ngClass]="setDinamicClass(day, i)"
+              (click)="openModal(day, i)"
+              >
+            <span class="font-weight-bolder" *ngIf="countEvtsByDay(day, i)>1 && !(_dragEvt && isDragEvtByDay(day, i))">{{countEvtsByDay(day, i)}}</span>
           </td>
         </tr>
       </tbody>
@@ -32,7 +32,7 @@
   </div>
 </div>
 
-
 <pre>
-  {{monthlyCalendarData | json}}
+  {{_dragEvtDays | json}}
+  {{_historicoDragEvtDays | json}}
 </pre>

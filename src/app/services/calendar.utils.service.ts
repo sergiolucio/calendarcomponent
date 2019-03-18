@@ -63,10 +63,10 @@ export class CalendarUtilsService {
         const eventsArray: Array<object> = [];
 
         if (findIndex(daysOff, randomDay) === -1) {
-          for (let k = 1; k <= Math.floor((Math.random() * 2) + 1); k++) {
+          for (let k = 1; k <= Math.floor((Math.random() * 3) + 1); k++) {
             const eventDesc = 'Evento ' + k;
             const code: number = Math.floor((Math.random() * 4) + 1);
-            const color: Array<string> = ['red', 'orange', 'blue', 'gray'];
+            const color: Array<string> = ['green', 'orange', 'blue', 'gray'];
             const colorOfCode = color[code - 1];
             const event: object = {
               body: undefined,
@@ -138,7 +138,7 @@ export class CalendarUtilsService {
 
         if (findIndex(daysOff, randomDay) === -1) {
 
-          for (let k = 1; k <= Math.floor((Math.random() * 10) + 1); k++) {
+          for (let k = 1; k <= Math.floor((Math.random() * 5) + 1); k++) {
             const eventDesc = 'Evento ' + k;
             const code: number = Math.floor((Math.random() * 4) + 1);
             const color: Array<string> = ['green', 'orange', 'blue', 'gray'];
@@ -177,7 +177,7 @@ export class CalendarUtilsService {
 
       const itemAux = {
         [itemName]: {
-          month: ECalendarMonths[Math.floor(Math.random() * 12 + 1)],
+          month: ECalendarMonths[ECalendarMonths[Math.floor(Math.random() * 12 + 1)]],
           days: days
         }
       };

@@ -9,6 +9,10 @@ export interface ICalendarItemClicked {
   day?: number;
 }
 
+export interface ICalendarDragEvt {
+  itemIndex: number;
+  days: Array<number>;
+}
 
 // -------------------------------------
 

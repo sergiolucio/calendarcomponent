@@ -14,6 +14,7 @@ import { MonthViewComponent } from './components/calendar/month-view/month-view.
 import {CalendarYearStateComponent} from './states/calendar-year/calendar.year.state.component';
 import {CalendarMonthStateComponent} from './states/calendar-month/calendar.month.state.component';
 import {CalendarComponent} from './components/calendar/calendar.component';
+import { MonthViewModalComponent } from './components/calendar/month-view-modal/month-view-modal.component';
 
 
 const appRoutes: Routes = [
@@ -48,10 +49,12 @@ const appRoutes: Routes = [
     YearViewComponent,
     DetailsBarComponent,
     YearViewModalComponent,
-    MonthViewComponent
+    MonthViewComponent,
+    MonthViewModalComponent
   ],
   entryComponents: [
-    YearViewModalComponent
+    YearViewModalComponent,
+    MonthViewModalComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

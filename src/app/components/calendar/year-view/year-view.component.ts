@@ -6,7 +6,7 @@ import {
   ECalendarMonths,
   IAnualCalendar,
   IAnualCalendarMonth,
-  IAnualCalendarMonths,
+  ICalendarEventDay,
   ICalendarItemClicked
 } from '../calendar.component.interface';
 import {forEach} from 'lodash';
@@ -139,7 +139,9 @@ export class YearViewComponent implements OnInit, OnChanges {
   openModal(day: number, month: number): void {
 
     if (this.generateEvtsByDay(day, month).length > 0) {
-      const instance = this._modalService.showVanilla(YearViewModalComponent, { modalSize: 'lg'});
+      const instance = this._modalService.showVanilla(YearViewModalComponent, {
+        modalSize: 'lg'
+      });
       instance.componentInstance.eventsData = this.generateEvtsByDay(day, month);
       instance.componentInstance.day = day;
       instance.componentInstance.month = month;
@@ -154,20 +156,26 @@ export class YearViewComponent implements OnInit, OnChanges {
     });
   }
 
-  generateEvtsByDay(day: number, month: number): Array<object> {
-    const evtsArray: Array<object> = [];
+  // next methods are to get data to seed calendar
 
-    forEach(this.anualCalendarData.items, itemValue => {
-      if (itemValue.month === ECalendarMonths[month] ) {
-        forEach(itemValue.days, daysValue => {
+  generateEvtsByDay(day: number, month: number): Array<ICalendarEventDay<any>> {
+    const evtsArray: Array<ICalendarEventDay<any>> = [];
+    for (const keyItemValue of Object.keys(this.anualCalendarData.items)) {
+      const itemValue: IAnualCalendarMonth<any> = <IAnualCalendarMonth <any>>this.anualCalendarData.items[keyItemValue];
+
+      if (itemValue.month === month) {
+        for (const keyDaysValue of Object.keys(itemValue.days)) {
+          const daysValue = itemValue.days[keyDaysValue];
+
           if (daysValue.day === day) {
-            forEach(daysValue.events, evtsValue => {
+            for (const evtsValue of daysValue.events) {
               evtsArray.push(evtsValue);
-            });
+            }
           }
-        });
+        }
       }
-    });
+
+    }
 
     return evtsArray;
   }
