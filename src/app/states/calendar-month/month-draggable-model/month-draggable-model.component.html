@@ -1,0 +1,99 @@
+<div class="modal-header">
+  <h4 class="modal-title">Criar Novo Evento - {{_item}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <div class="container">
+    <div class="row m-o py-3">
+
+      <div class="col-12">
+        <form>
+          <div class="form-group">
+            <label for="evtName">Título do evento:</label>
+            <input type="text" class="form-control" id="evtName" name="evtName">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label for="evtPriority">Prioridade do Evento:</label>
+              <select class="form-control" id="evtPriority">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group col-4">
+              <label for="evtCode">Código do Evento:</label>
+              <select class="form-control" id="evtCode">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group  col-4">
+              <label for="evtColor">Cor do Evento:</label>
+              <select class="form-control" id="evtColor">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-2">
+            <div class="col-6">Início do Evento</div>
+            <div class="col-4 offset-1 px-0">Fim do Evento</div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-1">
+              <select class="form-control" id="evtStartDay" name="evtStartDay" [(ngModel)]="_startDay">
+                <option *ngFor="let day of generateDaysOfMonth()" value="{{day}}">{{day}}</option>
+              </select>
+            </div>
+            <div class="form-group col-2">
+              <input type="text" class="form-control" id="evtStartMonth" name="evtMonth" readonly [ngModel]="_activeMonth">
+            </div>
+            <div class="form-group  col-2">
+              <input type="text" class="form-control" id="evtStartYear" name="evtYear" readonly [ngModel]="_activeYear">
+            </div>
+
+            <div class="form-group col-1 offset-2">
+              <select class="form-control" id="evtEndDay" name="evtEndDay" [(ngModel)]="_endDay">
+                <option *ngFor="let day of generateDaysOfMonth()" value="{{day}}">{{day}}</option>
+              </select>
+            </div>
+            <div class="form-group col-2">
+              <input type="text" class="form-control" id="evtEndMonth" name="evtMonth" readonly [ngModel]="_activeMonth">
+            </div>
+            <div class="form-group  col-2">
+              <input type="text" class="form-control" id="evtEndYear" name="evtYear" readonly [ngModel]="_activeYear">
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <label for="evtDescription">Descrição do Evento:</label>
+            <textarea class="form-control" id="evtDescription" rows="3"></textarea>
+          </div>
+
+          <button type="button" class="btn btn-primary mr-2">Registar evento</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="dismiss('Sair click')">Sair</button>
+</div>

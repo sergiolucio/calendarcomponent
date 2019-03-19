@@ -6,7 +6,9 @@
                      [monthSelectorDisabled]="false"></app-details-bar>
     <app-month-view [activeMonth]="selectedMonth"
                     [activeYear]="selectedYear"
-                    [monthlyCalendarData]="monthlyCalendarData"></app-month-view>
+                    [monthlyCalendarData]="monthlyCalendarData"
+                    (evtDraggableClicked)="evtDraggableClicked($event)"
+                    (evtMonthlyCalendarDayClicked)="evtMonthlyCalendarDayClicked($event)"></app-month-view>
   </div>
 
   <div *ngSwitchCase="'year'">

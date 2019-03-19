@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h4 class="modal-title">Eventos - {{evtMonthlyCalendarDay.item}} - {{evtMonthlyCalendarDay.days[0].day}}/{{evtMonthlyCalendarDay.month}}/{{evtMonthlyCalendarDay.year}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <!--vista para eventos já criados-->
+  <div class="container">
+    <div class="row m-o py-3 border-bottom"
+         *ngFor="let evt of evtMonthlyCalendarDay.days[0].events">
+
+      <div class="col-12">
+        <h4>{{evt.type.descricao}}</h4>
+        <h6>Prioridade: {{evt.type.prioridade}}</h6>
+        <p class="mt-2">Código: {{evt.type.codigo}}</p>
+        <p>Cor: <span [ngClass]="evt.type.color">{{evt.type.color}}</span></p>
+        <p>
+          {{evt.body}}
+        </p>
+      </div>
+      <div class="col-12">
+        <button type="button" class="btn btn-primary mr-2">Aprovar evento</button>
+        <button type="button" class="btn btn-danger mx-2">Reprovar evento</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="dismiss('Sair click')">Sair</button>
+</div>

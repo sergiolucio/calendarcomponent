@@ -20,9 +20,9 @@
               *ngFor="let day of generateDaysOfMonth()"
               (mousedown)="activateMouseDown(day, i);"
               (mouseenter)="mouseEnter(day)"
-              (mouseup)="desactivateMouseDown()"
+              (mouseup)="desactivateMouseDown(day)"
               [ngClass]="setDinamicClass(day, i)"
-              (click)="openModal(day, i)"
+              (click)="openEvtModal(day, i)"
               >
             <span class="font-weight-bolder" *ngIf="countEvtsByDay(day, i)>1 && !(_dragEvt && isDragEvtByDay(day, i))">{{countEvtsByDay(day, i)}}</span>
           </td>
@@ -32,7 +32,3 @@
   </div>
 </div>
 
-<pre>
-  {{_dragEvtDays | json}}
-  {{_historicoDragEvtDays | json}}
-</pre>

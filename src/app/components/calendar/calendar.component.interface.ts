@@ -3,17 +3,6 @@ export enum ECalendarState {
   Year = 'year'
 }
 
-export interface ICalendarItemClicked {
-  year: number;
-  month: number;
-  day?: number;
-}
-
-export interface ICalendarDragEvt {
-  itemIndex: number;
-  days: Array<number>;
-}
-
 // -------------------------------------
 
 export enum EPriority {
@@ -22,6 +11,13 @@ export enum EPriority {
   '03',
   '04',
   '05'
+}
+
+export enum EColorEvt {
+  'blue' = 1,
+  'green',
+  'orange',
+  'gray'
 }
 
 // Generic calendar
@@ -116,10 +112,14 @@ export interface ICalendarEventDay<T> {
 export interface ICalendarEventDayType {
   codigo: number;
   descricao: string;
-  color: string;
+  color: EColorEvt;
   prioridade: EPriority;
+  // estado: IEstados;
 }
 
+export interface IEstados {
+  [estado: string]: string;
+}
 
 // Anual calendar
 
@@ -134,4 +134,20 @@ export type IAnualCalendarMonths<T> = ICalendarItems<T> & {
 
 export interface IAnualCalendarMonth<T> extends ICalendarItem<T> {
   month: ECalendarMonths;
+}
+
+
+// events on click
+
+export interface ICalendarItemClicked {
+  year: number;
+  month: number;
+  day?: number;
+}
+
+export interface IMonthlyCalendarDayClicked<T> {
+  year: number;
+  month: number;
+  days: Array<ICalendarDay<T>>;
+  item: string;
 }

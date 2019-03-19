@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MonthViewModalComponent } from './month-view-modal.component';
+import { DailyInfoModalComponent } from './daily-info-modal.component';
 
-describe('MonthViewModalComponent', () => {
-  let component: MonthViewModalComponent;
-  let fixture: ComponentFixture<MonthViewModalComponent>;
+describe('DailyInfoModalComponent', () => {
+  let component: DailyInfoModalComponent;
+  let fixture: ComponentFixture<DailyInfoModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MonthViewModalComponent ]
+      declarations: [ DailyInfoModalComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MonthViewModalComponent);
+    fixture = TestBed.createComponent(DailyInfoModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

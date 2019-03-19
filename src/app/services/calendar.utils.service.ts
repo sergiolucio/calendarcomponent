@@ -2,7 +2,7 @@ import {cloneDeep} from 'lodash';
 import {Injectable} from '@angular/core';
 import {
   ECalendarMonths,
-  ECalendarWeekDays, EPriority,
+  ECalendarWeekDays, EColorEvt, EPriority,
   IAnualCalendar,
   ICalendar,
   ICalendarItems
@@ -67,12 +67,11 @@ export class CalendarUtilsService {
             const eventDesc = 'Evento ' + k;
             const code: number = Math.floor((Math.random() * 4) + 1);
             const color: Array<string> = ['green', 'orange', 'blue', 'gray'];
-            const colorOfCode = color[code - 1];
             const event: object = {
-              body: undefined,
+              body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
               type: {
                 codigo: code,
-                color: colorOfCode,
+                color: EColorEvt[Math.floor(Math.random() * 4 + 1)],
                 descricao: eventDesc,
                 prioridade: EPriority[k]
               }
@@ -142,12 +141,11 @@ export class CalendarUtilsService {
             const eventDesc = 'Evento ' + k;
             const code: number = Math.floor((Math.random() * 4) + 1);
             const color: Array<string> = ['green', 'orange', 'blue', 'gray'];
-            const colorOfCode = color[code - 1];
             const event: object = {
               body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
               type: {
                 codigo: code,
-                color: colorOfCode,
+                color: EColorEvt[Math.floor(Math.random() * 4 + 1)],
                 descricao: eventDesc,
                 prioridade: EPriority[k]
               }

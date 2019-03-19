@@ -1,5 +1,12 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ECalendarState, IAnualCalendar, ICalendar, ICalendarItemClicked} from './calendar.component.interface';
+import {
+  ECalendarState,
+  IAnualCalendar,
+  ICalendar,
+  ICalendarDraggableEvt,
+  ICalendarItemClicked,
+  IMonthlyCalendarDayClicked
+} from './calendar.component.interface';
 import {moment} from '../../../environments/environment';
 
 @Component({
@@ -17,12 +24,16 @@ export class CalendarComponent implements OnInit {
   @Input() monthlyCalendarData: ICalendar<any>;
   @Input() anualCalendarData: IAnualCalendar<any>;
   @Output() evtDateChanged: EventEmitter<ICalendarItemClicked>;
+  @Output() evtDraggable: EventEmitter<ICalendarDraggableEvt>;
+  @Output() evtMonthlyCalendarDay: EventEmitter<IMonthlyCalendarDayClicked<any>>;
 
   constructor() {
     this.evtMonthClicked = new EventEmitter<ICalendarItemClicked>();
     this.selectedMonthChange = new EventEmitter<number>();
     this.selectedYearChange = new EventEmitter<number>();
     this.evtDateChanged = new EventEmitter<ICalendarItemClicked>();
+    this.evtDraggable = new EventEmitter<ICalendarDraggableEvt>();
+    this.evtMonthlyCalendarDay = new EventEmitter<IMonthlyCalendarDayClicked<any>>();
   }
 
   public ngOnInit(): void {
@@ -50,6 +61,14 @@ export class CalendarComponent implements OnInit {
   yearChanged(value: number): void {
     this.selectedYear = value;
     this.selectedYearChange.emit(value);
+  }
+
+  evtDraggableClicked(value: ICalendarDraggableEvt): void {
+    this.evtDraggable.emit(value);
+  }
+
+  evtMonthlyCalendarDayClicked(value: IMonthlyCalendarDayClicked<any>): void {
+    this.evtMonthlyCalendarDay.emit(value);
   }
 
 }

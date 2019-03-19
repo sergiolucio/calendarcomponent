@@ -14,7 +14,8 @@ import { MonthViewComponent } from './components/calendar/month-view/month-view.
 import {CalendarYearStateComponent} from './states/calendar-year/calendar.year.state.component';
 import {CalendarMonthStateComponent} from './states/calendar-month/calendar.month.state.component';
 import {CalendarComponent} from './components/calendar/calendar.component';
-import { MonthViewModalComponent } from './components/calendar/month-view-modal/month-view-modal.component';
+import { MonthDraggableModelComponent } from './states/calendar-month/month-draggable-model/month-draggable-model.component';
+import { DailyInfoModalComponent } from './states/calendar-month/daily-info-modal/daily-info-modal.component';
 
 
 const appRoutes: Routes = [
@@ -50,11 +51,13 @@ const appRoutes: Routes = [
     DetailsBarComponent,
     YearViewModalComponent,
     MonthViewComponent,
-    MonthViewModalComponent
+    MonthDraggableModelComponent,
+    DailyInfoModalComponent
   ],
   entryComponents: [
     YearViewModalComponent,
-    MonthViewModalComponent
+    MonthDraggableModelComponent,
+    DailyInfoModalComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

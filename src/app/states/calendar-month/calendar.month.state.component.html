@@ -2,4 +2,6 @@
               [selectedYear]="activeYear"
               [selectedMonth]="activeMonth"
               (evtDateChanged)="dateChanged($event)"
-              [monthlyCalendarData]="monthlyCalendarData"></app-calendar>
+              [monthlyCalendarData]="monthlyCalendarData"
+              (evtDraggable)="evtDraggableClicked($event)"
+              (evtMonthlyCalendarDay)="evtMonthlyCalendarDayClicked($event)"></app-calendar>
