@@ -18,6 +18,8 @@
                      [monthSelectorDisabled]="true"></app-details-bar>
     <app-year-view [activeYear]="selectedYear"
                    [anualCalendarData]="anualCalendarData"
+                   (evtDayYearViewClicked)="dayYearViewClicked($event)"
+                   (evtDragYearViewClicked)="dragYearViewClicked($event)"
                    (evtMonthClicked)="monthClicked($event)"></app-year-view>
   </div>
 </div>

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {moment} from '../../../../environments/environment';
-import {ICalendarItemClicked} from '../calendar.component.interface';
+import {ICalendarMonthClicked} from '../calendar.component.interface';
 
 
 @Component({
@@ -14,13 +14,13 @@ export class DetailsBarComponent implements OnInit {
   @Input() month: number;
   @Output() monthChange: EventEmitter<number>;
   @Input() monthSelectorDisabled: boolean;
-  @Output() evtDateChanged: EventEmitter<ICalendarItemClicked>;
+  @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
   public  stringMonths: Array<string>;
 
   constructor() {
     this.yearChange = new EventEmitter<number>();
     this.monthChange = new EventEmitter<number>();
-    this.evtDateChanged = new EventEmitter<ICalendarItemClicked>();
+    this.evtDateChanged = new EventEmitter<ICalendarMonthClicked>();
   }
 
   ngOnInit() {

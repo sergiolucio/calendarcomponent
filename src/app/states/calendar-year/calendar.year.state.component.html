@@ -2,4 +2,10 @@
               [(selectedYear)]="activeYear"
               [anualCalendarData]="anualCalendarData"
               (evtDateChanged)="dateChanged($event)"
+              (evtDayYearViewClicked)="dayYearViewClicked($event)"
+              (evtDragYearViewClicked)="dragYearViewClicked($event)"
               (evtMonthClicked)="yearClicked($event.year, $event.month)"></app-calendar>
+
+<pre>
+  {{evtDayYearViewClicked | json}}
+</pre>

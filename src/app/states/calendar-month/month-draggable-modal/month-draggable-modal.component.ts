@@ -9,11 +9,11 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {moment} from '../../../../environments/environment';
 
 @Component({
-  selector: 'app-month-draggable-model',
-  templateUrl: './month-draggable-model.component.html',
-  styleUrls: ['./month-draggable-model.component.scss']
+  selector: 'app-month-draggable-modal',
+  templateUrl: './month-draggable-modal.component.html',
+  styleUrls: ['./month-draggable-modal.component.scss']
 })
-export class MonthDraggableModelComponent extends ModalComponent implements OnInit {
+export class MonthDraggableModalComponent extends ModalComponent implements OnInit {
 
   @Input() evtDraggable: IMonthlyCalendarDayClicked<any>;
   private _item: string;

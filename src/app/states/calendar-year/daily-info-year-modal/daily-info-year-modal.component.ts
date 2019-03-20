@@ -1,17 +1,15 @@
 import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {ModalComponent} from '../../../services/modal/modal.component';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {IDayYearViewClicked} from '../../../components/calendar/calendar.component.interface';
 
 @Component({
-  selector: 'app-year-view-modal',
-  templateUrl: './year-view-modal.component.html',
-  styleUrls: ['./year-view-modal.component.scss']
+  selector: 'app-daily-info-year-modal',
+  templateUrl: './daily-info-year-modal.component.html',
+  styleUrls: ['./daily-info-year-modal.component.scss']
 })
-export class YearViewModalComponent extends ModalComponent implements OnInit {
-  @Input() eventsData: Array<object>;
-  @Input() day: number;
-  @Input() month: number;
-  @Input() year: number;
+export class DailyInfoYearModalComponent extends ModalComponent implements OnInit {
+  @Input() evtDayYearViewClicked: Array<IDayYearViewClicked<any>>;
 
   constructor(
     protected readonly _modalInstance: NgbActiveModal,
@@ -21,6 +19,5 @@ export class YearViewModalComponent extends ModalComponent implements OnInit {
   }
 
   public ngOnInit() {
-
   }
 }

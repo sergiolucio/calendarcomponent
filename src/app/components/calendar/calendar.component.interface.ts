@@ -139,7 +139,7 @@ export interface IAnualCalendarMonth<T> extends ICalendarItem<T> {
 
 // events on click
 
-export interface ICalendarItemClicked {
+export interface ICalendarMonthClicked {
   year: number;
   month: number;
   day?: number;
@@ -147,7 +147,14 @@ export interface ICalendarItemClicked {
 
 export interface IMonthlyCalendarDayClicked<T> {
   year: number;
-  month: number;
+  month: ECalendarMonths;
   days: Array<ICalendarDay<T>>;
   item: string;
+}
+
+export interface IDayYearViewClicked<T> {
+  item: string;
+  year: number;
+  month: ECalendarMonths;
+  days: Array<ICalendarDay<T>>;
 }

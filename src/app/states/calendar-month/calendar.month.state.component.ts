@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap, Route, Router} from '@angular/router';
 import {
   ICalendar,
-  ICalendarDraggableEvt,
-  ICalendarItemClicked,
+  ICalendarMonthClicked,
   IMonthlyCalendarDayClicked
 } from '../../components/calendar/calendar.component.interface';
 import {CalendarUtilsService} from '../../services/calendar.utils.service';
@@ -11,7 +10,7 @@ import {Location} from '@angular/common';
 import {first} from 'rxjs/operators';
 import {moment} from '../../../environments/environment';
 import {ModalService} from '../../services/modal/modal.service';
-import {MonthDraggableModelComponent} from './month-draggable-model/month-draggable-model.component';
+import {MonthDraggableModalComponent} from './month-draggable-modal/month-draggable-modal.component';
 import {DailyInfoModalComponent} from './daily-info-modal/daily-info-modal.component';
 
 @Component({
@@ -22,7 +21,7 @@ export class CalendarMonthStateComponent implements OnInit {
   public activeYear: number;
   public activeMonth: number;
   public monthlyCalendarData: ICalendar<any>;
-  public evtDraggable: ICalendarDraggableEvt;
+  public evtDraggable: IMonthlyCalendarDayClicked<any>;
   public evtMonthlyCalendarDay: IMonthlyCalendarDayClicked<any>;
 
 
@@ -56,7 +55,7 @@ export class CalendarMonthStateComponent implements OnInit {
     this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
   }
 
-  public dateChanged(value: ICalendarItemClicked): void {
+  public dateChanged(value: ICalendarMonthClicked): void {
     this.activeYear = value.year;
     this.activeMonth = value.month;
     this._calendarUtilsService.monthRequested = this.activeMonth;
@@ -65,9 +64,9 @@ export class CalendarMonthStateComponent implements OnInit {
     this._location.replaceState(`/month-view/${this.activeYear}/${this.activeMonth}`);
   }
 
-  public evtDraggableClicked(value: ICalendarDraggableEvt): void {
+  public evtDraggableClicked(value: IMonthlyCalendarDayClicked<any>): void {
     this.evtDraggable = value;
-    const instance = this._modalService.showVanilla(MonthDraggableModelComponent,{
+    const instance = this._modalService.showVanilla(MonthDraggableModalComponent,{
       modalSize: 'lg'
     });
     instance.componentInstance.evtDraggable = this.evtDraggable;

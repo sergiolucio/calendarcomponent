@@ -71,8 +71,8 @@
           class="text-center days-content p-1"
           *ngFor="let day of generateDaysOfMonth(i+1); let dayOfMonth = index"
           [class]="getEvtColor(dayOfMonth+1,i+1)"
-          [ngClass]="{'bg-weekend': isWeekend(dayOfMonth+1, i+1), 'bg-danger': countEvtsByDay(dayOfMonth+1, i+1)>1}"
-          (click)="openModal(dayOfMonth+1, i+1)">
+          (click)="dayYearViewClicked(dayOfMonth+1, i+1)"
+          (mouseenter)="draggingTheEvent(dayOfMonth+1, i+1)">
             {{day}}
         </td>
 
@@ -91,6 +91,3 @@
   </div>
 
 </div>
-<pre>
-  {{anualCalendarData | json}}
-</pre>
