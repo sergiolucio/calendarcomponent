@@ -34,17 +34,17 @@ export class CalendarYearStateComponent implements OnInit {
     this.anualCalendarData = this._calendarUtilsService.anualCalendar;
   }
 
-  yearClicked(year: number, month: number): void {
+  public yearClicked(year: number, month: number): void {
     this._router.navigateByUrl(`/month-view/${year}/${month}`);
   }
 
-  dateChanged(value: ICalendarMonthClicked): void {
+  public dateChanged(value: ICalendarMonthClicked): void {
     this.activeYear = value.year;
     this._calendarUtilsService.yearRequested = this.activeYear;
     this.anualCalendarData = this._calendarUtilsService.anualCalendar;
   }
 
-  dayYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
+  public dayYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
     this.evtDayYearViewClicked = value;
 
     const instance = this._modalService.showVanilla(DailyInfoYearModalComponent, {
@@ -53,7 +53,7 @@ export class CalendarYearStateComponent implements OnInit {
     instance.componentInstance.evtDayYearViewClicked = value;
   }
 
-  dragYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
+  public dragYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
     this.evtDragYearViewClicked = value;
 
     const instance = this._modalService.showVanilla(YearDraggableModalComponent, {

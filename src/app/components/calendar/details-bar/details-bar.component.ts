@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {moment} from '../../../../environments/environment';
-import {ICalendarMonthClicked} from '../calendar.component.interface';
+import {ECalendarState, ICalendar, ICalendarMonthClicked} from '../calendar.component.interface';
 
 
 @Component({
@@ -13,18 +12,22 @@ export class DetailsBarComponent implements OnInit {
   @Output() yearChange: EventEmitter<number>;
   @Input() month: number;
   @Output() monthChange: EventEmitter<number>;
-  @Input() monthSelectorDisabled: boolean;
   @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
-  public  stringMonths: Array<string>;
+  @Input() itemsAvailables: Array<string>;
+  @Input() activeItem: string;
+  @Output() activeItemChange: EventEmitter<string>;
+  private _stringMonths: Array<string>;
+  @Input() panelMode: ECalendarState;
 
   constructor() {
     this.yearChange = new EventEmitter<number>();
     this.monthChange = new EventEmitter<number>();
     this.evtDateChanged = new EventEmitter<ICalendarMonthClicked>();
+    this.activeItemChange = new EventEmitter<string>();
   }
 
-  ngOnInit() {
-    this.stringMonths = [
+  public ngOnInit(): void {
+    this._stringMonths = [
       'Janeiro',
       'Fevereiro',
       'Março',
@@ -38,41 +41,65 @@ export class DetailsBarComponent implements OnInit {
       'Novembro',
       'Dezembro'
     ];
+
+    // this.activeItem = this.itemsAvailables[0];
   }
 
-  decrementYear(): void {
+  public decrementYear(): void {
     this.year--;
     this.yearChange.emit(this.year);
-    this.dateChanged();
+    this._dateChanged();
   }
 
-  incrementYear(): void {
+  public incrementYear(): void {
     this.year++;
     this.yearChange.emit(this.year);
-    this.dateChanged();
+    this._dateChanged();
   }
 
-  decrementMonth(): void {
-    if (!this.monthSelectorDisabled && this.month > 1) {
+  public decrementMonth(): void {
+    if (this.month > 1) {
       this.month--;
       this.monthChange.emit(this.month);
-      this.dateChanged();
+      this._dateChanged();
     }
   }
 
-  incrementMonth(): void {
-    if (!this.monthSelectorDisabled && this.month < 12) {
+  public incrementMonth(): void {
+    if (this.month < 12) {
       this.month++;
       this.monthChange.emit(this.month);
-      this.dateChanged();
+      this._dateChanged();
     }
   }
 
-  getMonthName(): string {
-    return this.stringMonths[this.month - 1];
+  public getMonthName(): string {
+    return this._stringMonths[this.month - 1];
   }
 
-  dateChanged() {
+  public decrementItem(): void {
+    if (this.activeItem !== this.itemsAvailables[0]) {
+      for (let i = 1; i < this.itemsAvailables.length; i++) {
+        if (this.activeItem === this.itemsAvailables[i]) {
+          this.activeItem = this.itemsAvailables[i - 1];
+          this.activeItemChange.emit(this.activeItem);
+        }
+      }
+    }
+  }
+
+  public incrementItem(): void {
+    if (this.activeItem !== this.itemsAvailables[this.itemsAvailables.length - 1]) {
+      for (let i = this.itemsAvailables.length - 2; i >= 0; i--) {
+        if (this.activeItem === this.itemsAvailables[i]) {
+          this.activeItem = this.itemsAvailables[i + 1];
+          this.activeItemChange.emit(this.activeItem);
+        }
+      }
+    }
+  }
+
+  private _dateChanged() {
     this.evtDateChanged.emit({
       year: this.year,
       month: this.month

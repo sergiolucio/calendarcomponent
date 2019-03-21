@@ -14,12 +14,12 @@ import {moment} from '../../../environments/environment';
 })
 export class CalendarComponent implements OnInit {
   @Input() state: ECalendarState;
-  @Output() stateChange: EventEmitter<ECalendarState>;
   @Output() evtMonthClicked: EventEmitter<ICalendarMonthClicked>;
   @Input() selectedYear: number;
   @Output() selectedYearChange: EventEmitter<number>;
   @Input() selectedMonth: number;
   @Output() selectedMonthChange: EventEmitter<number>;
+  public activeItem: string;
   @Input() monthlyCalendarData: ICalendar<any>;
   @Input() anualCalendarData: IAnualCalendar<any>;
   @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
@@ -51,34 +51,43 @@ export class CalendarComponent implements OnInit {
     if (!this.selectedMonth) {
       this.selectedMonth = moment().month() + 1;
     }
+
+    if (!this.activeItem && this.anualCalendarData) {
+      this.activeItem = this.generateItemsAvailables()[0];
+    }
   }
 
-  monthClicked (value: ICalendarMonthClicked) {
+  public monthClicked (value: ICalendarMonthClicked): void {
     this.evtMonthClicked.emit(value);
   }
 
-  dateChanged(value: ICalendarMonthClicked) {
+  public dateChanged(value: ICalendarMonthClicked): void {
     this.evtDateChanged.emit(value);
   }
 
-  yearChanged(value: number): void {
-    this.selectedYear = value;
-    this.selectedYearChange.emit(value);
-  }
-
-  evtDraggableClicked(value: IMonthlyCalendarDayClicked<any>): void {
+  public evtDraggableClicked(value: IMonthlyCalendarDayClicked<any>): void {
     this.evtDraggable.emit(value);
   }
 
-  evtMonthlyCalendarDayClicked(value: IMonthlyCalendarDayClicked<any>): void {
+  public evtMonthlyCalendarDayClicked(value: IMonthlyCalendarDayClicked<any>): void {
     this.evtMonthlyCalendarDay.emit(value);
   }
 
-  dayYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
+  public dayYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
     this.evtDayYearViewClicked.emit(value);
   }
 
-  dragYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
+  public dragYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
     this.evtDragYearViewClicked.emit(value);
+  }
+
+  public generateItemsAvailables(): Array<string> {
+    let arrayItems: Array<string>;
+    arrayItems = [];
+    for (const item of Object.keys(this.anualCalendarData.items)) {
+      arrayItems.push(item);
+    }
+
+    return arrayItems;
   }
 }

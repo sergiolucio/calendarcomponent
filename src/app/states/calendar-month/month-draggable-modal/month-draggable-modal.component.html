@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Criar Novo Evento - {{_item}}</h4>
+  <h4 class="modal-title">Criar Novo Evento - {{item}}</h4>
   <button type="button" class="close" aria-label="Close" (click)="dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -56,27 +56,27 @@
 
           <div class="form-row">
             <div class="form-group col-1">
-              <select class="form-control" id="evtStartDay" name="evtStartDay" [(ngModel)]="_startDay">
+              <select class="form-control" id="evtStartDay" name="evtStartDay" [(ngModel)]="startDay">
                 <option *ngFor="let day of generateDaysOfMonth()" value="{{day}}">{{day}}</option>
               </select>
             </div>
             <div class="form-group col-2">
-              <input type="text" class="form-control" id="evtStartMonth" name="evtMonth" readonly [ngModel]="_activeMonth">
+              <input type="text" class="form-control" id="evtStartMonth" name="evtMonth" readonly [ngModel]="activeMonth">
             </div>
             <div class="form-group  col-2">
-              <input type="text" class="form-control" id="evtStartYear" name="evtYear" readonly [ngModel]="_activeYear">
+              <input type="text" class="form-control" id="evtStartYear" name="evtYear" readonly [ngModel]="activeYear">
             </div>
 
             <div class="form-group col-1 offset-2">
-              <select class="form-control" id="evtEndDay" name="evtEndDay" [(ngModel)]="_endDay">
+              <select class="form-control" id="evtEndDay" name="evtEndDay" [(ngModel)]="endDay">
                 <option *ngFor="let day of generateDaysOfMonth()" value="{{day}}">{{day}}</option>
               </select>
             </div>
             <div class="form-group col-2">
-              <input type="text" class="form-control" id="evtEndMonth" name="evtMonth" readonly [ngModel]="_activeMonth">
+              <input type="text" class="form-control" id="evtEndMonth" name="evtMonth" readonly [ngModel]="activeMonth">
             </div>
             <div class="form-group  col-2">
-              <input type="text" class="form-control" id="evtEndYear" name="evtYear" readonly [ngModel]="_activeYear">
+              <input type="text" class="form-control" id="evtEndYear" name="evtYear" readonly [ngModel]="activeYear">
             </div>
           </div>
 

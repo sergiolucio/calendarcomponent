@@ -11,13 +11,13 @@ import {moment} from '../../../../environments/environment';
 })
 export class YearDraggableModalComponent extends ModalComponent implements OnInit {
   @Input() evtDragYearViewClicked: Array<IDayYearViewClicked<any>>;
-  private _startDay: number;
-  private _startMonth: string;
-  private _startYear: number;
-  private _endDay: number;
-  private _endMonth: string;
-  private _endYear: number;
-  private _months: Array<string>;
+  public startDay: number;
+  public startMonth: string;
+  public startYear: number;
+  public months: Array<string>;
+  public endDay: number;
+  public endMonth: string;
+  public endYear: number;
 
   constructor(
     protected readonly _modalInstance: NgbActiveModal,
@@ -28,8 +28,8 @@ export class YearDraggableModalComponent extends ModalComponent implements OnIni
 
   public ngOnInit() {
     if (this.evtDragYearViewClicked) {
-      this._startYear = this.evtDragYearViewClicked[0].year;
-      this._endYear = this._startYear;
+      this.startYear = this.evtDragYearViewClicked[0].year;
+      this.endYear = this.startYear;
 
       const firstMonth: number = this.evtDragYearViewClicked[0].month;
       const lastMonth: number = this.evtDragYearViewClicked[this.evtDragYearViewClicked.length - 1].month;
@@ -38,8 +38,8 @@ export class YearDraggableModalComponent extends ModalComponent implements OnIni
         this.evtDragYearViewClicked.reverse();
       }
 
-      this._startMonth = ECalendarMonths[this.evtDragYearViewClicked[0].month];
-      this._endMonth = ECalendarMonths[this.evtDragYearViewClicked[this.evtDragYearViewClicked.length - 1].month];
+      this.startMonth = ECalendarMonths[this.evtDragYearViewClicked[0].month];
+      this.endMonth = ECalendarMonths[this.evtDragYearViewClicked[this.evtDragYearViewClicked.length - 1].month];
 
       for (let i = 0; i < this.evtDragYearViewClicked.length; i++) {
         const firstDay: number = this.evtDragYearViewClicked[i].days[0].day;
@@ -50,19 +50,19 @@ export class YearDraggableModalComponent extends ModalComponent implements OnIni
         }
       }
 
-      this._startDay = this.evtDragYearViewClicked[0].days[0].day;
+      this.startDay = this.evtDragYearViewClicked[0].days[0].day;
 
       const lastIndex: number = this.evtDragYearViewClicked.length - 1;
-      this._endDay = this.evtDragYearViewClicked[lastIndex].days[this.evtDragYearViewClicked[lastIndex].days.length - 1].day;
+      this.endDay = this.evtDragYearViewClicked[lastIndex].days[this.evtDragYearViewClicked[lastIndex].days.length - 1].day;
     }
 
-    this._months = [];
+    this.months = [];
     for (let i = 1; i <= 12; i++) {
-      this._months.push(ECalendarMonths[i]);
+      this.months.push(ECalendarMonths[i]);
     }
   }
 
-  generateDaysOfMonth(month: string, year: number): Array<number> {
+  public generateDaysOfMonth(month: string, year: number): Array<number> {
     const m = ECalendarMonths[month];
 
     const daysAux = moment(m + '-' + year, 'MM-YYYY').daysInMonth();

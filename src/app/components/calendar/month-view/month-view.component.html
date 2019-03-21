@@ -3,9 +3,10 @@
     <table class="table table-hover m-0">
       <thead>
         <tr>
-          <th>{{findCurrentMonth()}}</th>
+          <th class="border-right" scope="col">{{findCurrentMonth()}}</th>
           <th
             class="p-1"
+            scope="col"
             *ngFor="let day of generateDaysOfMonth()"
             [class.bg-weekend]="isWeekend(day)">
             <p class="text-center mb-1">{{findCurrentDay(day)}}</p>
@@ -15,7 +16,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of monthlyCalendarData.items | keyvalue; let i = index">
-          <td>{{item.key}}</td>
+          <td class="border-right">{{item.key}}</td>
           <td class="text-center"
               *ngFor="let day of generateDaysOfMonth()"
               (mousedown)="activateMouseDown(day, i);"

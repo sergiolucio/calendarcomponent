@@ -17,8 +17,6 @@ export class DailyInfoModalComponent extends ModalComponent implements OnInit {
   @Input() itemKey: string;
   @Input() activeMonth: ECalendarMonths;
   @Input() activeYear: number;
-  public startDay: ECalendarDays;
-  public endDay: ECalendarDays;
 
   constructor(
     protected readonly _modalInstance: NgbActiveModal,
@@ -26,15 +24,6 @@ export class DailyInfoModalComponent extends ModalComponent implements OnInit {
     super(_modalInstance, _changeDetectorRef);
   }
 
-  ngOnInit() {
-  }
-
-
-
-  generatePriorityLevels(): Array<number> {
-    let priorityLvl: Array<number>;
-    priorityLvl = [];
-
-    return priorityLvl;
+  public ngOnInit(): void {
   }
 }

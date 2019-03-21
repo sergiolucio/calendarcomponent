@@ -16,11 +16,11 @@ import {moment} from '../../../../environments/environment';
 export class MonthDraggableModalComponent extends ModalComponent implements OnInit {
 
   @Input() evtDraggable: IMonthlyCalendarDayClicked<any>;
-  private _item: string;
-  private _activeMonth: string;
-  private _activeYear: number;
-  private _startDay: ECalendarDays;
-  private _endDay: ECalendarDays;
+  public item: string;
+  public activeMonth: string;
+  public activeYear: number;
+  public startDay: ECalendarDays;
+  public endDay: ECalendarDays;
 
   constructor(
     protected readonly _modalInstance: NgbActiveModal,
@@ -30,16 +30,16 @@ export class MonthDraggableModalComponent extends ModalComponent implements OnIn
 
   ngOnInit() {
     if (this.evtDraggable) {
-      this._startDay = Number(this.evtDraggable.days[0].day);
-      this._endDay = Number(this.evtDraggable.days[this.evtDraggable.days.length - 1].day);
-      this._activeMonth = ECalendarMonths[this.evtDraggable.month];
-      this._activeYear = this.evtDraggable.year;
-      this._item = this.evtDraggable.item;
+      this.startDay = Number(this.evtDraggable.days[0].day);
+      this.endDay = Number(this.evtDraggable.days[this.evtDraggable.days.length - 1].day);
+      this.activeMonth = ECalendarMonths[this.evtDraggable.month];
+      this.activeYear = this.evtDraggable.year;
+      this.item = this.evtDraggable.item;
     }
   }
 
-  generateDaysOfMonth(): Array<number> {
-    const month: number = Number(ECalendarMonths[this._activeMonth]);
+  public generateDaysOfMonth(): Array<number> {
+    const month: number = Number(ECalendarMonths[this.activeMonth]);
     let stringMonth: string;
 
     if (month < 10) {
@@ -48,7 +48,7 @@ export class MonthDraggableModalComponent extends ModalComponent implements OnIn
       stringMonth = String(month);
     }
 
-    const daysAux = moment(stringMonth + '-' + this._activeYear, 'MM-YYYY').daysInMonth();
+    const daysAux = moment(stringMonth + '-' + this.activeYear, 'MM-YYYY').daysInMonth();
     let dayAux: Array<number>;
     dayAux = [];
 
@@ -57,13 +57,6 @@ export class MonthDraggableModalComponent extends ModalComponent implements OnIn
     }
 
     return dayAux;
-  }
-
-  generatePriorityLevels(): Array<number> {
-    let priorityLvl: Array<number>;
-    priorityLvl = [];
-
-    return priorityLvl;
   }
 }
 

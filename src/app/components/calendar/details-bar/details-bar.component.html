@@ -49,17 +49,33 @@
           </div>
       </div>
 
-      <div class="col-2">
-        <div class="row no-gutters" *ngIf="!monthSelectorDisabled">
+      <div class="col-2" [ngSwitch]="panelMode">
+        <div class="row no-gutters" *ngSwitchCase="'year'">
+          <div class="col-auto d-flex align-items-center pr-1">
+            <i class="fa fa-chevron-left" (click)="decrementItem()"></i>
+          </div>
+          <div class="col-8">
+            <input type="text"
+                   class="form-control text-center bg-white px-0"
+                   name="year"
+                   [ngModel]="activeItem"
+                   readonly>
+          </div>
+          <div class="col-auto d-flex align-items-center pl-1">
+            <i class="fa fa-chevron-right" (click)="incrementItem()"></i>
+          </div>
+        </div>
+
+
+        <div class="row no-gutters" *ngSwitchCase="'month'">
           <div class="col-auto d-flex align-items-center pr-1">
             <i class="fa fa-chevron-left" (click)="decrementMonth()"></i>
           </div>
           <div class="col-7">
             <input type="text"
-                   class="form-control text-center"
+                   class="form-control text-center bg-white"
                    name="year"
                    [ngModel]="getMonthName()"
-                   [class.bg-white]="!monthSelectorDisabled"
                    readonly>
           </div>
           <div class="col-auto d-flex align-items-center pl-1">
@@ -69,7 +85,7 @@
       </div>
 
       <div class="col-8">
-        <div class="row d-flex justify-content-end">
+        <div class="row">
           <div class="col-auto py-1 d-flex align-content-center">
             <div class="color-marker bg-warning shadow"></div>
             <span>Pendente</span>
@@ -88,7 +104,7 @@
           </div>
           <div class="col-auto py-1 d-flex align-content-center">
             <div class="color-marker bg-danger shadow"></div>
-            <span>Conflitos</span>
+            <span>Eventos simultâneos</span>
           </div>
           <div class="col-auto py-1 d-flex align-content-center">
             <div class="color-marker bg-info shadow"></div>

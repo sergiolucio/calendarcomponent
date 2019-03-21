@@ -3,7 +3,7 @@
     <app-details-bar [(year)]="selectedYear"
                      [(month)]="selectedMonth"
                      (evtDateChanged)="dateChanged($event)"
-                     [monthSelectorDisabled]="false"></app-details-bar>
+                     panelMode="month"></app-details-bar>
     <app-month-view [activeMonth]="selectedMonth"
                     [activeYear]="selectedYear"
                     [monthlyCalendarData]="monthlyCalendarData"
@@ -12,14 +12,16 @@
   </div>
 
   <div *ngSwitchCase="'year'">
-    <app-details-bar [year]="selectedYear"
-                     (yearChange)="yearChanged($event)"
+    <app-details-bar [(year)]="selectedYear"
                      (evtDateChanged)="dateChanged($event)"
-                     [monthSelectorDisabled]="true"></app-details-bar>
+                     [itemsAvailables]="generateItemsAvailables()"
+                     [(activeItem)]="activeItem"
+                     panelMode="year"></app-details-bar>
     <app-year-view [activeYear]="selectedYear"
                    [anualCalendarData]="anualCalendarData"
                    (evtDayYearViewClicked)="dayYearViewClicked($event)"
                    (evtDragYearViewClicked)="dragYearViewClicked($event)"
+                   [activeItem]="activeItem"
                    (evtMonthClicked)="monthClicked($event)"></app-year-view>
   </div>
 </div>

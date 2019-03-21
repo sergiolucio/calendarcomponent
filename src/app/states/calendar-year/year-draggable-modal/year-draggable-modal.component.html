@@ -1,5 +1,5 @@
 <div class="modal-header">
-<h4 class="modal-title">Criar Novo Evento</h4>
+  <h4 class="modal-title">Criar Novo Evento</h4>
 <button type="button" class="close" aria-label="Close" (click)="dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -11,6 +11,8 @@
     <div class="row m-o py-3">
 
       <div class="col-12">
+        <h5 class="mb-3">{{evtDragYearViewClicked[0].item}}</h5>
+
         <form>
           <div class="form-group">
             <label for="evtName">Título do evento:</label>
@@ -56,31 +58,31 @@
 
           <div class="form-row">
             <div class="form-group col-1">
-              <select class="form-control" id="evtStartDay" name="evtStartDay" [(ngModel)]="_startDay">
-                <option *ngFor="let day of generateDaysOfMonth(_startMonth, _startYear)" value="{{day}}">{{day}}</option>
+              <select class="form-control" id="evtStartDay" name="evtStartDay" [(ngModel)]="startDay">
+                <option *ngFor="let day of generateDaysOfMonth(startMonth, startYear)" value="{{day}}">{{day}}</option>
               </select>
             </div>
             <div class="form-group col-2">
-              <select class="form-control" id="evtStartMonth" name="evtStartMonth" [(ngModel)]="_startMonth">
-                <option *ngFor="let month of _months" value="{{month}}">{{month}}</option>
+              <select class="form-control" id="evtStartMonth" name="evtStartMonth" [(ngModel)]="startMonth">
+                <option *ngFor="let month of months" value="{{month}}">{{month}}</option>
               </select>
             </div>
             <div class="form-group  col-2">
-              <input type="number" class="form-control" id="evtStartYear" name="evtStartYear" [(ngModel)]="_startYear">
+              <input type="number" class="form-control" id="evtStartYear" name="evtStartYear" [(ngModel)]="startYear">
             </div>
 
             <div class="form-group col-1 offset-2">
-              <select class="form-control" id="evtEndDay" name="evtEndDay" [(ngModel)]="_endDay">
-                <option *ngFor="let day of generateDaysOfMonth(_endMonth, _endYear)" value="{{day}}">{{day}}</option>
+              <select class="form-control" id="evtEndDay" name="evtEndDay" [(ngModel)]="endDay">
+                <option *ngFor="let day of generateDaysOfMonth(endMonth, endYear)" value="{{day}}">{{day}}</option>
               </select>
             </div>
             <div class="form-group col-2">
-              <select class="form-control" id="evtEndMonth" name="evtEndMonth" [(ngModel)]="_endMonth">
-                <option *ngFor="let month of _months" value="{{month}}">{{month}}</option>
+              <select class="form-control" id="evtEndMonth" name="evtEndMonth" [(ngModel)]="endMonth">
+                <option *ngFor="let month of months" value="{{month}}">{{month}}</option>
               </select>
             </div>
             <div class="form-group  col-2">
-              <input type="number" class="form-control" id="evtEndYear" name="evtEndYear" [(ngModel)]="_endYear">
+              <input type="number" class="form-control" id="evtEndYear" name="evtEndYear" [(ngModel)]="endYear">
             </div>
           </div>
 

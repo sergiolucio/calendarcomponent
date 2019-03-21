@@ -41,7 +41,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     this.evtMonthlyCalendarDayClicked = new EventEmitter<IMonthlyCalendarDayClicked<any>>();
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     if (this.activeMonth < 10) {
       const stringMonth: string = '0' + this.activeMonth;
       this._activeData = stringMonth + '-' + this.activeYear;
@@ -81,7 +81,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  generateDaysOfMonth(): Array<number> {
+  public generateDaysOfMonth(): Array<number> {
     const daysAux = moment(this._activeData, 'MM-YYYY').daysInMonth();
     let dayAux: Array<number>;
     dayAux = [];
@@ -93,11 +93,11 @@ export class MonthViewComponent implements OnInit, OnChanges {
     return dayAux;
   }
 
-  findCurrentMonth(): string {
+  public findCurrentMonth(): string {
     return this._months[this.activeMonth - 1];
   }
 
-  findCurrentDay(day: number): string {
+  public findCurrentDay(day: number): string {
     let dayOfWeek: number;
     if (day < 10) {
       dayOfWeek = moment('0' + day + '-' + this._activeData, 'DD-MM-YYYY').weekday();
@@ -123,7 +123,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  isWeekend(day: number): boolean {
+  public isWeekend(day: number): boolean {
 
     let stringDay: string;
     let WeekDay: number;
@@ -143,7 +143,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     return false;
   }
 
-  setDinamicClass(day: number, item: number): string {
+  public setDinamicClass(day: number, item: number): string {
     let bg: string;
 
     if (this._dragEvtDays && this.isDragEvtByDay(day, item)) {
@@ -163,7 +163,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   // next methods are to get data to seed calendar
 
-  generateEvtsByDay(day: number, itemIndex: number): Array<ICalendarEventDay<any>> {
+  private _generateEvtsByDay(day: number, itemIndex: number): Array<ICalendarEventDay<any>> {
     const evtsArray: Array<ICalendarEventDay<any>> = [];
 
     const keyItemValue = Object.keys(this.monthlyCalendarData.items)[itemIndex];
@@ -182,15 +182,15 @@ export class MonthViewComponent implements OnInit, OnChanges {
     return evtsArray;
   }
 
-  countEvtsByDay(day: number, itemIndex: number): number {
-    return this.generateEvtsByDay(day, itemIndex).length;
+  public countEvtsByDay(day: number, itemIndex: number): number {
+    return this._generateEvtsByDay(day, itemIndex).length;
   }
 
-  getEvtColor(day: number, itemIndex: number): string {
+  public getEvtColor(day: number, itemIndex: number): string {
     let evtColor: string;
 
-    if (this.generateEvtsByDay(day, itemIndex).length > 0) {
-      evtColor = 'bg-' + this.generateEvtsByDay(day, itemIndex)[0].type.color;
+    if (this._generateEvtsByDay(day, itemIndex).length > 0) {
+      evtColor = 'bg-' + this._generateEvtsByDay(day, itemIndex)[0].type.color;
     }
 
     return evtColor;
@@ -198,7 +198,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   // next methods draw new events
 
-  activateMouseDown(day: number, itemIndex: number): void {
+  public activateMouseDown(day: number, itemIndex: number): void {
     this._dragEvtDays = [];
     this._historicoDragEvtDays = [];
 
@@ -211,7 +211,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  mouseEnter(day): void {
+  public mouseEnter(day): void {
     if (this._mouseDown) {
 
       this._historicoDragEvtDays.push(day);
@@ -238,7 +238,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  desactivateMouseDown(day): void {
+  public desactivateMouseDown(day): void {
     this._mouseDown = false;
 
     if (
@@ -247,14 +247,14 @@ export class MonthViewComponent implements OnInit, OnChanges {
       this._historicoDragEvtDays.length > 0 &&
       this.countEvtsByDay(this._historicoDragEvtDays[0], this._dragEvtItem) === 0
     ) {
-      this.drawDragEvt(this._dragEvtDays, this._dragEvtItem);
+      this._drawDragEvt(this._dragEvtDays, this._dragEvtItem);
     }
 
     this._historicoDragEvtDays = [];
     this._dragEvtDays = [];
   }
 
-  drawDragEvt(days: Array<number>, itemIndex: number) {
+  private _drawDragEvt(days: Array<number>, itemIndex: number) {
 
     if (days.length > 0) {
       const dragEvt: IMonthlyCalendarDayClicked<any> = new class implements IMonthlyCalendarDayClicked<any> {
@@ -288,7 +288,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-  isDragEvtByDay(day: number, item: number): boolean {
+  public isDragEvtByDay(day: number, item: number): boolean {
     if (this._dragEvtItem === item) {
       for (const d of this._dragEvtDays) {
         if (d === day) {
@@ -300,7 +300,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
     return false;
   }
 
-  openEvtModal(day: number, itemIndex: number): void {
+  public openEvtModal(day: number, itemIndex: number): void {
     if (this.countEvtsByDay(day, itemIndex) > 0) {
 
       const dayliInfo: IMonthlyCalendarDayClicked<any>  = new class implements IMonthlyCalendarDayClicked<any> {
@@ -323,7 +323,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
       };
 
       daysAux.day = day;
-      daysAux.events = this.generateEvtsByDay(day, itemIndex);
+      daysAux.events = this._generateEvtsByDay(day, itemIndex);
       daysAux.isHoliday = undefined;
       daysAux.isWeekend = undefined;
 

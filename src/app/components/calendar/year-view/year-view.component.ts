@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {moment} from '../../../../environments/environment';
-import {ModalService} from '../../../services/modal/modal.service';
 import {
   ECalendarMonths,
   IAnualCalendar,
@@ -23,12 +22,13 @@ export class YearViewComponent implements OnInit, OnChanges {
   public months: Array<string>;
   @Output() evtDayYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
   @Output() evtDragYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
-  private _mouseActive: boolean;
+  private _mouseDown: boolean;
   private _startDayDragged: number;
   private _startMonthDragged: number;
   private _daysDragged: Array<ICalendarDay<any>>;
   private _daysDraggedByMonth: IDayYearViewClicked<any>;
   private _daysDraggedByYear: Array<IDayYearViewClicked<any>>;
+  @Input() activeItem: string;
 
   constructor(
   ) {
@@ -37,7 +37,7 @@ export class YearViewComponent implements OnInit, OnChanges {
     this.evtDragYearViewClicked = new EventEmitter<Array<IDayYearViewClicked<any>>>();
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.months = [
       'Janeiro',
       'Fevereiro',
@@ -61,20 +61,20 @@ export class YearViewComponent implements OnInit, OnChanges {
       }
     });
 
-    this._mouseActive = false;
+    this._mouseDown = false;
   }
 
   public ngOnChanges({activeYear}: SimpleChanges): void {
     if (activeYear && !activeYear.isFirstChange()) {
-      this.updateYear(activeYear.currentValue);
+      this._updateYear(activeYear.currentValue);
     }
   }
 
-  updateYear(value: number) {
+  private _updateYear(value: number) {
     this.activeYear = value;
   }
 
-  generateDaysOfMonth(month: number): Array<number> {
+  public generateDaysOfMonth(month: number): Array<number> {
     const daysAux = moment(month + '-' + this.activeYear, 'MM-YYYY').daysInMonth();
     let dayAux: Array<number>;
     dayAux = [];
@@ -87,7 +87,7 @@ export class YearViewComponent implements OnInit, OnChanges {
   }
 
   // Descobre o primeiro dia da semana e conta quantos espaços(dias) deve deixar em branco até imprimir.
-  verifyFirstDayOfMonth(month: number): Array<number> {
+  public verifyFirstDayOfMonth(month: number): Array<number> {
 
     let stringMonth: string;
     const daysOff: Array<number> = [];
@@ -113,7 +113,7 @@ export class YearViewComponent implements OnInit, OnChanges {
     return daysOff;
   }
 
-  isWeekend(day: number, month: number): boolean {
+  private _isWeekend(day: number, month: number): boolean {
 
     let stringDay: string;
     let stringMonth: string;
@@ -140,14 +140,14 @@ export class YearViewComponent implements OnInit, OnChanges {
     return false;
   }
 
-  isCurrentMonth(month: number): boolean {
+  public isCurrentMonth(month: number): boolean {
     if (moment().month() === month && moment().year() === this.activeYear) {
       return true;
     }
     return false;
   }
 
-  monthClicked(month: number): void {
+  public monthClicked(month: number): void {
     this.evtMonthClicked.emit({
       year: this.activeYear,
       month: month
@@ -156,7 +156,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
   // next methods are to get data to seed calendar in generic view
 
-  generateEvtsByDay(day: number, month: number): Array<ICalendarEventDay<any>> {
+  private _generateEvtsByDay(day: number, month: number): Array<ICalendarEventDay<any>> {
     const evtsArray: Array<ICalendarEventDay<any>> = [];
     for (const keyItemValue of Object.keys(this.anualCalendarData.items)) {
       const itemValue: IAnualCalendarMonth<any> = <IAnualCalendarMonth <any>>this.anualCalendarData.items[keyItemValue];
@@ -178,19 +178,15 @@ export class YearViewComponent implements OnInit, OnChanges {
     return evtsArray;
   }
 
-  countEvtsByDay(day: number, month: number): number {
-    return this.generateEvtsByDay(day, month).length;
-  }
-
-  getEvtColor(day: number, month: number): string {
+  public getEvtColor(day: number, month: number): string {
     let evtColor: string;
 
-    if (this.generateEvtsByDay(day, month).length === 1) {
+    if (this._generateEvtsByDay(day, month).length === 1) {
 
-      evtColor = 'bg-' + this.generateEvtsByDay(day, month)[0].type.color;
-    } else if (this.generateEvtsByDay(day, month).length > 1) {
+      evtColor = 'bg-' + this._generateEvtsByDay(day, month)[0].type.color;
+    } else if (this._generateEvtsByDay(day, month).length > 1) {
       evtColor = 'bg-danger';
-    } else if (this.isWeekend(day, month)) {
+    } else if (this._isWeekend(day, month)) {
       evtColor = 'bg-weekend';
     }
 
@@ -211,11 +207,9 @@ export class YearViewComponent implements OnInit, OnChanges {
 
   // method to send data when a day is clicked
 
-  dayYearViewClicked(day: number, month: number): void {
+  public dayYearViewClicked(day: number, month: number): void {
 
-    if (this.generateEvtsByDay(day, month).length === 0 || this._mouseActive) {
-      this.startDragEvent(day, month);
-    } else {
+    if (this._generateEvtsByDay(day, month).length > 0 ) {
 
       const evtsArray: Array<IDayYearViewClicked<any>> = [];
 
@@ -261,18 +255,34 @@ export class YearViewComponent implements OnInit, OnChanges {
           }
         }
       }
-      console.log(evtsArray);
       this.evtDayYearViewClicked.emit(evtsArray);
     }
 
   }
 
+  public toggleMouseDown(day: number, month: number): void {
+    if (this._generateEvtsByDay(day, month).length === 0 || this._mouseDown) {
+      this._mouseDown = !this._mouseDown;
+      if (this._mouseDown) {
+        this._startDragEvent(day, month);
+      } else {
+        this._startDragEvent(day, month);
+      }
+    }
+  }
+
+  public mouseUp(day: number, month: number): void {
+    if (this._mouseDown) {
+      this.toggleMouseDown(day, month);
+    }
+  }
+
   // methods to star dragging events
 
-  startDragEvent (day: number, month: number): void {
-    this._mouseActive = !this._mouseActive;
+  private _startDragEvent (day: number, month: number): void {
 
-    if (this._mouseActive) {
+
+    if (this._mouseDown) {
       this._startDayDragged = day;
       this._startMonthDragged = month;
       this._daysDragged = [];
@@ -295,7 +305,7 @@ export class YearViewComponent implements OnInit, OnChanges {
       daysDraggedAux.day = day;
 
       this._daysDragged.push(daysDraggedAux);
-      this._daysDraggedByMonth.item = 'teste';
+      this._daysDraggedByMonth.item = this.activeItem;
       this._daysDraggedByMonth.month = month;
       this._daysDraggedByMonth.year = this.activeYear;
       this._daysDraggedByMonth.days = this._daysDragged;
@@ -314,8 +324,8 @@ export class YearViewComponent implements OnInit, OnChanges {
 
   }
 
-  draggingTheEvent (day: number, month: number): void {
-    if (this._mouseActive) {
+  public draggingTheEvent (day: number, month: number): void {
+    if (this._mouseDown) {
       this._daysDraggedByYear = [];
 
       // verifico que estou com o cursor no mesmo mês em que comecei
@@ -365,7 +375,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
         this._daysDraggedByMonth.year = this.activeYear;
         this._daysDraggedByMonth.month = month;
-        this._daysDraggedByMonth.item = 'teste';
+        this._daysDraggedByMonth.item = this.activeItem;
         this._daysDraggedByMonth.days = [];
 
         for (const days of this._daysDragged) {
@@ -416,7 +426,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
           this._daysDraggedByMonth.year = this.activeYear;
           this._daysDraggedByMonth.month = m;
-          this._daysDraggedByMonth.item = 'teste';
+          this._daysDraggedByMonth.item = this.activeItem;
           this._daysDraggedByMonth.days = [];
 
           for (const days of this._daysDragged) {
@@ -431,7 +441,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
         // vou percorrer todos os meses até aonde tenho o cursor
         for (let m = this._startMonthDragged; m >= month; m--) {
-          let dayToStop: number = 1;
+          let dayToStop = 1;
 
           if (m === month) {
             dayToStop = day;
@@ -467,7 +477,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
           this._daysDraggedByMonth.year = this.activeYear;
           this._daysDraggedByMonth.month = m;
-          this._daysDraggedByMonth.item = 'teste';
+          this._daysDraggedByMonth.item = this.activeItem;
           this._daysDraggedByMonth.days = [];
 
           for (const days of this._daysDragged) {
