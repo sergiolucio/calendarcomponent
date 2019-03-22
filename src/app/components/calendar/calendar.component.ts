@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   ECalendarState,
   IAnualCalendar,
-  ICalendar,
+  ICalendar, ICalendarLabels,
   ICalendarMonthClicked, IDayYearViewClicked,
   IMonthlyCalendarDayClicked
 } from './calendar.component.interface';
@@ -27,6 +27,7 @@ export class CalendarComponent implements OnInit {
   @Output() evtMonthlyCalendarDay: EventEmitter<IMonthlyCalendarDayClicked<any>>;
   @Output() evtDayYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
   @Output() evtDragYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
+  @Input() detailsBarLabels: ICalendarLabels;
 
   constructor() {
     this.evtMonthClicked = new EventEmitter<ICalendarMonthClicked>();

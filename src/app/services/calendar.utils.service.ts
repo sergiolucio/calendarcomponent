@@ -2,10 +2,10 @@ import {cloneDeep} from 'lodash';
 import {Injectable} from '@angular/core';
 import {
   ECalendarMonths,
-  ECalendarWeekDays, EColorEvt, EPriority,
+  ECalendarWeekDays, EPriority,
   IAnualCalendar,
   ICalendar,
-  ICalendarItems
+  ICalendarItems, ICalendarLabel, ICalendarLabels
 } from '../components/calendar/calendar.component.interface';
 import {moment} from '../../environments/environment';
 import {findIndex, forEach} from 'lodash';
@@ -18,8 +18,14 @@ export class CalendarUtilsService {
   private _montlhyCalendar: ICalendar<any>;
   private _monthRequested: number;
   private _yearRequested = 2019;
+  private _labelsAvailables: ICalendarLabels;
 
   constructor() {
+  }
+
+  public get labelsAvailables(): ICalendarLabels {
+    this._generateLabels();
+    return cloneDeep(this._labelsAvailables);
   }
 
   public get anualCalendar(): IAnualCalendar<any> {
@@ -66,12 +72,12 @@ export class CalendarUtilsService {
           for (let k = 1; k <= Math.floor((Math.random() * 3) + 1); k++) {
             const eventDesc = 'Evento ' + k;
             const code: number = Math.floor((Math.random() * 4) + 1);
-            const color: Array<string> = ['green', 'orange', 'blue', 'gray'];
+            const color: Array<string> = ['#f2a654', '#57c7d4', '#8daaba', '#46be8a'];
             const event: object = {
               body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
               type: {
                 codigo: code,
-                color: EColorEvt[Math.floor(Math.random() * 4 + 1)],
+                color: color[Math.floor(Math.random() * 3 + 1)],
                 descricao: eventDesc,
                 prioridade: EPriority[k]
               }
@@ -140,12 +146,12 @@ export class CalendarUtilsService {
           for (let k = 1; k <= Math.floor((Math.random() * 5) + 1); k++) {
             const eventDesc = 'Evento ' + k;
             const code: number = Math.floor((Math.random() * 4) + 1);
-            const color: Array<string> = ['green', 'orange', 'blue', 'gray'];
+            const color: Array<string> = ['#f2a654', '#57c7d4', '#8daaba', '#46be8a'];
             const event: object = {
               body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
               type: {
                 codigo: code,
-                color: EColorEvt[Math.floor(Math.random() * 4 + 1)],
+                color: color[Math.floor(Math.random() * 3 + 1)],
                 descricao: eventDesc,
                 prioridade: EPriority[k]
               }
@@ -197,5 +203,32 @@ export class CalendarUtilsService {
 
   private _generateDaysOfMonth(): number {
     return moment().month(this._monthRequested - 1).year(this._yearRequested).daysInMonth();
+  }
+
+  private _generateLabels(): void {
+    this._labelsAvailables = new class implements ICalendarLabels {
+      public labels: Array<ICalendarLabel>;
+    };
+    this._labelsAvailables.labels = [];
+
+    const colors: Array<string> = ['#f2a654', '#46be8a', '#57c7d4', '#8daaba'];
+    const labels: Array<string> = ['Pendente', 'Aprovado', 'Feriado', 'Rejeitado'];
+
+    for (let i = 0; i < colors.length; i++) {
+      const labelAux: ICalendarLabel = new class implements ICalendarLabel {
+        public color: string;
+        public label: string;
+        public quantity: number;
+      };
+      labelAux.color = colors[i];
+      labelAux.label = labels[i];
+      labelAux.quantity = Math.floor(Math.random() * 30);
+      this._labelsAvailables.labels.push(labelAux);
+    }
+    const labelAux: ICalendarLabel = new class implements ICalendarLabel {
+      public color: string;
+      public label: string;
+      public quantity: number;
+    };
   }
 }

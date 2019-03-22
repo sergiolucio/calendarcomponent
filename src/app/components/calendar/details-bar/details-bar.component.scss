@@ -14,11 +14,36 @@ div.numbers-details{
   }
 }
 
-.fa-chevron-left, .fa-chevron-right{
-  font-size: 1rem;
-  cursor: pointer;
+div.selector {
+  .selector-button:hover {
+    cursor: pointer;
+  }
+
+  .fa-chevron-left, .fa-chevron-right{
+    font-size: 1rem;
+  }
 }
+
 
 input {
   font-size: 0.8rem;
+}
+
+.bg-weekend {
+  background-color: rgb(33, 150, 243);
+}
+.bg-orange {
+  background-color: #f2a654;
+}
+.bg-blue{
+  background-color: #57c7d4;
+}
+.bg-gray {
+  background-color: #8daaba;
+}
+.bg-green {
+  background-color: #46be8a;
+}
+.bg-red {
+  background-color: #f96868;
 }

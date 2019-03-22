@@ -1,10 +1,11 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {HammerGestureConfig, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {moment} from '../../../../environments/environment';
 import {
   ECalendarMonths,
   IAnualCalendar,
   IAnualCalendarMonth, ICalendarDay,
-  ICalendarEventDay,
+  ICalendarEventDay, ICalendarLabels,
   ICalendarMonthClicked,
   IDayYearViewClicked
 } from '../calendar.component.interface';
@@ -179,15 +180,16 @@ export class YearViewComponent implements OnInit, OnChanges {
   }
 
   public getEvtColor(day: number, month: number): string {
+
     let evtColor: string;
 
     if (this._generateEvtsByDay(day, month).length === 1) {
 
-      evtColor = 'bg-' + this._generateEvtsByDay(day, month)[0].type.color;
+      evtColor = this._generateEvtsByDay(day, month)[0].type.color;
     } else if (this._generateEvtsByDay(day, month).length > 1) {
-      evtColor = 'bg-danger';
+      evtColor = '#f96868';
     } else if (this._isWeekend(day, month)) {
-      evtColor = 'bg-weekend';
+      evtColor = '#2196F3';
     }
 
     if (this._daysDraggedByYear) {
@@ -195,7 +197,7 @@ export class YearViewComponent implements OnInit, OnChanges {
         if (i.month === month) {
           for (const d of i.days) {
             if (d.day === day) {
-              evtColor = 'bg-info';
+              evtColor = '#a2caee';
             }
           }
         }
@@ -260,7 +262,9 @@ export class YearViewComponent implements OnInit, OnChanges {
 
   }
 
-  public toggleMouseDown(day: number, month: number): void {
+  public toggleMouseDown(day: number, month: number, event: any): void {
+
+
     if (this._generateEvtsByDay(day, month).length === 0 || this._mouseDown) {
       this._mouseDown = !this._mouseDown;
       if (this._mouseDown) {
@@ -273,7 +277,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
   public mouseUp(day: number, month: number): void {
     if (this._mouseDown) {
-      this.toggleMouseDown(day, month);
+      this.toggleMouseDown(day, month, null);
     }
   }
 

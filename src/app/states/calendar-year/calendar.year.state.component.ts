@@ -2,7 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {moment} from '../../../environments/environment';
 import {CalendarUtilsService} from '../../services/calendar.utils.service';
-import {IAnualCalendar, ICalendarMonthClicked, IDayYearViewClicked} from '../../components/calendar/calendar.component.interface';
+import {
+  IAnualCalendar,
+  ICalendarLabels,
+  ICalendarMonthClicked,
+  IDayYearViewClicked
+} from '../../components/calendar/calendar.component.interface';
 import {ModalService} from '../../services/modal/modal.service';
 import {DailyInfoYearModalComponent} from './daily-info-year-modal/daily-info-year-modal.component';
 import {YearDraggableModalComponent} from './year-draggable-modal/year-draggable-modal.component';
@@ -15,6 +20,7 @@ export class CalendarYearStateComponent implements OnInit {
 
   public activeYear: number;
   public anualCalendarData: IAnualCalendar<any>;
+  public detailsBarLabels: ICalendarLabels;
   public evtDayYearViewClicked: Array<IDayYearViewClicked<any>>;
   public evtDragYearViewClicked: Array<IDayYearViewClicked<any>>;
 
@@ -32,6 +38,7 @@ export class CalendarYearStateComponent implements OnInit {
 
     this._calendarUtilsService.yearRequested = this.activeYear;
     this.anualCalendarData = this._calendarUtilsService.anualCalendar;
+    this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
   }
 
   public yearClicked(year: number, month: number): void {

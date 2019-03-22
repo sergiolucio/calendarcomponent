@@ -1,6 +1,7 @@
 <app-calendar state="year"
               [(selectedYear)]="activeYear"
               [anualCalendarData]="anualCalendarData"
+              [detailsBarLabels]="detailsBarLabels"
               (evtDateChanged)="dateChanged($event)"
               (evtDayYearViewClicked)="dayYearViewClicked($event)"
               (evtDragYearViewClicked)="dragYearViewClicked($event)"

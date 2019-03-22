@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ECalendarState, ICalendar, ICalendarMonthClicked} from '../calendar.component.interface';
+import {ECalendarState, ICalendar, ICalendarLabels, ICalendarMonthClicked} from '../calendar.component.interface';
 
 
 @Component({
@@ -18,6 +18,7 @@ export class DetailsBarComponent implements OnInit {
   @Output() activeItemChange: EventEmitter<string>;
   private _stringMonths: Array<string>;
   @Input() panelMode: ECalendarState;
+  @Input() detailsBarLabels: ICalendarLabels;
 
   constructor() {
     this.yearChange = new EventEmitter<number>();
@@ -104,6 +105,10 @@ export class DetailsBarComponent implements OnInit {
       year: this.year,
       month: this.month
     });
+  }
+
+  public teste(): void {
+    alert('tap');
   }
 
 }

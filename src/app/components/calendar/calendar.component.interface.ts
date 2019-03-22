@@ -13,13 +13,6 @@ export enum EPriority {
   '05'
 }
 
-export enum EColorEvt {
-  'blue' = 1,
-  'green',
-  'orange',
-  'gray'
-}
-
 // Generic calendar
 export enum ECalendarMonths {
   JANUARY = 1,
@@ -80,6 +73,10 @@ export enum ECalendarDays {
   '031'
 }
 
+// --------------------------
+
+// Interfaces dos dados para popular o calendário
+
 export interface ICalendar<T> {
   items: ICalendarItems<T>;
   weekStartDay: ECalendarWeekDays;
@@ -112,13 +109,8 @@ export interface ICalendarEventDay<T> {
 export interface ICalendarEventDayType {
   codigo: number;
   descricao: string;
-  color: EColorEvt;
+  color: string;
   prioridade: EPriority;
-  // estado: IEstados;
-}
-
-export interface IEstados {
-  [estado: string]: string;
 }
 
 // Anual calendar
@@ -136,6 +128,8 @@ export interface IAnualCalendarMonth<T> extends ICalendarItem<T> {
   month: ECalendarMonths;
 }
 
+
+// ------------------------
 
 // events on click
 
@@ -157,4 +151,18 @@ export interface IDayYearViewClicked<T> {
   year: number;
   month: ECalendarMonths;
   days: Array<ICalendarDay<T>>;
+}
+
+// ------------------------
+
+// Interface para receber estados
+
+export interface ICalendarLabels {
+  labels: Array<ICalendarLabel>;
+}
+
+export interface ICalendarLabel {
+  label: string;
+  color: string;
+  quantity: number;
 }

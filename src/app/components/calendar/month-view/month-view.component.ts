@@ -16,15 +16,19 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
   @Input() activeMonth: number;
   @Input() activeYear: number;
+  @Input() monthlyCalendarData: ICalendar<any>;
+  @Output() evtDraggableClicked: EventEmitter<IMonthlyCalendarDayClicked<any>>;
+  @Output() evtMonthlyCalendarDayClicked: EventEmitter<IMonthlyCalendarDayClicked<any>>;
   private _activeData: string;
   private _months: Array<string>;
-  @Input() monthlyCalendarData: ICalendar<any>;
   private _mouseDown: boolean;
   private _dragEvtDays: Array<number>;
   private _dragEvtItem: number;
   private _historicoDragEvtDays: Array<number>;
-  @Output() evtDraggableClicked: EventEmitter<IMonthlyCalendarDayClicked<any>>;
-  @Output() evtMonthlyCalendarDayClicked: EventEmitter<IMonthlyCalendarDayClicked<any>>;
+  // mobile drag event variables
+  private _dragMobileIndex: number;
+  private _touchPosition: number;
+  private _cellWidth: number;
 
   constructor(
     private readonly _modalService: ModalService
@@ -63,6 +67,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
       'Dezembro'
     ];
     this._mouseDown = false;
+    this._dragMobileIndex = 1;
   }
 
   public ngOnChanges({activeMonth, activeYear}: SimpleChanges): void {
@@ -143,62 +148,87 @@ export class MonthViewComponent implements OnInit, OnChanges {
     return false;
   }
 
-  public setDinamicClass(day: number, item: number): string {
-    let bg: string;
-
-    if (this._dragEvtDays && this.isDragEvtByDay(day, item)) {
-      bg = 'bg-info';
-    } else if (this.countEvtsByDay(day, item) > 1) {
-      bg = 'bg-danger';
-    } else if (this.getEvtColor(day, item)) {
-      bg = this.getEvtColor(day, item);
-    } else if (this.isWeekend(day)) {
-      bg = 'bg-weekend';
-    } else {
-      bg = 'bg-transparent';
-    }
-
-    return bg;
-  }
 
   // next methods are to get data to seed calendar
-
-  private _generateEvtsByDay(day: number, itemIndex: number): Array<ICalendarEventDay<any>> {
-    const evtsArray: Array<ICalendarEventDay<any>> = [];
-
-    const keyItemValue = Object.keys(this.monthlyCalendarData.items)[itemIndex];
-    const itemValue = this.monthlyCalendarData.items[keyItemValue];
-
-    for (const keyDaysValue of Object.keys(itemValue.days)) {
-      const daysValue = itemValue.days[keyDaysValue];
-
-      if (daysValue.day === day) {
-        for (const evtsValue of daysValue.events) {
-          evtsArray.push(evtsValue);
-        }
-      }
-    }
-
-    return evtsArray;
-  }
 
   public countEvtsByDay(day: number, itemIndex: number): number {
     return this._generateEvtsByDay(day, itemIndex).length;
   }
 
   public getEvtColor(day: number, itemIndex: number): string {
-    let evtColor: string;
+    let bg: string;
 
-    if (this._generateEvtsByDay(day, itemIndex).length > 0) {
-      evtColor = 'bg-' + this._generateEvtsByDay(day, itemIndex)[0].type.color;
+    if (this._dragEvtDays && this.isDragEvtByDay(day, itemIndex)) {
+      bg = '#a2caee';
+    } else if (this.countEvtsByDay(day, itemIndex) > 1) {
+      bg = '#f96868';
+    } else if (this._generateEvtsByDay(day, itemIndex).length > 0) {
+      bg = this._generateEvtsByDay(day, itemIndex)[0].type.color;
+    } else if (this.isWeekend(day)) {
+      bg = '#2196F3';
     }
 
-    return evtColor;
+    return bg;
   }
+
 
   // next methods draw new events
 
-  public activateMouseDown(day: number, itemIndex: number): void {
+  public touchStart(day: number, itemIndex: number, event: any): void {
+    this._dragEvtDays = [];
+    this._historicoDragEvtDays = [];
+
+    console.log(event.srcEvent.offsetX);
+
+    if (this.countEvtsByDay(day, itemIndex) === 0) {
+      this._historicoDragEvtDays.push(day);
+      this._dragEvtDays.push(day);
+      this._dragEvtItem = itemIndex;
+
+      this._touchPosition = event.srcEvent.offsetX;
+      this._cellWidth = event.target.clientWidth;
+    }
+  }
+
+  public touchRight(event: any): void {
+    if (this._touchPosition && this._cellWidth) {
+      this._dragMobileIndex = Math.ceil((event.deltaX + this._touchPosition) / this._cellWidth);
+      this._dragEvtDays = [];
+
+      for (let i = 0; i < this._dragMobileIndex; i++) {
+        if (i === 0) {
+          this._dragEvtDays.push(this._historicoDragEvtDays[0]);
+        } else {
+          this._dragEvtDays.push(this._historicoDragEvtDays[0] + i);
+        }
+      }
+    }
+  }
+
+  public touchLeft(event: any): void {
+    if (this._touchPosition && this._cellWidth) {
+      this._dragMobileIndex = Math.ceil((event.deltaX + this._touchPosition) / this._cellWidth);
+      this._dragEvtDays = [];
+
+      for (let i = 0; i < this._dragMobileIndex; i++) {
+        if (i === 0) {
+          this._dragEvtDays.push(this._historicoDragEvtDays[0]);
+        } else {
+          this._dragEvtDays.push(this._historicoDragEvtDays[0] + i);
+        }
+      }
+    }
+  }
+
+  public touchEnd(event: any): void {
+    if (this._touchPosition && this._cellWidth) {
+      this._drawDragEvt(this._dragEvtDays, this._dragEvtItem);
+      this._dragEvtDays = [];
+    }
+  }
+
+
+  public activateMouseDown(day: number, itemIndex: number, event: any): void {
     this._dragEvtDays = [];
     this._historicoDragEvtDays = [];
 
@@ -208,6 +238,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
       this._dragEvtItem = itemIndex;
       this._dragEvtDays.push(day);
       this._mouseDown = true;
+      this.mouseEnter(day);
     }
   }
 
@@ -215,10 +246,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
     if (this._mouseDown) {
 
       this._historicoDragEvtDays.push(day);
-      let incrementing: boolean;
-
-      incrementing = day > this._historicoDragEvtDays[this._historicoDragEvtDays.length - 2];
-
 
       if (day >= this._historicoDragEvtDays[0]) {
         this._dragEvtDays = [];
@@ -227,14 +254,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
         }
         this._dragEvtDays.sort((a, b) => (a - b));
       }
-
-      // this._dragEvtDays.sort((a, b) => (a - b));
-      // if (day > this._dragEvtDays[this._dragEvtDays.length - 1]) {
-      //   this._dragEvtDays.push(day);
-      // } else if (day < this._dragEvtDays[this._dragEvtDays.length - 1] && !incrementing) {
-      //   this._dragEvtDays.pop();
-      // }
-
     }
   }
 
@@ -252,40 +271,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
 
     this._historicoDragEvtDays = [];
     this._dragEvtDays = [];
-  }
-
-  private _drawDragEvt(days: Array<number>, itemIndex: number) {
-
-    if (days.length > 0) {
-      const dragEvt: IMonthlyCalendarDayClicked<any> = new class implements IMonthlyCalendarDayClicked<any> {
-        public days: Array<ICalendarDay<any>>;
-        public item: string;
-        public month: number;
-        public year: number;
-      };
-
-      dragEvt.year = this.activeYear;
-      dragEvt.month = this.activeMonth;
-      dragEvt.item = Object.keys(this.monthlyCalendarData.items)[itemIndex];
-      dragEvt.days = [];
-
-      for (const d of this._dragEvtDays) {
-        const daysAux: ICalendarDay<any> = new class implements ICalendarDay<any> {
-          public day: number;
-          public events: Array<ICalendarEventDay<any>>;
-          public isHoliday: boolean;
-          public isWeekend: boolean;
-        };
-        daysAux.day = d;
-        daysAux.events = [];
-        daysAux.isHoliday = undefined;
-        daysAux.isWeekend = undefined;
-
-        dragEvt.days.push(daysAux);
-      }
-
-      this.evtDraggableClicked.emit(dragEvt);
-    }
   }
 
   public isDragEvtByDay(day: number, item: number): boolean {
@@ -330,6 +315,59 @@ export class MonthViewComponent implements OnInit, OnChanges {
       dayliInfo.days.push(daysAux);
 
       this.evtMonthlyCalendarDayClicked.emit(dayliInfo);
+    }
+  }
+
+  private _generateEvtsByDay(day: number, itemIndex: number): Array<ICalendarEventDay<any>> {
+    const evtsArray: Array<ICalendarEventDay<any>> = [];
+
+    const keyItemValue = Object.keys(this.monthlyCalendarData.items)[itemIndex];
+    const itemValue = this.monthlyCalendarData.items[keyItemValue];
+
+    for (const keyDaysValue of Object.keys(itemValue.days)) {
+      const daysValue = itemValue.days[keyDaysValue];
+
+      if (daysValue.day === day) {
+        for (const evtsValue of daysValue.events) {
+          evtsArray.push(evtsValue);
+        }
+      }
+    }
+
+    return evtsArray;
+  }
+
+  private _drawDragEvt(days: Array<number>, itemIndex: number) {
+
+    if (days.length > 0) {
+      const dragEvt: IMonthlyCalendarDayClicked<any> = new class implements IMonthlyCalendarDayClicked<any> {
+        public days: Array<ICalendarDay<any>>;
+        public item: string;
+        public month: number;
+        public year: number;
+      };
+
+      dragEvt.year = this.activeYear;
+      dragEvt.month = this.activeMonth;
+      dragEvt.item = Object.keys(this.monthlyCalendarData.items)[itemIndex];
+      dragEvt.days = [];
+
+      for (const d of this._dragEvtDays) {
+        const daysAux: ICalendarDay<any> = new class implements ICalendarDay<any> {
+          public day: number;
+          public events: Array<ICalendarEventDay<any>>;
+          public isHoliday: boolean;
+          public isWeekend: boolean;
+        };
+        daysAux.day = d;
+        daysAux.events = [];
+        daysAux.isHoliday = undefined;
+        daysAux.isWeekend = undefined;
+
+        dragEvt.days.push(daysAux);
+      }
+
+      this.evtDraggableClicked.emit(dragEvt);
     }
   }
 }

@@ -1,119 +1,100 @@
-<div class="card mt-3 p-2 shadow">
+<div class="container-fluid">
+  <div class="row mb-3 numbers-details">
 
-  <div class="container-fluid">
-    <div class="row mb-3 numbers-details">
+    <div class="col-12">
 
-      <div class="col-12">
+      <div class="row">
 
-        <div class="row">
-          <div class="col p-3 bg-light rounded my-1 mx-2 d-flex align-items-center justify-content-center shadow">
-            <span>0 Férias Anual</span>
-          </div>
-
-          <div class="col p-3 bg-success rounded my-1 mx-2 d-flex text-white align-items-center justify-content-center shadow">
-            <span>20 Aprovados</span>
-          </div>
-
-          <div class="col p-3 bg-warning rounded my-1 mx-2 d-flex text-white align-items-center justify-content-center shadow">
-            <span>10 Pendentes</span>
-          </div>
-
-          <div class="col p-3 bg-info rounded my-1 mx-2 d-flex text-white align-items-center justify-content-center shadow">
-            <span>30 Livres</span>
-          </div>
-
+        <div class="col p-3 rounded my-1 mx-2 d-flex align-items-center justify-content-center shadow"
+             *ngFor="let label of detailsBarLabels.labels"
+             [ngStyle]="{'background-color': label.color}">
+          <span>{{label.quantity}} {{label.label}}</span>
         </div>
 
+      </div>
 
 
+
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div class="selector col-auto">
+      <div class="row no-gutters">
+        <div class="col-auto">
+          <span>Ano: </span>
+        </div>
+        <div class="selector-button col-auto d-flex align-items-center p-2 ml-1 text-white font-weight-lighter bg-weekend rounded-left"
+             (click)="decrementYear()">
+          <i class="fa fa-chevron-left"></i>
+        </div>
+
+        <div class="selector-button col-auto d-flex align-items-center p-2 border-left border-white text-white font-weight-lighter bg-weekend rounded-right"
+             (click)="incrementYear()">
+          <i class="fa fa-chevron-right"></i>
+        </div>
       </div>
     </div>
 
-    <div class="row">
-
-      <div class="col-2">
-          <div class="row no-gutters">
-            <div class="col-auto d-flex align-items-center pr-1">
-              <i class="fa fa-chevron-left" (click)="decrementYear()"></i>
-            </div>
-            <div class="col-7">
-              <input type="text"
-                     class="form-control text-center bg-white"
-                     name="year"
-                     [ngModel]="year"
-                     readonly>
-            </div>
-            <div class="col-auto d-flex align-items-center pl-1">
-              <i class="fa fa-chevron-right" (click)="incrementYear()"></i>
-            </div>
-          </div>
-      </div>
-
-      <div class="col-2" [ngSwitch]="panelMode">
-        <div class="row no-gutters" *ngSwitchCase="'year'">
-          <div class="col-auto d-flex align-items-center pr-1">
-            <i class="fa fa-chevron-left" (click)="decrementItem()"></i>
-          </div>
-          <div class="col-8">
-            <input type="text"
-                   class="form-control text-center bg-white px-0"
-                   name="year"
-                   [ngModel]="activeItem"
-                   readonly>
-          </div>
-          <div class="col-auto d-flex align-items-center pl-1">
-            <i class="fa fa-chevron-right" (click)="incrementItem()"></i>
-          </div>
+    <div class="selector col-auto" [ngSwitch]="panelMode">
+      <div class="row no-gutters" *ngSwitchCase="'year'">
+        <div class="col-auto">
+          <span>Item: </span>
+        </div>
+        <div class="selector-button col-auto d-flex align-items-center p-2 ml-1 text-white font-weight-lighter bg-weekend rounded-left"
+             (click)="decrementItem()">
+          <i class="fa fa-chevron-left"></i>
         </div>
 
+        <div class="col-auto mx-2 border rounded p-1">
+          <span><b>{{activeItem}}</b></span>
+        </div>
 
-        <div class="row no-gutters" *ngSwitchCase="'month'">
-          <div class="col-auto d-flex align-items-center pr-1">
-            <i class="fa fa-chevron-left" (click)="decrementMonth()"></i>
-          </div>
-          <div class="col-7">
-            <input type="text"
-                   class="form-control text-center bg-white"
-                   name="year"
-                   [ngModel]="getMonthName()"
-                   readonly>
-          </div>
-          <div class="col-auto d-flex align-items-center pl-1">
-            <i class="fa fa-chevron-right" (click)="incrementMonth()"></i>
-          </div>
+        <div class="selector-button col-auto d-flex align-items-center p-2 border-left border-white text-white font-weight-lighter bg-weekend rounded-right"
+             (click)="incrementItem()">
+          <i class="fa fa-chevron-right"></i>
         </div>
       </div>
 
-      <div class="col-8">
-        <div class="row">
-          <div class="col-auto py-1 d-flex align-content-center">
-            <div class="color-marker bg-warning shadow"></div>
-            <span>Pendente</span>
-          </div>
-          <div class="col-auto py-1 d-flex align-content-center">
-            <div class="color-marker bg-secondary shadow"></div>
-            <span>Pref. não marcar</span>
-          </div>
-          <div class="col-auto py-1 d-flex align-content-center">
-            <div class="color-marker bg-success shadow"></div>
-            <span>Aprovado</span>
-          </div>
-          <div class="col-auto py-1 d-flex align-content-center">
-            <div class="color-marker bg-dark shadow"></div>
-            <span>Feriado</span>
-          </div>
-          <div class="col-auto py-1 d-flex align-content-center">
-            <div class="color-marker bg-danger shadow"></div>
-            <span>Eventos simultâneos</span>
-          </div>
-          <div class="col-auto py-1 d-flex align-content-center">
-            <div class="color-marker bg-info shadow"></div>
-            <span>Bloqueada</span>
-          </div>
+
+      <div class="row no-gutters" *ngSwitchCase="'month'">
+        <div class="col-auto">
+          <span>Mês: </span>
+        </div>
+        <div class="selector-button col-auto d-flex align-items-center p-2 ml-1 text-white font-weight-lighter bg-weekend rounded-left" (click)="decrementMonth()">
+          <i class="fa fa-chevron-left"></i>
+        </div>
+
+        <div class="selector-button col-auto d-flex align-items-center p-2 border-left border-white text-white font-weight-lighter bg-weekend rounded-right" (click)="incrementMonth()">
+          <i class="fa fa-chevron-right"></i>
         </div>
       </div>
+    </div>
 
+    <div class="col ml-auto">
+      <div class="row d-flex justify-content-end">
+        <div class="col-auto py-1 d-flex align-content-center"
+             *ngFor="let label of detailsBarLabels.labels">
+          <div class="color-marker shadow"
+               [ngStyle]="{'background-color': label.color}"></div>
+          <span>{{label.label}}</span>
+        </div>
+
+        <div class="col-auto py-1 d-flex align-content-center">
+          <div class="color-marker shadow"
+               [ngStyle]="{'background-color': '#f96868'}"></div>
+          <span>Eventos Simultâneos</span>
+        </div>
+
+        <div class="col-auto py-1 d-flex align-content-center">
+          <div class="color-marker shadow"
+               [ngStyle]="{'background-color': '#2196F3'}"></div>
+          <span>Fins de Semana</span>
+        </div>
+      </div>
     </div>
 
   </div>
+
 </div>

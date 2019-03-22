@@ -1,27 +1,37 @@
 <div class="calendar" [ngSwitch]="state">
   <div *ngSwitchCase="'month'">
-    <app-details-bar [(year)]="selectedYear"
-                     [(month)]="selectedMonth"
-                     (evtDateChanged)="dateChanged($event)"
-                     panelMode="month"></app-details-bar>
-    <app-month-view [activeMonth]="selectedMonth"
-                    [activeYear]="selectedYear"
-                    [monthlyCalendarData]="monthlyCalendarData"
-                    (evtDraggableClicked)="evtDraggableClicked($event)"
-                    (evtMonthlyCalendarDayClicked)="evtMonthlyCalendarDayClicked($event)"></app-month-view>
+
+    <div class="card my-3 p-2">
+
+
+      <app-details-bar [(year)]="selectedYear"
+                       [(month)]="selectedMonth"
+                       (evtDateChanged)="dateChanged($event)"
+                       [detailsBarLabels]="detailsBarLabels"
+                       panelMode="month"></app-details-bar>
+      <app-month-view [activeMonth]="selectedMonth"
+                      [activeYear]="selectedYear"
+                      [monthlyCalendarData]="monthlyCalendarData"
+                      (evtDraggableClicked)="evtDraggableClicked($event)"
+                      (evtMonthlyCalendarDayClicked)="evtMonthlyCalendarDayClicked($event)"></app-month-view>
+    </div>
   </div>
 
   <div *ngSwitchCase="'year'">
-    <app-details-bar [(year)]="selectedYear"
-                     (evtDateChanged)="dateChanged($event)"
-                     [itemsAvailables]="generateItemsAvailables()"
-                     [(activeItem)]="activeItem"
-                     panelMode="year"></app-details-bar>
-    <app-year-view [activeYear]="selectedYear"
-                   [anualCalendarData]="anualCalendarData"
-                   (evtDayYearViewClicked)="dayYearViewClicked($event)"
-                   (evtDragYearViewClicked)="dragYearViewClicked($event)"
-                   [activeItem]="activeItem"
-                   (evtMonthClicked)="monthClicked($event)"></app-year-view>
+    <div class="card my-3 p-2">
+
+      <app-details-bar [(year)]="selectedYear"
+                       (evtDateChanged)="dateChanged($event)"
+                       [itemsAvailables]="generateItemsAvailables()"
+                       [(activeItem)]="activeItem"
+                       [detailsBarLabels]="detailsBarLabels"
+                       panelMode="year"></app-details-bar>
+      <app-year-view [activeYear]="selectedYear"
+                     [anualCalendarData]="anualCalendarData"
+                     (evtDayYearViewClicked)="dayYearViewClicked($event)"
+                     (evtDragYearViewClicked)="dragYearViewClicked($event)"
+                     [activeItem]="activeItem"
+                     (evtMonthClicked)="monthClicked($event)"></app-year-view>
+    </div>
   </div>
 </div>

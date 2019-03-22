@@ -1,23 +1,42 @@
+$whiteSmoke: #f9f9f9;
+
 .bg-weekend {
-  background-color: #d9dada;
+  background-color: rgb(33, 150, 243);
 }
 
-td.bg-orange {
-  background-color: orange;
-}
-td.bg-blue{
-  background-color: blue;
-}
-td.bg-gray {
-  background-color: gray;
-}
-td.bg-green {
-  background-color: green;
+thead {
+  th {
+    min-width: 2.5rem;
+    background-color: $whiteSmoke;
+    font-weight: lighter;
+  }
 }
 
-td:hover {
-  cursor: pointer;
-  background-color: rgba(49, 115, 205, 0.65)!important;
+tbody{
+  td.itemKey {
+    background-color: $whiteSmoke;
+  }
+
+  td.bg-orange {
+    background-color: #f2a654;
+  }
+  td.bg-blue{
+    background-color: #57c7d4;
+  }
+  td.bg-gray {
+    background-color: #8daaba;
+  }
+  td.bg-green {
+    background-color: #46be8a;
+  }
+  td.bg-red {
+    background-color: #f96868;
+  }
+
+  td:hover {
+    cursor: pointer;
+    background-color: #a2caee !important;
+  }
 }
 
 *::selection {

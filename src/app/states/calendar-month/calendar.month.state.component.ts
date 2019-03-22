@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap, Route, Router} from '@angular/router';
 import {
-  ICalendar,
+  ICalendar, ICalendarLabels,
   ICalendarMonthClicked,
   IMonthlyCalendarDayClicked
 } from '../../components/calendar/calendar.component.interface';
@@ -21,6 +21,7 @@ export class CalendarMonthStateComponent implements OnInit {
   public activeYear: number;
   public activeMonth: number;
   public monthlyCalendarData: ICalendar<any>;
+  public detailsBarLabels: ICalendarLabels;
   public evtDraggable: IMonthlyCalendarDayClicked<any>;
   public evtMonthlyCalendarDay: IMonthlyCalendarDayClicked<any>;
 
@@ -53,6 +54,7 @@ export class CalendarMonthStateComponent implements OnInit {
     this._calendarUtilsService.monthRequested = this.activeMonth;
     this._calendarUtilsService.yearRequested = this.activeYear;
     this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
+    this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
   }
 
   public dateChanged(value: ICalendarMonthClicked): void {

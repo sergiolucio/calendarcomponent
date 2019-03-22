@@ -1,100 +1,90 @@
+<div class="table-responsive mt-3 border">
+  <table class="table table-hover m-0">
+    <thead>
+    <tr>
+      <th class="border-right" scope="col">
+        Meses
+      </th>
+      <th class="days-content text-center px-0" scope="col">Ter</th>
+      <th class="days-content text-center px-0" scope="col">Qua</th>
+      <th class="days-content text-center px-0" scope="col">Qui</th>
+      <th class="days-content text-center px-0" scope="col">Seg</th>
+      <th class="days-content text-center px-0" scope="col">Sex</th>
+      <th class="days-content text-center px-0" scope="col">Sab</th>
+      <th class="days-content text-center px-0" scope="col">Dom</th>
+      <th class="days-content text-center px-0" scope="col">Seg</th>
+      <th class="days-content text-center px-0" scope="col">Ter</th>
+      <th class="days-content text-center px-0" scope="col">Qua</th>
+      <th class="days-content text-center px-0" scope="col">Qui</th>
+      <th class="days-content text-center px-0" scope="col">Sex</th>
+      <th class="days-content text-center px-0" scope="col">Sab</th>
+      <th class="days-content text-center px-0" scope="col">Dom</th>
+      <th class="days-content text-center px-0" scope="col">Seg</th>
+      <th class="days-content text-center px-0" scope="col">Ter</th>
+      <th class="days-content text-center px-0" scope="col">Qua</th>
+      <th class="days-content text-center px-0" scope="col">Qui</th>
+      <th class="days-content text-center px-0" scope="col">Sex</th>
+      <th class="days-content text-center px-0" scope="col">Sab</th>
+      <th class="days-content text-center px-0" scope="col">Dom</th>
+      <th class="days-content text-center px-0" scope="col">Seg</th>
+      <th class="days-content text-center px-0" scope="col">Ter</th>
+      <th class="days-content text-center px-0" scope="col">Qua</th>
+      <th class="days-content text-center px-0" scope="col">Qui</th>
+      <th class="days-content text-center px-0" scope="col">Sex</th>
+      <th class="days-content text-center px-0" scope="col">Sab</th>
+      <th class="days-content text-center px-0" scope="col">Dom</th>
+      <th class="days-content text-center px-0" scope="col">Seg</th>
+      <th class="days-content text-center px-0" scope="col">Ter</th>
+      <th class="days-content text-center px-0" scope="col">Qua</th>
+      <th class="days-content text-center px-0" scope="col">Qui</th>
+      <th class="days-content text-center px-0" scope="col">Sex</th>
+      <th class="days-content text-center px-0" scope="col">Sab</th>
+      <th class="days-content text-center px-0" scope="col">Dom</th>
+      <th class="days-content text-center px-0" scope="col">Seg</th>
+      <th class="days-content text-center px-0" scope="col">Ter</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let month of months; let i = index">
+      <td
+        class="border-right months-content p-1 py-2"
+        [class.bg-currentMonth]="isCurrentMonth(i)"
+        (click)="monthClicked(i+1)"
+      >
+        {{month}}
+      </td>
 
 
-<div class="card my-3 shadow">
+      <!-- Espaços em branco antes do mês começar -->
+      <td
+        *ngFor="let dayOff of verifyFirstDayOfMonth(i+1); let dayOfWeek = index"
+        [class.bg-weekend]="dayOfWeek==5"
+      >
+      </td>
 
-  <div class="table-responsive">
-    <table class="table table-hover m-0">
-      <thead>
-      <tr>
-        <th class="border-right" scope="col">
-          Meses
-        </th>
-        <th class="days-content text-center px-0" scope="col">Ter</th>
-        <th class="days-content text-center px-0" scope="col">Qua</th>
-        <th class="days-content text-center px-0" scope="col">Qui</th>
-        <th class="days-content text-center px-0" scope="col">Seg</th>
-        <th class="days-content text-center px-0" scope="col">Sex</th>
-        <th class="days-content text-center px-0" scope="col">Sab</th>
-        <th class="days-content text-center px-0" scope="col">Dom</th>
-        <th class="days-content text-center px-0" scope="col">Seg</th>
-        <th class="days-content text-center px-0" scope="col">Ter</th>
-        <th class="days-content text-center px-0" scope="col">Qua</th>
-        <th class="days-content text-center px-0" scope="col">Qui</th>
-        <th class="days-content text-center px-0" scope="col">Sex</th>
-        <th class="days-content text-center px-0" scope="col">Sab</th>
-        <th class="days-content text-center px-0" scope="col">Dom</th>
-        <th class="days-content text-center px-0" scope="col">Seg</th>
-        <th class="days-content text-center px-0" scope="col">Ter</th>
-        <th class="days-content text-center px-0" scope="col">Qua</th>
-        <th class="days-content text-center px-0" scope="col">Qui</th>
-        <th class="days-content text-center px-0" scope="col">Sex</th>
-        <th class="days-content text-center px-0" scope="col">Sab</th>
-        <th class="days-content text-center px-0" scope="col">Dom</th>
-        <th class="days-content text-center px-0" scope="col">Seg</th>
-        <th class="days-content text-center px-0" scope="col">Ter</th>
-        <th class="days-content text-center px-0" scope="col">Qua</th>
-        <th class="days-content text-center px-0" scope="col">Qui</th>
-        <th class="days-content text-center px-0" scope="col">Sex</th>
-        <th class="days-content text-center px-0" scope="col">Sab</th>
-        <th class="days-content text-center px-0" scope="col">Dom</th>
-        <th class="days-content text-center px-0" scope="col">Seg</th>
-        <th class="days-content text-center px-0" scope="col">Ter</th>
-        <th class="days-content text-center px-0" scope="col">Qua</th>
-        <th class="days-content text-center px-0" scope="col">Qui</th>
-        <th class="days-content text-center px-0" scope="col">Sex</th>
-        <th class="days-content text-center px-0" scope="col">Sab</th>
-        <th class="days-content text-center px-0" scope="col">Dom</th>
-        <th class="days-content text-center px-0" scope="col">Seg</th>
-        <th class="days-content text-center px-0" scope="col">Ter</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let month of months; let i = index">
-        <td
-          class="border-right months-content p-1 py-2"
-          [class.bg-currentMonth]="isCurrentMonth(i)"
-          (click)="monthClicked(i+1)"
-        >
-          {{month}}
-        </td>
+      <!-- dayOfMonth para a App começa na segunda-feira -->
+      <td
+        class="text-center days-content p-1"
+        *ngFor="let day of generateDaysOfMonth(i+1); let dayOfMonth = index"
+        [ngStyle]="{'background-color': getEvtColor(dayOfMonth+1,i+1)}"
+        (mousedown)="toggleMouseDown(dayOfMonth+1, i+1, $event)"
+        (mouseup)="mouseUp(dayOfMonth+1, i+1)"
+        (mouseenter)="draggingTheEvent(dayOfMonth+1, i+1)"
+        (click)="dayYearViewClicked(dayOfMonth+1, i+1)">
+        {{day}}
+      </td>
 
-
-        <!-- Espaços em branco antes do mês começar -->
-        <td
-          *ngFor="let dayOff of verifyFirstDayOfMonth(i+1); let dayOfWeek = index"
-          [class.bg-weekend]="dayOfWeek==5"
-        >
-        </td>
-
-        <!-- dayOfMonth para a App começa na segunda-feira -->
-        <td
-          class="text-center days-content p-1"
-          *ngFor="let day of generateDaysOfMonth(i+1); let dayOfMonth = index"
-          [ngClass]="getEvtColor(dayOfMonth+1,i+1)"
-          (mousedown)="toggleMouseDown(dayOfMonth+1, i+1)"
-          (mouseup)="mouseUp(dayOfMonth+1, i+1)"
-          (mouseenter)="draggingTheEvent(dayOfMonth+1, i+1)"
-          (click)="dayYearViewClicked(dayOfMonth+1, i+1)">
-            {{day}}
-        </td>
-
-        <!-- Espaços em branco depois do mês terminar -->
-        <td
-          class="p-1"
-          *ngFor="let d of [].constructor(37-generateDaysOfMonth(i+1).length-verifyFirstDayOfMonth(i+1).length); let dayOfMonth = index"
-          [class.bg-weekend]="
+      <!-- Espaços em branco depois do mês terminar -->
+      <td
+        class="p-1"
+        *ngFor="let d of [].constructor(37-generateDaysOfMonth(i+1).length-verifyFirstDayOfMonth(i+1).length); let dayOfMonth = index"
+        [class.bg-weekend]="
             generateDaysOfMonth(i+1).length+verifyFirstDayOfMonth(i+1).length + dayOfMonth == 33 ||
             generateDaysOfMonth(i+1).length+verifyFirstDayOfMonth(i+1).length + dayOfMonth == 34"
-        ></td>
+      ></td>
 
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
+    </tr>
+    </tbody>
+  </table>
 </div>
 
-
-<pre>
-  {{anualCalendarData | json}}
-</pre>

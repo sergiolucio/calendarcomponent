@@ -1,4 +1,4 @@
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG, HammerGestureConfig} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -16,6 +16,16 @@ import { MonthDraggableModalComponent } from './states/calendar-month/month-drag
 import { DailyInfoModalComponent } from './states/calendar-month/daily-info-modal/daily-info-modal.component';
 import { DailyInfoYearModalComponent } from './states/calendar-year/daily-info-year-modal/daily-info-year-modal.component';
 import { YearDraggableModalComponent } from './states/calendar-year/year-draggable-modal/year-draggable-modal.component';
+import * as Hammer from 'hammerjs';
+
+export class MyHammerConfig extends HammerGestureConfig {
+  overrides = <any>{
+    pan: {
+      threshold: 1
+    },
+    swipe: {direction: Hammer.DIRECTION_VERTICAL},
+  };
+}
 
 
 const appRoutes: Routes = [
@@ -61,7 +71,12 @@ const appRoutes: Routes = [
     DailyInfoYearModalComponent,
     YearDraggableModalComponent
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: MyHammerConfig
+    }
+  ],
   bootstrap: [AppComponent]
 })
 
