@@ -23,8 +23,9 @@
       <app-details-bar [(year)]="selectedYear"
                        (evtDateChanged)="dateChanged($event)"
                        [itemsAvailables]="generateItemsAvailables()"
-                       [(activeItem)]="activeItem"
+                       (activeItemChange)="activeItemChanged($event)"
                        [detailsBarLabels]="detailsBarLabels"
+                       [multipleSelect]="multipleSelect"
                        panelMode="year"></app-details-bar>
       <app-year-view [activeYear]="selectedYear"
                      [anualCalendarData]="anualCalendarData"

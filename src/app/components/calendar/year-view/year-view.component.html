@@ -67,12 +67,23 @@
         class="text-center days-content p-1"
         *ngFor="let day of generateDaysOfMonth(i+1); let dayOfMonth = index"
         [ngStyle]="{'background-color': getEvtColor(dayOfMonth+1,i+1)}"
-        (mousedown)="toggleMouseDown(dayOfMonth+1, i+1, $event)"
-        (mouseup)="mouseUp(dayOfMonth+1, i+1)"
-        (mouseenter)="draggingTheEvent(dayOfMonth+1, i+1)"
+        (panstart)="touchStart(dayOfMonth+1, i+1, $event)"
+        (pan)="touching(dayOfMonth+1, i+1, $event)"
+        (panend)="touchEnd(dayOfMonth+1, i+1, $event)"
         (click)="dayYearViewClicked(dayOfMonth+1, i+1)">
         {{day}}
       </td>
+
+      <!--<td-->
+        <!--class="text-center days-content p-1"-->
+        <!--*ngFor="let day of generateDaysOfMonth(i+1); let dayOfMonth = index"-->
+        <!--[ngStyle]="{'background-color': getEvtColor(dayOfMonth+1,i+1)}"-->
+        <!--(mousedown)="toggleMouseDown(dayOfMonth+1, i+1, $event)"-->
+        <!--(mouseup)="mouseUp(dayOfMonth+1, i+1)"-->
+        <!--(mouseenter)="draggingTheEvent(dayOfMonth+1, i+1)"-->
+        <!--(click)="dayYearViewClicked(dayOfMonth+1, i+1)">-->
+        <!--{{day}}-->
+      <!--</td>-->
 
       <!-- Espaços em branco depois do mês terminar -->
       <td

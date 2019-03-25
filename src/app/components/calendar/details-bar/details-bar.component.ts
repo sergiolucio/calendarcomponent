@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ECalendarState, ICalendar, ICalendarLabels, ICalendarMonthClicked} from '../calendar.component.interface';
-
+import {findIndex, indexOf} from 'lodash';
 
 @Component({
   selector: 'app-details-bar',
@@ -14,17 +14,19 @@ export class DetailsBarComponent implements OnInit {
   @Output() monthChange: EventEmitter<number>;
   @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
   @Input() itemsAvailables: Array<string>;
-  @Input() activeItem: string;
-  @Output() activeItemChange: EventEmitter<string>;
+  @Output() activeItemChange: EventEmitter<Array<string>>;
   private _stringMonths: Array<string>;
   @Input() panelMode: ECalendarState;
   @Input() detailsBarLabels: ICalendarLabels;
+  public activeStatus: boolean;
+  @Input() multipleSelect: boolean;
+  public itemsSelection: Array<string>;
 
   constructor() {
     this.yearChange = new EventEmitter<number>();
     this.monthChange = new EventEmitter<number>();
     this.evtDateChanged = new EventEmitter<ICalendarMonthClicked>();
-    this.activeItemChange = new EventEmitter<string>();
+    this.activeItemChange = new EventEmitter<Array<string>>();
   }
 
   public ngOnInit(): void {
@@ -43,7 +45,12 @@ export class DetailsBarComponent implements OnInit {
       'Dezembro'
     ];
 
-    // this.activeItem = this.itemsAvailables[0];
+    this.activeStatus = false;
+
+    this.itemsSelection = [];
+    if (this.itemsAvailables) {
+      this.itemsSelection.push(this.itemsAvailables[0]);
+    }
   }
 
   public decrementYear(): void {
@@ -74,27 +81,27 @@ export class DetailsBarComponent implements OnInit {
     }
   }
 
-  public getMonthName(): string {
-    return this._stringMonths[this.month - 1];
-  }
-
   public decrementItem(): void {
-    if (this.activeItem !== this.itemsAvailables[0]) {
-      for (let i = 1; i < this.itemsAvailables.length; i++) {
-        if (this.activeItem === this.itemsAvailables[i]) {
-          this.activeItem = this.itemsAvailables[i - 1];
-          this.activeItemChange.emit(this.activeItem);
+    if (!this.multipleSelect) {
+      if (this.itemsSelection[0] !== this.itemsAvailables[0]) {
+        for (let i = 1; i < this.itemsAvailables.length; i++) {
+          if (this.itemsSelection[0] === this.itemsAvailables[i]) {
+            this.itemsSelection[0] = this.itemsAvailables[i - 1];
+            this.activeItemChange.emit(this.itemsSelection);
+          }
         }
       }
     }
   }
 
   public incrementItem(): void {
-    if (this.activeItem !== this.itemsAvailables[this.itemsAvailables.length - 1]) {
-      for (let i = this.itemsAvailables.length - 2; i >= 0; i--) {
-        if (this.activeItem === this.itemsAvailables[i]) {
-          this.activeItem = this.itemsAvailables[i + 1];
-          this.activeItemChange.emit(this.activeItem);
+    if (!this.multipleSelect) {
+      if (this.itemsSelection[0] !== this.itemsAvailables[this.itemsAvailables.length - 1]) {
+        for (let i = this.itemsAvailables.length - 2; i >= 0; i--) {
+          if (this.itemsSelection[0] === this.itemsAvailables[i]) {
+            this.itemsSelection[0] = this.itemsAvailables[i + 1];
+            this.activeItemChange.emit(this.itemsSelection);
+          }
         }
       }
     }
@@ -107,8 +114,27 @@ export class DetailsBarComponent implements OnInit {
     });
   }
 
-  public teste(): void {
-    alert('tap');
+  public toggleActive(): void {
+    this.activeStatus = !this.activeStatus;
   }
 
+  public itemChecked(item: string): boolean {
+
+    if (indexOf(this.itemsSelection, item) !== -1) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public itemCheckedChange(item: string): void {
+    if (!this.itemChecked(item)) {
+      this.itemsSelection.push(item);
+      this.activeItemChange.emit(this.itemsSelection);
+    } else {
+      const indexToRemove: number = indexOf(this.itemsSelection, item);
+      this.itemsSelection.splice(indexToRemove, 1);
+      this.activeItemChange.emit(this.itemsSelection);
+    }
+  }
 }

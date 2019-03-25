@@ -66,7 +66,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
       'Novembro',
       'Dezembro'
     ];
-    this._mouseDown = false;
     this._dragMobileIndex = 1;
   }
 
@@ -178,8 +177,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
     this._dragEvtDays = [];
     this._historicoDragEvtDays = [];
 
-    console.log(event.srcEvent.offsetX);
-
     if (this.countEvtsByDay(day, itemIndex) === 0) {
       this._historicoDragEvtDays.push(day);
       this._dragEvtDays.push(day);
@@ -227,52 +224,6 @@ export class MonthViewComponent implements OnInit, OnChanges {
     }
   }
 
-
-  public activateMouseDown(day: number, itemIndex: number, event: any): void {
-    this._dragEvtDays = [];
-    this._historicoDragEvtDays = [];
-
-    if (this.countEvtsByDay(day, itemIndex) === 0) {
-      this._historicoDragEvtDays.push(day);
-
-      this._dragEvtItem = itemIndex;
-      this._dragEvtDays.push(day);
-      this._mouseDown = true;
-      this.mouseEnter(day);
-    }
-  }
-
-  public mouseEnter(day): void {
-    if (this._mouseDown) {
-
-      this._historicoDragEvtDays.push(day);
-
-      if (day >= this._historicoDragEvtDays[0]) {
-        this._dragEvtDays = [];
-        for (let d = this._historicoDragEvtDays[0]; d <= day; d++) {
-          this._dragEvtDays.push(d);
-        }
-        this._dragEvtDays.sort((a, b) => (a - b));
-      }
-    }
-  }
-
-  public desactivateMouseDown(day): void {
-    this._mouseDown = false;
-
-    if (
-      day >= this._historicoDragEvtDays[0] &&
-      this._historicoDragEvtDays &&
-      this._historicoDragEvtDays.length > 0 &&
-      this.countEvtsByDay(this._historicoDragEvtDays[0], this._dragEvtItem) === 0
-    ) {
-      this._drawDragEvt(this._dragEvtDays, this._dragEvtItem);
-    }
-
-    this._historicoDragEvtDays = [];
-    this._dragEvtDays = [];
-  }
-
   public isDragEvtByDay(day: number, item: number): boolean {
     if (this._dragEvtItem === item) {
       for (const d of this._dragEvtDays) {
@@ -315,6 +266,10 @@ export class MonthViewComponent implements OnInit, OnChanges {
       dayliInfo.days.push(daysAux);
 
       this.evtMonthlyCalendarDayClicked.emit(dayliInfo);
+    } else {
+      this._dragEvtDays = [];
+      this._dragEvtDays.push(day);
+      this._drawDragEvt(this._dragEvtDays, itemIndex);
     }
   }
 

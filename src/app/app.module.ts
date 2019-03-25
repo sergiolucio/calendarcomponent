@@ -21,7 +21,7 @@ import * as Hammer from 'hammerjs';
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     pan: {
-      threshold: 1
+      threshold: 1,
     },
     swipe: {direction: Hammer.DIRECTION_VERTICAL},
   };

@@ -17,6 +17,7 @@
         </tr>
       </thead>
       <tbody>
+
         <tr *ngFor="let item of monthlyCalendarData.items | keyvalue; let i = index">
           <td class="itemKey border-right">{{item.key}}</td>
           <td class="text-center"
@@ -32,19 +33,6 @@
           </td>
         </tr>
 
-        <!--<tr *ngFor="let item of monthlyCalendarData.items | keyvalue; let i = index">-->
-          <!--<td class="itemKey border-right">{{item.key}}</td>-->
-          <!--<td class="text-center"-->
-              <!--[ngStyle]="{'background-color': getEvtColor(day, i)}"-->
-              <!--*ngFor="let day of generateDaysOfMonth()"-->
-              <!--(mousedown)="activateMouseDown(day, i)"-->
-              <!--(mouseenter)="mouseEnter(day)"-->
-              <!--(mouseup)="desactivateMouseDown(day)"-->
-              <!--(click)="openEvtModal(day, i)"-->
-              <!--&gt;-->
-            <!--<span class="font-weight-bolder" *ngIf="countEvtsByDay(day, i)>1 && !(_dragEvt && isDragEvtByDay(day, i))">{{countEvtsByDay(day, i)}}</span>-->
-          <!--</td>-->
-        <!--</tr>-->
       </tbody>
     </table>
   </div>

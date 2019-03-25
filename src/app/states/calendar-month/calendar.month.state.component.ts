@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, ParamMap, Route, Router} from '@angular/router';
 import {
   ICalendar, ICalendarLabels,
@@ -24,7 +24,6 @@ export class CalendarMonthStateComponent implements OnInit {
   public detailsBarLabels: ICalendarLabels;
   public evtDraggable: IMonthlyCalendarDayClicked<any>;
   public evtMonthlyCalendarDay: IMonthlyCalendarDayClicked<any>;
-
 
   constructor(
     private readonly _router: Router,

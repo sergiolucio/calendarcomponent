@@ -147,7 +147,7 @@ export interface IMonthlyCalendarDayClicked<T> {
 }
 
 export interface IDayYearViewClicked<T> {
-  item: string;
+  item: Array<string>;
   year: number;
   month: ECalendarMonths;
   days: Array<ICalendarDay<T>>;

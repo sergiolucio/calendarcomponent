@@ -4612,6 +4612,11 @@ multicast-dns@^6.0.1:
     dns-packet "^1.3.1"
     thunky "^1.0.2"
 
+multiple-select@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/multiple-select/-/multiple-select-1.2.2.tgz#059f9ad0fb0822a61bcd22febe539e331a76c283"
+  integrity sha512-IYfZ0dSJ75rdoYrQ73QnFeyoiw6v4X96QlK7FDf++kzR5Vz5+JPaU5OLXpdlaR9SL/qhoid/pUU0fsvkmSZhFw==
+
 mute-stream@0.0.7:
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.7.tgz#3075ce93bc21b8fab43e1bc4da7e8115ed1e7bab"

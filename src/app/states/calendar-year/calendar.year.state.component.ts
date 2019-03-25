@@ -23,6 +23,7 @@ export class CalendarYearStateComponent implements OnInit {
   public detailsBarLabels: ICalendarLabels;
   public evtDayYearViewClicked: Array<IDayYearViewClicked<any>>;
   public evtDragYearViewClicked: Array<IDayYearViewClicked<any>>;
+  public multipleSelect: boolean;
 
   constructor(
     private readonly _router: Router,
@@ -39,6 +40,7 @@ export class CalendarYearStateComponent implements OnInit {
     this._calendarUtilsService.yearRequested = this.activeYear;
     this.anualCalendarData = this._calendarUtilsService.anualCalendar;
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+    this.multipleSelect = true;
   }
 
   public yearClicked(year: number, month: number): void {

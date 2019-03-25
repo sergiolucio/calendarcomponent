@@ -28,6 +28,7 @@
     "hammerjs": "^2.0.8",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
+    "multiple-select": "^1.2.2",
     "ng-sidebar": "^8.0.0",
     "node-sass": "^4.11.0",
     "popper.js": "^1.14.7",

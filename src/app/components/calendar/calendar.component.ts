@@ -19,7 +19,7 @@ export class CalendarComponent implements OnInit {
   @Output() selectedYearChange: EventEmitter<number>;
   @Input() selectedMonth: number;
   @Output() selectedMonthChange: EventEmitter<number>;
-  public activeItem: string;
+  public activeItem: Array<string>;
   @Input() monthlyCalendarData: ICalendar<any>;
   @Input() anualCalendarData: IAnualCalendar<any>;
   @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
@@ -28,6 +28,7 @@ export class CalendarComponent implements OnInit {
   @Output() evtDayYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
   @Output() evtDragYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
   @Input() detailsBarLabels: ICalendarLabels;
+  @Input() multipleSelect: boolean;
 
   constructor() {
     this.evtMonthClicked = new EventEmitter<ICalendarMonthClicked>();
@@ -53,8 +54,9 @@ export class CalendarComponent implements OnInit {
       this.selectedMonth = moment().month() + 1;
     }
 
-    if (!this.activeItem && this.anualCalendarData) {
-      this.activeItem = this.generateItemsAvailables()[0];
+    if (!this.activeItem) {
+      this.activeItem = [];
+      this.activeItem.push(this.generateItemsAvailables()[0]);
     }
   }
 
@@ -90,5 +92,9 @@ export class CalendarComponent implements OnInit {
     }
 
     return arrayItems;
+  }
+
+  public activeItemChanged(value: Array<string>): void {
+    this.activeItem = value;
   }
 }

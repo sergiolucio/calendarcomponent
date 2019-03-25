@@ -30,6 +30,10 @@
           <i class="fa fa-chevron-left"></i>
         </div>
 
+        <div class="col-auto mx-1 border p-2" *ngIf="panelMode === 'year'">
+          <span><b>{{year}}</b></span>
+        </div>
+
         <div class="selector-button col-auto d-flex align-items-center p-2 border-left border-white text-white font-weight-lighter bg-weekend rounded-right"
              (click)="incrementYear()">
           <i class="fa fa-chevron-right"></i>
@@ -38,23 +42,46 @@
     </div>
 
     <div class="selector col-auto" [ngSwitch]="panelMode">
-      <div class="row no-gutters" *ngSwitchCase="'year'">
-        <div class="col-auto">
+      <div class="row no-gutters position-relative" *ngSwitchCase="'year'">
+        <div class="col-auto" *ngIf="multipleSelect">
+          <span>Items: </span>
+        </div>
+
+        <div class="selector-button col-auto d-flex align-items-center p-2 ml-1 text-white font-weight-lighter bg-weekend rounded-bottom"
+             *ngIf="multipleSelect"
+             (click)="toggleActive()">
+          <i class="fa fa-chevron-down"></i>
+        </div>
+
+        <div class="col-auto" *ngIf="!multipleSelect">
           <span>Item: </span>
         </div>
+
         <div class="selector-button col-auto d-flex align-items-center p-2 ml-1 text-white font-weight-lighter bg-weekend rounded-left"
+             *ngIf="!multipleSelect"
              (click)="decrementItem()">
           <i class="fa fa-chevron-left"></i>
         </div>
 
-        <div class="col-auto mx-2 border rounded p-1">
-          <span><b>{{activeItem}}</b></span>
+        <div class="col-auto mx-2 border rounded p-1" *ngIf="!multipleSelect">
+          <span><b>{{itemsSelection[0]}}</b></span>
         </div>
 
         <div class="selector-button col-auto d-flex align-items-center p-2 border-left border-white text-white font-weight-lighter bg-weekend rounded-right"
+             *ngIf="!multipleSelect"
              (click)="incrementItem()">
           <i class="fa fa-chevron-right"></i>
         </div>
+
+        <div class="items-dropdown border border-dark" [ngClass]="{'active': activeStatus}">
+            <div class="form-check my-2" *ngFor="let item of itemsAvailables">
+              <input class="form-check-input" type="checkbox" name="itemsSelection" [checked]="itemChecked(item)" (change)="itemCheckedChange(item)">
+              <label class="form-check-label">
+                {{item}}
+              </label>
+            </div>
+        </div>
+
       </div>
 
 
@@ -98,3 +125,4 @@
   </div>
 
 </div>
+

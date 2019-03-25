@@ -19,8 +19,20 @@ div.selector {
     cursor: pointer;
   }
 
-  .fa-chevron-left, .fa-chevron-right{
+  [class^="fa-chevron"] {
     font-size: 1rem;
+  }
+
+  .items-dropdown {
+    display: none;
+    position: absolute;
+    top: 2rem;
+    min-width: 20rem;
+    background-color: rgb(249, 249, 249);
+    padding: 2rem;
+  }
+  .items-dropdown.active {
+    display: block;
   }
 }
 

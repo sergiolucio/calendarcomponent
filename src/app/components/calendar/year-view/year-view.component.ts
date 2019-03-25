@@ -29,7 +29,14 @@ export class YearViewComponent implements OnInit, OnChanges {
   private _daysDragged: Array<ICalendarDay<any>>;
   private _daysDraggedByMonth: IDayYearViewClicked<any>;
   private _daysDraggedByYear: Array<IDayYearViewClicked<any>>;
-  @Input() activeItem: string;
+  @Input() activeItem: Array<string>;
+  // mobile drag event variables
+  private _dragMobileDaysIndex: number;
+  private _dragMobileMonthsIndex: number;
+  private _touchPositionX: number;
+  private _touchPositionY: number;
+  private _cellWidth: number;
+  private _cellHeight: number;
 
   constructor(
   ) {
@@ -63,6 +70,9 @@ export class YearViewComponent implements OnInit, OnChanges {
     });
 
     this._mouseDown = false;
+
+    this._dragMobileDaysIndex = 1;
+    this._dragMobileMonthsIndex = 1;
   }
 
   public ngOnChanges({activeYear}: SimpleChanges): void {
@@ -220,7 +230,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
         const evtsAux: IDayYearViewClicked<any> = new class implements IDayYearViewClicked<any> {
           public days: Array<ICalendarDay<any>>;
-          public item: string;
+          public item: Array<string>;
           public month: ECalendarMonths;
           public year: number;
         };
@@ -247,7 +257,8 @@ export class YearViewComponent implements OnInit, OnChanges {
                 daysAux.events.push(evtsValue);
               }
 
-              evtsAux.item = keyItemValue;
+              evtsAux.item = [];
+              evtsAux.item.push(keyItemValue);
               evtsAux.days = [];
               evtsAux.days.push(daysAux);
               evtsAux.month = month;
@@ -262,37 +273,22 @@ export class YearViewComponent implements OnInit, OnChanges {
 
   }
 
-  public toggleMouseDown(day: number, month: number, event: any): void {
 
+  // methods to start dragging events
 
-    if (this._generateEvtsByDay(day, month).length === 0 || this._mouseDown) {
-      this._mouseDown = !this._mouseDown;
-      if (this._mouseDown) {
-        this._startDragEvent(day, month);
-      } else {
-        this._startDragEvent(day, month);
-      }
-    }
-  }
+  public touchStart(day: number, month: number, event: any): void {
+    if (this._generateEvtsByDay(day, month).length === 0) {
+      this._touchPositionX = event.srcEvent.offsetX;
+      this._touchPositionY = event.srcEvent.offsetY;
+      this._cellWidth = event.target.clientWidth;
+      this._cellHeight = event.target.clientHeight;
 
-  public mouseUp(day: number, month: number): void {
-    if (this._mouseDown) {
-      this.toggleMouseDown(day, month, null);
-    }
-  }
-
-  // methods to star dragging events
-
-  private _startDragEvent (day: number, month: number): void {
-
-
-    if (this._mouseDown) {
       this._startDayDragged = day;
       this._startMonthDragged = month;
       this._daysDragged = [];
       this._daysDraggedByMonth = new class implements IDayYearViewClicked<any> {
         public days: Array<ICalendarDay<any>>;
-        public item: string;
+        public item: Array<string>;
         public month: ECalendarMonths;
         public year: number;
       };
@@ -315,33 +311,25 @@ export class YearViewComponent implements OnInit, OnChanges {
       this._daysDraggedByMonth.days = this._daysDragged;
 
       this._daysDraggedByYear.push(this._daysDraggedByMonth);
-
-    } else {
-      if (this._daysDraggedByYear.length > 0) {
-        this.evtDragYearViewClicked.emit(this._daysDraggedByYear);
-      } else {
-        this._daysDraggedByYear.push(this._daysDraggedByMonth);
-        this.evtDragYearViewClicked.emit(this._daysDraggedByYear);
-      }
-      this._daysDraggedByYear = [];
     }
-
   }
 
-  public draggingTheEvent (day: number, month: number): void {
-    if (this._mouseDown) {
+  public touching(day: number, month: number, event: any): void {
+    if (this._generateEvtsByDay(day, month).length === 0) {
       this._daysDraggedByYear = [];
+      this._dragMobileDaysIndex = Math.ceil((event.deltaX + this._touchPositionX) / this._cellWidth);
+      this._dragMobileMonthsIndex = Math.ceil((event.deltaY + this._touchPositionY) / this._cellHeight);
 
       // verifico que estou com o cursor no mesmo mês em que comecei
-      if (month === this._startMonthDragged) {
+      if (this._dragMobileMonthsIndex === 1) {
 
         // verifico que o dia que tenho seleccionado é superior ou igual ao que seleccionei primeiro
-        if (day >= this._startDayDragged) {
+        if (this._dragMobileDaysIndex >= 1) {
 
           // aqui preencho de novo com os dias desde o primeiro seleccionado até onde tenho o cursor
           this._daysDragged = [];
 
-          for (let d = this._startDayDragged; d <= day; d++) {
+          for (let d = 0; d < this._dragMobileDaysIndex; d++) {
             const daysDraggedAux: ICalendarDay<any> = new class implements ICalendarDay<any> {
               public day: number;
               public events: Array<ICalendarEventDay<any>>;
@@ -349,14 +337,17 @@ export class YearViewComponent implements OnInit, OnChanges {
               public isWeekend: boolean;
             };
 
-            daysDraggedAux.day = d;
+
+            daysDraggedAux.day = this._startDayDragged + d;
+
+
             this._daysDragged.push(daysDraggedAux);
           }
         } else {
           // aqui preencho de novo com os dias desde o primeiro seleccionado até onde tenho o cursor
           this._daysDragged = [];
 
-          for (let d = this._startDayDragged; d >= day; d--) {
+          for (let d = this._dragMobileDaysIndex - 1; d < 1; d++) {
             const daysDraggedAux: ICalendarDay<any> = new class implements ICalendarDay<any> {
               public day: number;
               public events: Array<ICalendarEventDay<any>>;
@@ -364,7 +355,7 @@ export class YearViewComponent implements OnInit, OnChanges {
               public isWeekend: boolean;
             };
 
-            daysDraggedAux.day = d;
+            daysDraggedAux.day = this._startDayDragged + d;
             this._daysDragged.push(daysDraggedAux);
           }
         }
@@ -372,7 +363,7 @@ export class YearViewComponent implements OnInit, OnChanges {
         // aqui cria um objeto com os dias seleccionados para o mês atual
         this._daysDraggedByMonth = new class implements IDayYearViewClicked<any> {
           public days: Array<ICalendarDay<any>>;
-          public item: string;
+          public item: Array<string>;
           public month: ECalendarMonths;
           public year: number;
         };
@@ -388,16 +379,22 @@ export class YearViewComponent implements OnInit, OnChanges {
 
         this._daysDraggedByYear.push(this._daysDraggedByMonth);
 
-        // caso o cursor esteja num mês superior ao do primeiro dia seleccionado
-      } else if (month > this._startMonthDragged) {
+      } else if (this._dragMobileMonthsIndex > 1) {
+
         let firsDay: number = this._startDayDragged;
 
-        // vou percorrer todos os meses até aonde tenho o cursor
-        for (let m = this._startMonthDragged; m <= month; m++) {
-          let daysOfMonth: number = this.generateDaysOfMonth(m).length;
+        // vou percorrer todos os meses até onde tenho o cursor
+        for (let m = 0; m < this._dragMobileMonthsIndex; m++) {
+          let daysOfMonth: number = this.generateDaysOfMonth(this._startMonthDragged + m).length;
 
-          if (m === month) {
-            daysOfMonth = day;
+          // apanha a última iteração - onde tenho o cursor
+          if (m === this._dragMobileMonthsIndex - 1) {
+            // os meses começam em indices de células diferentes
+            // tenho que apanhar o nº de espaços em brancos para achar o index correcto do dia pretendido
+            const indexFirstDayCurretMonth = this.verifyFirstDayOfMonth(this._startMonthDragged + m).length;
+            const indexFirstDayStartMonth = this.verifyFirstDayOfMonth(this._startMonthDragged).length;
+            const indexReset: number = indexFirstDayCurretMonth - indexFirstDayStartMonth;
+            daysOfMonth = this._startDayDragged + this._dragMobileDaysIndex - 1 - indexReset;
           }
 
           // aqui preencho de novo com os dias desde o primeiro seleccionado até ao fim do mês ou onde tenha o cursor
@@ -423,13 +420,13 @@ export class YearViewComponent implements OnInit, OnChanges {
           // aqui cria um objeto com os dias seleccionados para cada mês e adiciona ao array do ano
           this._daysDraggedByMonth = new class implements IDayYearViewClicked<any> {
             public days: Array<ICalendarDay<any>>;
-            public item: string;
+            public item: Array<string>;
             public month: ECalendarMonths;
             public year: number;
           };
 
           this._daysDraggedByMonth.year = this.activeYear;
-          this._daysDraggedByMonth.month = m;
+          this._daysDraggedByMonth.month = this._startMonthDragged + m;
           this._daysDraggedByMonth.item = this.activeItem;
           this._daysDraggedByMonth.days = [];
 
@@ -439,23 +436,34 @@ export class YearViewComponent implements OnInit, OnChanges {
 
           this._daysDraggedByYear.push(this._daysDraggedByMonth);
         }
-        // caso o cursor esteja num mês inferior ao inicial
       } else {
-        let firsDay: number = this._startDayDragged;
 
-        // vou percorrer todos os meses até aonde tenho o cursor
-        for (let m = this._startMonthDragged; m >= month; m--) {
-          let dayToStop = 1;
+        // vou percorrer todos os meses até onde tenho o cursor
+        for (let m = this._dragMobileMonthsIndex - 1; m < 1; m++) {
 
-          if (m === month) {
-            dayToStop = day;
+          let dayToStart = 1;
+
+          if (m === this._dragMobileMonthsIndex - 1) {
+            // os meses começam em indices de células diferentes
+            // tenho que apanhar o nº de espaços em brancos para achar o index correcto do dia pretendido
+            const indexFirstDayCurretMonth = this.verifyFirstDayOfMonth(this._startMonthDragged + m).length;
+            const indexFirstDayStartMonth = this.verifyFirstDayOfMonth(this._startMonthDragged).length;
+            const indexReset: number = indexFirstDayCurretMonth - indexFirstDayStartMonth;
+
+            dayToStart = this._startDayDragged + this._dragMobileDaysIndex - 1 - indexReset;
+          }
+
+          let dayToStop: number = this.generateDaysOfMonth(this._startMonthDragged + m).length;
+
+          if (m === 0) {
+            dayToStop = this._startDayDragged;
           }
 
           // aqui preencho de novo com os dias desde o primeiro seleccionado até ao fim do mês ou onde tenha o cursor
           this._daysDragged = [];
 
 
-          for (let d = firsDay; d >= dayToStop; d--) {
+          for (let d = dayToStart; d <= dayToStop; d++) {
             const daysDraggedAux: ICalendarDay<any> = new class implements ICalendarDay<any> {
               public day: number;
               public events: Array<ICalendarEventDay<any>>;
@@ -467,20 +475,17 @@ export class YearViewComponent implements OnInit, OnChanges {
             this._daysDragged.push(daysDraggedAux);
           }
 
-          // na primeira iteração deixamos ficar esta variável com o dia que foi primeiro seleccionado
-          // após a primeira iteração o primeiro dia passa a ser dia 31 (agora estamos a percrrer na ordem inversa - decrementar)
-          firsDay = this.generateDaysOfMonth(m - 1).length;
 
           // aqui cria um objeto com os dias seleccionados para cada mês e adiciona ao array do ano
           this._daysDraggedByMonth = new class implements IDayYearViewClicked<any> {
             public days: Array<ICalendarDay<any>>;
-            public item: string;
+            public item: Array<string>;
             public month: ECalendarMonths;
             public year: number;
           };
 
           this._daysDraggedByMonth.year = this.activeYear;
-          this._daysDraggedByMonth.month = m;
+          this._daysDraggedByMonth.month = this._startMonthDragged + m;
           this._daysDraggedByMonth.item = this.activeItem;
           this._daysDraggedByMonth.days = [];
 
@@ -491,6 +496,19 @@ export class YearViewComponent implements OnInit, OnChanges {
           this._daysDraggedByYear.push(this._daysDraggedByMonth);
         }
       }
+    }
+  }
+
+  public touchEnd(day: number, month: number, event: any): void {
+    if (this._generateEvtsByDay(day, month).length === 0) {
+
+      if (this._daysDraggedByYear.length > 0) {
+        this.evtDragYearViewClicked.emit(this._daysDraggedByYear);
+      } else {
+        this._daysDraggedByYear.push(this._daysDraggedByMonth);
+        this.evtDragYearViewClicked.emit(this._daysDraggedByYear);
+      }
+      this._daysDraggedByYear = [];
     }
   }
 }
