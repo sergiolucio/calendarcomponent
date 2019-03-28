@@ -159,6 +159,7 @@ export interface IDayYearViewClicked<T> {
 
 export interface ICalendarLabels {
   labels: Array<ICalendarLabel>;
+  itemsAvailables: Array<string>;
 }
 
 export interface ICalendarLabel {

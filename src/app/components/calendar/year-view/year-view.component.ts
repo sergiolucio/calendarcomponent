@@ -258,7 +258,6 @@ export class YearViewComponent implements OnInit, OnChanges {
               }
 
               evtsAux.item = [];
-              evtsAux.item.push(keyItemValue);
               evtsAux.days = [];
               evtsAux.days.push(daysAux);
               evtsAux.month = month;
@@ -269,6 +268,36 @@ export class YearViewComponent implements OnInit, OnChanges {
         }
       }
       this.evtDayYearViewClicked.emit(evtsArray);
+
+    } else {
+      this._daysDragged = [];
+      this._daysDraggedByMonth = new class implements IDayYearViewClicked<any> {
+        public days: Array<ICalendarDay<any>>;
+        public item: Array<string>;
+        public month: ECalendarMonths;
+        public year: number;
+      };
+
+      this._daysDraggedByYear = [];
+
+      const daysDraggedAux: ICalendarDay<any> = new class implements ICalendarDay<any> {
+        public day: number;
+        public events: Array<ICalendarEventDay<any>>;
+        public isHoliday: boolean;
+        public isWeekend: boolean;
+      };
+
+      daysDraggedAux.day = day;
+
+      this._daysDragged.push(daysDraggedAux);
+      this._daysDraggedByMonth.item = this.activeItem;
+      this._daysDraggedByMonth.month = month;
+      this._daysDraggedByMonth.year = this.activeYear;
+      this._daysDraggedByMonth.days = this._daysDragged;
+
+      this._daysDraggedByYear.push(this._daysDraggedByMonth);
+
+      this.touchEnd(day, month);
     }
 
   }
@@ -499,7 +528,7 @@ export class YearViewComponent implements OnInit, OnChanges {
     }
   }
 
-  public touchEnd(day: number, month: number, event: any): void {
+  public touchEnd(day: number, month: number): void {
     if (this._generateEvtsByDay(day, month).length === 0) {
 
       if (this._daysDraggedByYear.length > 0) {

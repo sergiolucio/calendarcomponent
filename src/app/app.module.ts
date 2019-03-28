@@ -17,6 +17,7 @@ import { DailyInfoModalComponent } from './states/calendar-month/daily-info-moda
 import { DailyInfoYearModalComponent } from './states/calendar-year/daily-info-year-modal/daily-info-year-modal.component';
 import { YearDraggableModalComponent } from './states/calendar-year/year-draggable-modal/year-draggable-modal.component';
 import * as Hammer from 'hammerjs';
+import { HttpClientModule} from '@angular/common/http';
 
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
@@ -47,6 +48,7 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     NgbModule,
+    HttpClientModule,
     SidebarModule.forRoot(),
     RouterModule.forRoot(
       appRoutes

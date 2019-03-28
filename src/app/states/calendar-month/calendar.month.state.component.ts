@@ -50,19 +50,46 @@ export class CalendarMonthStateComponent implements OnInit {
       this.activeYear = moment().year();
     }
 
-    this._calendarUtilsService.monthRequested = this.activeMonth;
-    this._calendarUtilsService.yearRequested = this.activeYear;
-    this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
+    this._calendarUtilsService.getMonthlyCalendar().subscribe(
+      monthlyData => this.monthlyCalendarData = monthlyData
+    );
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+
+    this._location.replaceState(`/month-view/${this.activeYear}/${this.activeMonth}`);
+
+    // ======================================
+    // código quando utilizava o calendar.utils.service.ts
+    //
+    // this._calendarUtilsService.monthRequested = this.activeMonth;
+    // this._calendarUtilsService.yearRequested = this.activeYear;
+    // this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
+    // this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+    // ======================================
+
+
   }
 
   public dateChanged(value: ICalendarMonthClicked): void {
+
+    this._calendarUtilsService.getMonthlyCalendar().subscribe(
+      monthlyData => this.monthlyCalendarData = monthlyData
+    );
+    this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+
     this.activeYear = value.year;
     this.activeMonth = value.month;
-    this._calendarUtilsService.monthRequested = this.activeMonth;
-    this._calendarUtilsService.yearRequested = this.activeYear;
-    this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
     this._location.replaceState(`/month-view/${this.activeYear}/${this.activeMonth}`);
+
+    // ======================================
+    // código quando utilizava o calendar.utils.service.ts
+    //
+    //
+    // this._calendarUtilsService.monthRequested = this.activeMonth;
+    // this._calendarUtilsService.yearRequested = this.activeYear;
+    // this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
+    //
+    // ===========================
+
   }
 
   public evtDraggableClicked(value: IMonthlyCalendarDayClicked<any>): void {

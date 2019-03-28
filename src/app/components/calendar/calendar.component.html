@@ -22,7 +22,6 @@
 
       <app-details-bar [(year)]="selectedYear"
                        (evtDateChanged)="dateChanged($event)"
-                       [itemsAvailables]="generateItemsAvailables()"
                        (activeItemChange)="activeItemChanged($event)"
                        [detailsBarLabels]="detailsBarLabels"
                        [multipleSelect]="multipleSelect"
@@ -36,3 +35,4 @@
     </div>
   </div>
 </div>
+

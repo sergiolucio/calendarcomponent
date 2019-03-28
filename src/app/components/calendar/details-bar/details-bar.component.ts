@@ -13,7 +13,6 @@ export class DetailsBarComponent implements OnInit {
   @Input() month: number;
   @Output() monthChange: EventEmitter<number>;
   @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
-  @Input() itemsAvailables: Array<string>;
   @Output() activeItemChange: EventEmitter<Array<string>>;
   private _stringMonths: Array<string>;
   @Input() panelMode: ECalendarState;
@@ -48,8 +47,8 @@ export class DetailsBarComponent implements OnInit {
     this.activeStatus = false;
 
     this.itemsSelection = [];
-    if (this.itemsAvailables) {
-      this.itemsSelection.push(this.itemsAvailables[0]);
+    if (this.detailsBarLabels.itemsAvailables) {
+      this.itemsSelection.push(this.detailsBarLabels.itemsAvailables[0]);
     }
   }
 
@@ -83,10 +82,10 @@ export class DetailsBarComponent implements OnInit {
 
   public decrementItem(): void {
     if (!this.multipleSelect) {
-      if (this.itemsSelection[0] !== this.itemsAvailables[0]) {
-        for (let i = 1; i < this.itemsAvailables.length; i++) {
-          if (this.itemsSelection[0] === this.itemsAvailables[i]) {
-            this.itemsSelection[0] = this.itemsAvailables[i - 1];
+      if (this.itemsSelection[0] !== this.detailsBarLabels.itemsAvailables[0]) {
+        for (let i = 1; i < this.detailsBarLabels.itemsAvailables.length; i++) {
+          if (this.itemsSelection[0] === this.detailsBarLabels.itemsAvailables[i]) {
+            this.itemsSelection[0] = this.detailsBarLabels.itemsAvailables[i - 1];
             this.activeItemChange.emit(this.itemsSelection);
           }
         }
@@ -96,10 +95,10 @@ export class DetailsBarComponent implements OnInit {
 
   public incrementItem(): void {
     if (!this.multipleSelect) {
-      if (this.itemsSelection[0] !== this.itemsAvailables[this.itemsAvailables.length - 1]) {
-        for (let i = this.itemsAvailables.length - 2; i >= 0; i--) {
-          if (this.itemsSelection[0] === this.itemsAvailables[i]) {
-            this.itemsSelection[0] = this.itemsAvailables[i + 1];
+      if (this.itemsSelection[0] !== this.detailsBarLabels.itemsAvailables[this.detailsBarLabels.itemsAvailables.length - 1]) {
+        for (let i = this.detailsBarLabels.itemsAvailables.length - 2; i >= 0; i--) {
+          if (this.itemsSelection[0] === this.detailsBarLabels.itemsAvailables[i]) {
+            this.itemsSelection[0] = this.detailsBarLabels.itemsAvailables[i + 1];
             this.activeItemChange.emit(this.itemsSelection);
           }
         }

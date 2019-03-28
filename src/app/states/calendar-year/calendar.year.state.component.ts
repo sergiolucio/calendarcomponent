@@ -23,7 +23,7 @@ export class CalendarYearStateComponent implements OnInit {
   public detailsBarLabels: ICalendarLabels;
   public evtDayYearViewClicked: Array<IDayYearViewClicked<any>>;
   public evtDragYearViewClicked: Array<IDayYearViewClicked<any>>;
-  public multipleSelect: boolean;
+  public multipleSelect: boolean = true;
 
   constructor(
     private readonly _router: Router,
@@ -37,10 +37,15 @@ export class CalendarYearStateComponent implements OnInit {
       this.activeYear = moment().year();
     }
 
-    this._calendarUtilsService.yearRequested = this.activeYear;
-    this.anualCalendarData = this._calendarUtilsService.anualCalendar;
+    this._calendarUtilsService.getAnualCalendar().subscribe(
+      response => ( this.anualCalendarData = response )
+    );
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
-    this.multipleSelect = true;
+
+    // this._calendarUtilsService.yearRequested = this.activeYear;
+    // this.anualCalendarData = this._calendarUtilsService.anualCalendar;
+    // this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+    // this.multipleSelect = true;
   }
 
   public yearClicked(year: number, month: number): void {
@@ -48,9 +53,15 @@ export class CalendarYearStateComponent implements OnInit {
   }
 
   public dateChanged(value: ICalendarMonthClicked): void {
-    this.activeYear = value.year;
-    this._calendarUtilsService.yearRequested = this.activeYear;
-    this.anualCalendarData = this._calendarUtilsService.anualCalendar;
+
+    this._calendarUtilsService.getAnualCalendar().subscribe(
+      response => ( this.anualCalendarData = response )
+    );
+    this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+
+    // this.activeYear = value.year;
+    // this._calendarUtilsService.yearRequested = this.activeYear;
+    // this.anualCalendarData = this._calendarUtilsService.anualCalendar;
   }
 
   public dayYearViewClicked(value: Array<IDayYearViewClicked<any>>): void {
