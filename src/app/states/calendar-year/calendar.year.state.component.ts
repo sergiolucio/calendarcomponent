@@ -3,8 +3,8 @@ import {Router} from '@angular/router';
 import {moment} from '../../../environments/environment';
 import {CalendarUtilsService} from '../../services/calendar.utils.service';
 import {
-  IAnualCalendar,
-  ICalendarLabels,
+  IAnualCalendar, ICalendarDataSet,
+  ICalendarLabel,
   ICalendarMonthClicked,
   IDayYearViewClicked
 } from '../../components/calendar/calendar.component.interface';
@@ -20,10 +20,11 @@ export class CalendarYearStateComponent implements OnInit {
 
   public activeYear: number;
   public anualCalendarData: IAnualCalendar<any>;
-  public detailsBarLabels: ICalendarLabels;
+  public detailsBarLabels: Array<ICalendarLabel>;
+  public dataSets: ICalendarDataSet;
   public evtDayYearViewClicked: Array<IDayYearViewClicked<any>>;
   public evtDragYearViewClicked: Array<IDayYearViewClicked<any>>;
-  public multipleSelect: boolean = true;
+  public multipleSelect = true;
 
   constructor(
     private readonly _router: Router,
@@ -38,9 +39,10 @@ export class CalendarYearStateComponent implements OnInit {
     }
 
     this._calendarUtilsService.getAnualCalendar().subscribe(
-      response => ( this.anualCalendarData = response )
+      response => (this.anualCalendarData = response)
     );
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+    this.dataSets = this._calendarUtilsService.dataSets;
 
     // this._calendarUtilsService.yearRequested = this.activeYear;
     // this.anualCalendarData = this._calendarUtilsService.anualCalendar;
@@ -55,7 +57,7 @@ export class CalendarYearStateComponent implements OnInit {
   public dateChanged(value: ICalendarMonthClicked): void {
 
     this._calendarUtilsService.getAnualCalendar().subscribe(
-      response => ( this.anualCalendarData = response )
+      response => (this.anualCalendarData = response)
     );
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
 

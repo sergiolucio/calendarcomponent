@@ -1,15 +1,14 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {HammerGestureConfig, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {moment} from '../../../../environments/environment';
 import {
   ECalendarMonths,
   IAnualCalendar,
-  IAnualCalendarMonth, ICalendarDay,
-  ICalendarEventDay, ICalendarLabels,
+  IAnualCalendarMonth,
+  ICalendarDay,
+  ICalendarEventDay,
   ICalendarMonthClicked,
   IDayYearViewClicked
 } from '../calendar.component.interface';
-
 
 @Component({
   selector: 'app-year-view',
@@ -17,19 +16,20 @@ import {
   styleUrls: ['./year-view.component.scss']
 })
 export class YearViewComponent implements OnInit, OnChanges {
-  @Input() activeYear: number;
-  @Output() evtMonthClicked: EventEmitter<ICalendarMonthClicked>;
-  @Input() anualCalendarData: IAnualCalendar<any>;
+  @Input() public activeYear: number;
+  @Output() public evtMonthClicked: EventEmitter<ICalendarMonthClicked>;
+  @Input() public anualCalendarData: IAnualCalendar<any>;
+  @Input() public activeItem: Array<string>;
+  @Output() public evtDayYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
+  @Output() public evtDragYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
   public months: Array<string>;
-  @Output() evtDayYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
-  @Output() evtDragYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
+
   private _mouseDown: boolean;
   private _startDayDragged: number;
   private _startMonthDragged: number;
   private _daysDragged: Array<ICalendarDay<any>>;
   private _daysDraggedByMonth: IDayYearViewClicked<any>;
   private _daysDraggedByYear: Array<IDayYearViewClicked<any>>;
-  @Input() activeItem: Array<string>;
   // mobile drag event variables
   private _dragMobileDaysIndex: number;
   private _dragMobileMonthsIndex: number;
@@ -38,8 +38,7 @@ export class YearViewComponent implements OnInit, OnChanges {
   private _cellWidth: number;
   private _cellHeight: number;
 
-  constructor(
-  ) {
+  constructor() {
     this.evtMonthClicked = new EventEmitter<ICalendarMonthClicked>();
     this.evtDayYearViewClicked = new EventEmitter<Array<IDayYearViewClicked<any>>>();
     this.evtDragYearViewClicked = new EventEmitter<Array<IDayYearViewClicked<any>>>();
@@ -170,7 +169,7 @@ export class YearViewComponent implements OnInit, OnChanges {
   private _generateEvtsByDay(day: number, month: number): Array<ICalendarEventDay<any>> {
     const evtsArray: Array<ICalendarEventDay<any>> = [];
     for (const keyItemValue of Object.keys(this.anualCalendarData.items)) {
-      const itemValue: IAnualCalendarMonth<any> = <IAnualCalendarMonth <any>>this.anualCalendarData.items[keyItemValue];
+      const itemValue: IAnualCalendarMonth<any> = <IAnualCalendarMonth<any>>this.anualCalendarData.items[keyItemValue];
 
       if (itemValue.month === month) {
         for (const keyDaysValue of Object.keys(itemValue.days)) {
@@ -221,7 +220,7 @@ export class YearViewComponent implements OnInit, OnChanges {
 
   public dayYearViewClicked(day: number, month: number): void {
 
-    if (this._generateEvtsByDay(day, month).length > 0 ) {
+    if (this._generateEvtsByDay(day, month).length > 0) {
 
       const evtsArray: Array<IDayYearViewClicked<any>> = [];
 

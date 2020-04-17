@@ -1,6 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ECalendarState, ICalendar, ICalendarLabels, ICalendarMonthClicked} from '../calendar.component.interface';
-import {findIndex, indexOf} from 'lodash';
+import {
+  ECalendarState,
+  ICalendarDataSet,
+  ICalendarDataSetLayer,
+  ICalendarLabel,
+  ICalendarMonthClicked
+} from '../calendar.component.interface';
 
 @Component({
   selector: 'app-details-bar',
@@ -8,27 +13,27 @@ import {findIndex, indexOf} from 'lodash';
   styleUrls: ['./details-bar.component.scss']
 })
 export class DetailsBarComponent implements OnInit {
-  @Input() year: number;
-  @Output() yearChange: EventEmitter<number>;
-  @Input() month: number;
-  @Output() monthChange: EventEmitter<number>;
-  @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
-  @Output() activeItemChange: EventEmitter<Array<string>>;
-  private _stringMonths: Array<string>;
-  @Input() panelMode: ECalendarState;
-  @Input() detailsBarLabels: ICalendarLabels;
+  @Input() public year: number;
+  @Input() public month: number;
+  @Input() public panelMode: ECalendarState;
+  @Input() public detailsBarLabels: Array<ICalendarLabel>;
+  @Input() public dataSets: ICalendarDataSet;
+  @Input() public multipleSelect: boolean;
+  @Output() public readonly yearChange: EventEmitter<number>;
+  @Output() public readonly monthChange: EventEmitter<number>;
+  @Output() public readonly evtDateChanged: EventEmitter<ICalendarMonthClicked>;
+  @Output() public readonly activeItemChange: EventEmitter<ICalendarDataSet>;
+
   public activeStatus: boolean;
-  @Input() multipleSelect: boolean;
-  public itemsSelection: Array<string>;
+
+  private readonly _stringMonths: Array<string>;
 
   constructor() {
     this.yearChange = new EventEmitter<number>();
     this.monthChange = new EventEmitter<number>();
     this.evtDateChanged = new EventEmitter<ICalendarMonthClicked>();
-    this.activeItemChange = new EventEmitter<Array<string>>();
-  }
-
-  public ngOnInit(): void {
+    this.activeItemChange = new EventEmitter<ICalendarDataSet>();
+    this.activeStatus = false;
     this._stringMonths = [
       'Janeiro',
       'Fevereiro',
@@ -43,13 +48,11 @@ export class DetailsBarComponent implements OnInit {
       'Novembro',
       'Dezembro'
     ];
+  }
 
-    this.activeStatus = false;
-
-    this.itemsSelection = [];
-    if (this.detailsBarLabels.itemsAvailables) {
-      this.itemsSelection.push(this.detailsBarLabels.itemsAvailables[0]);
-    }
+  public ngOnInit(): void {
+    this._initDataSets();
+    console.log(this.dataSets);
   }
 
   public decrementYear(): void {
@@ -81,29 +84,29 @@ export class DetailsBarComponent implements OnInit {
   }
 
   public decrementItem(): void {
-    if (!this.multipleSelect) {
-      if (this.itemsSelection[0] !== this.detailsBarLabels.itemsAvailables[0]) {
-        for (let i = 1; i < this.detailsBarLabels.itemsAvailables.length; i++) {
-          if (this.itemsSelection[0] === this.detailsBarLabels.itemsAvailables[i]) {
-            this.itemsSelection[0] = this.detailsBarLabels.itemsAvailables[i - 1];
+    /*if (!this.multipleSelect) {
+      if (this.itemsSelection[0] !== this.dataSets[0]) {
+        for (let i = 1; i < this.dataSets.length; i++) {
+          if (this.itemsSelection[0] === this.dataSets[i]) {
+            this.itemsSelection[0] = this.dataSets[i - 1];
             this.activeItemChange.emit(this.itemsSelection);
           }
         }
       }
-    }
+    }*/
   }
 
   public incrementItem(): void {
-    if (!this.multipleSelect) {
-      if (this.itemsSelection[0] !== this.detailsBarLabels.itemsAvailables[this.detailsBarLabels.itemsAvailables.length - 1]) {
-        for (let i = this.detailsBarLabels.itemsAvailables.length - 2; i >= 0; i--) {
-          if (this.itemsSelection[0] === this.detailsBarLabels.itemsAvailables[i]) {
-            this.itemsSelection[0] = this.detailsBarLabels.itemsAvailables[i + 1];
+    /*if (!this.multipleSelect) {
+      if (this.itemsSelection[0] !== this.dataSets[this.dataSets.length - 1]) {
+        for (let i = this.dataSets.length - 2; i >= 0; i--) {
+          if (this.itemsSelection[0] === this.dataSets[i]) {
+            this.itemsSelection[0] = this.dataSets[i + 1];
             this.activeItemChange.emit(this.itemsSelection);
           }
         }
       }
-    }
+    }*/
   }
 
   private _dateChanged() {
@@ -117,23 +120,44 @@ export class DetailsBarComponent implements OnInit {
     this.activeStatus = !this.activeStatus;
   }
 
-  public itemChecked(item: string): boolean {
-
-    if (indexOf(this.itemsSelection, item) !== -1) {
-      return true;
-    }
-
+  public itemChecked(item: ICalendarDataSetLayer): boolean {
     return false;
+    // return this.itemsSelection.indexOf(item) !== -1;
   }
 
-  public itemCheckedChange(item: string): void {
-    if (!this.itemChecked(item)) {
+  public itemCheckedChange(item: ICalendarDataSetLayer): void {
+    /*if (!this.itemChecked(item)) {
       this.itemsSelection.push(item);
       this.activeItemChange.emit(this.itemsSelection);
     } else {
-      const indexToRemove: number = indexOf(this.itemsSelection, item);
+      const indexToRemove: number = this.itemsSelection.indexOf(item);
       this.itemsSelection.splice(indexToRemove, 1);
       this.activeItemChange.emit(this.itemsSelection);
+    }*/
+  }
+
+  public generateNextDataSet(layerIdx: number): ICalendarDataSet {
+
+  }
+
+  private _initDataSets(): void {
+    const fnTurnOff = (myDataSet: ICalendarDataSet, layerIdx: number = 1) => {
+      for (const layer of myDataSet.layers) {
+        layer._checked = false;
+        layer._layerIdx = layerIdx;
+        if (layer.nextDataSet) {
+          fnTurnOff(layer.nextDataSet, layerIdx + 1);
+        }
+      }
+    };
+
+    if (this.dataSets) {
+      fnTurnOff(this.dataSets);
+    } else {
+      this.dataSets = {
+        title: '',
+        layers: undefined
+      };
     }
   }
 }

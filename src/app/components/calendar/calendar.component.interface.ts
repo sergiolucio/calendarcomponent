@@ -157,13 +157,20 @@ export interface IDayYearViewClicked<T> {
 
 // Interface para receber estados
 
-export interface ICalendarLabels {
-  labels: Array<ICalendarLabel>;
-  itemsAvailables: Array<string>;
-}
-
 export interface ICalendarLabel {
   label: string;
   color: string;
   quantity: number;
+}
+
+export interface ICalendarDataSet {
+  title: string;
+  layers: Array<ICalendarDataSetLayer>;
+}
+
+export interface ICalendarDataSetLayer {
+  title: string;
+  nextDataSet?: ICalendarDataSet;
+  _checked?: boolean;
+  _layerIdx?: number;
 }

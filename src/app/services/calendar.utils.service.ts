@@ -3,29 +3,38 @@ import {Injectable} from '@angular/core';
 import {
   IAnualCalendar,
   ICalendar,
-  ICalendarLabel, ICalendarLabels
+  ICalendarDataSet,
+  ICalendarDataSetLayer,
+  ICalendarLabel
 } from '../components/calendar/calendar.component.interface';
 import {moment} from '../../environments/environment';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {catchError, tap} from 'rxjs/operators';
+import {catchError} from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarUtilsService {
   private _monthRequested: number;
   private _yearRequested = 2019;
-  private _labelsAvailables: ICalendarLabels;
+  private _labelsAvailables: Array<ICalendarLabel>;
+  private _dataSets: ICalendarDataSet;
   private _calendarRestAPI = 'http://localhost:8080/CalendarRestAPI_war/';
 
   constructor(
     private _http: HttpClient
-) {
+  ) {
   }
 
-  public get labelsAvailables(): ICalendarLabels {
+  public get labelsAvailables(): Array<ICalendarLabel> {
     this._generateLabels();
     return cloneDeep(this._labelsAvailables);
+  }
+
+  public get dataSets(): ICalendarDataSet {
+    this._generateDataSets();
+    return cloneDeep(this._dataSets);
   }
 
   public getMonthlyCalendar(): Observable<ICalendar<any>> {
@@ -83,11 +92,7 @@ export class CalendarUtilsService {
   }
 
   private _generateLabels(): void {
-    this._labelsAvailables = new class implements ICalendarLabels {
-      public labels: Array<ICalendarLabel>;
-      public itemsAvailables: Array<string>;
-    };
-    this._labelsAvailables.labels = [];
+    this._labelsAvailables = [];
 
     const colors: Array<string> = ['#f2a654', '#46be8a', '#57c7d4', '#8daaba'];
     const labels: Array<string> = ['Pendente', 'Aprovado', 'Feriado', 'Rejeitado'];
@@ -101,19 +106,22 @@ export class CalendarUtilsService {
       labelAux.color = colors[i];
       labelAux.label = labels[i];
       labelAux.quantity = Math.floor(Math.random() * 30);
-      this._labelsAvailables.labels.push(labelAux);
+      this._labelsAvailables.push(labelAux);
     }
-    const labelAux: ICalendarLabel = new class implements ICalendarLabel {
-      public color: string;
-      public label: string;
-      public quantity: number;
+  }
+
+  private _generateDataSets(): void {
+    this._dataSets = {
+      title: 'Serviços',
+      layers: []
     };
 
-    this._labelsAvailables.itemsAvailables = [];
-
-    for (let i = 1; i < (Math.random() * 10) + 5; i++) {
-      const itemName: string = 'Empregado ' + i;
-      this._labelsAvailables.itemsAvailables.push(itemName);
+    for (let j = 1; j < (Math.random() * 10) + 3; j++) {
+      const empregadosLayer: Array<ICalendarDataSetLayer> = [];
+      for (let i = 1; i < (Math.random() * 10) + 5; i++) {
+        empregadosLayer.push({title: `Empregado ${i}`});
+      }
+      this._dataSets.layers.push({title: `Serviço ${j}`, nextDataSet: {title: 'Empregados', layers: empregadosLayer}});
     }
   }
 

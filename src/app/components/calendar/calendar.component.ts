@@ -1,9 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {
   ECalendarState,
+  ECalendarWeekDays,
   IAnualCalendar,
-  ICalendar, ICalendarLabels,
-  ICalendarMonthClicked, IDayYearViewClicked,
+  ICalendar,
+  ICalendarDataSet,
+  ICalendarLabel,
+  ICalendarMonthClicked,
+  IDayYearViewClicked,
   IMonthlyCalendarDayClicked
 } from './calendar.component.interface';
 import {moment} from '../../../environments/environment';
@@ -13,22 +17,24 @@ import {moment} from '../../../environments/environment';
   templateUrl: 'calendar.component.html'
 })
 export class CalendarComponent implements OnInit {
-  @Input() state: ECalendarState;
-  @Output() evtMonthClicked: EventEmitter<ICalendarMonthClicked>;
-  @Input() selectedYear: number;
-  @Output() selectedYearChange: EventEmitter<number>;
-  @Input() selectedMonth: number;
-  @Output() selectedMonthChange: EventEmitter<number>;
-  public activeItem: Array<string>;
-  @Input() monthlyCalendarData: ICalendar<any>;
-  @Input() anualCalendarData: IAnualCalendar<any>;
-  @Output() evtDateChanged: EventEmitter<ICalendarMonthClicked>;
-  @Output() evtDraggable: EventEmitter<IMonthlyCalendarDayClicked<any>>;
-  @Output() evtMonthlyCalendarDay: EventEmitter<IMonthlyCalendarDayClicked<any>>;
-  @Output() evtDayYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
-  @Output() evtDragYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
-  @Input() detailsBarLabels: ICalendarLabels;
-  @Input() multipleSelect: boolean;
+  @Input() public state: ECalendarState;
+  @Input() public selectedYear: number;
+  @Input() public selectedMonth: number;
+  @Input() public monthlyCalendarData: ICalendar<any>;
+  @Input() public anualCalendarData: IAnualCalendar<any>;
+  @Input() public detailsBarLabels: Array<ICalendarLabel>;
+  @Input() public dataSets: ICalendarDataSet;
+  @Input() public multipleSelect: boolean;
+  @Output() public evtMonthClicked: EventEmitter<ICalendarMonthClicked>;
+  @Output() public selectedYearChange: EventEmitter<number>;
+  @Output() public selectedMonthChange: EventEmitter<number>;
+  @Output() public evtDateChanged: EventEmitter<ICalendarMonthClicked>;
+  @Output() public evtDraggable: EventEmitter<IMonthlyCalendarDayClicked<any>>;
+  @Output() public evtMonthlyCalendarDay: EventEmitter<IMonthlyCalendarDayClicked<any>>;
+  @Output() public evtDayYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
+  @Output() public evtDragYearViewClicked: EventEmitter<Array<IDayYearViewClicked<any>>>;
+
+  public activeItem: Array<ICalendarDataSet>;
 
   constructor() {
     this.evtMonthClicked = new EventEmitter<ICalendarMonthClicked>();
@@ -58,9 +64,24 @@ export class CalendarComponent implements OnInit {
       this.activeItem = [];
       this.activeItem.push(this.generateItemsAvailables()[0]);
     }
+
+    if (!this.anualCalendarData) {
+      this.anualCalendarData = {
+        items: {},
+        weekStartDay: ECalendarWeekDays.MONDAY,
+        year: 0
+      };
+    }
+
+    if (!this.monthlyCalendarData) {
+      this.monthlyCalendarData = {
+        items: {},
+        weekStartDay: ECalendarWeekDays.MONDAY
+      };
+    }
   }
 
-  public monthClicked (value: ICalendarMonthClicked): void {
+  public monthClicked(value: ICalendarMonthClicked): void {
     this.evtMonthClicked.emit(value);
   }
 
@@ -84,17 +105,27 @@ export class CalendarComponent implements OnInit {
     this.evtDragYearViewClicked.emit(value);
   }
 
-  public generateItemsAvailables(): Array<string> {
-    let arrayItems: Array<string>;
+  public generateItemsAvailables(): Array<ICalendarDataSet> {
+    let arrayItems: Array<ICalendarDataSet>;
     arrayItems = [];
+
+    if (!this.anualCalendarData) {
+      this.anualCalendarData = {
+        items: {},
+        weekStartDay: ECalendarWeekDays.MONDAY,
+        year: 0
+      };
+    }
+
+    // todo - verificar
     for (const item of Object.keys(this.anualCalendarData.items)) {
-      arrayItems.push(item);
+      arrayItems.push({title: item, layers: []});
     }
 
     return arrayItems;
   }
 
-  public activeItemChanged(value: Array<string>): void {
+  public activeItemChanged(value: Array<ICalendarDataSet>): void {
     this.activeItem = value;
   }
 }

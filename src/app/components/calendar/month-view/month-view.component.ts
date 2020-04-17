@@ -1,11 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {moment} from '../../../../environments/environment';
-import {
-  ICalendar, ICalendarDay, ICalendarDays,
-  ICalendarEventDay, IMonthlyCalendarDayClicked
-} from '../calendar.component.interface';
+import {ICalendar, ICalendarDay, ICalendarEventDay, IMonthlyCalendarDayClicked} from '../calendar.component.interface';
 import {ModalService} from '../../../services/modal/modal.service';
-
 
 @Component({
   selector: 'app-month-view',
@@ -239,7 +235,7 @@ export class MonthViewComponent implements OnInit, OnChanges {
   public openEvtModal(day: number, itemIndex: number): void {
     if (this.countEvtsByDay(day, itemIndex) > 0) {
 
-      const dayliInfo: IMonthlyCalendarDayClicked<any>  = new class implements IMonthlyCalendarDayClicked<any> {
+      const dayliInfo: IMonthlyCalendarDayClicked<any> = new class implements IMonthlyCalendarDayClicked<any> {
         public days: Array<ICalendarDay<any>>;
         public item: string;
         public month: number;

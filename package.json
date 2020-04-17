@@ -30,7 +30,7 @@
     "moment": "^2.24.0",
     "multiple-select": "^1.2.2",
     "ng-sidebar": "^8.0.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^4.13.1",
     "popper.js": "^1.14.7",
     "rxjs": "~6.3.3",
     "startbootstrap-simple-sidebar": "^5.0.0",

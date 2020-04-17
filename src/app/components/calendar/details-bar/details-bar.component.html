@@ -1,25 +1,17 @@
 <div class="container-fluid">
   <div class="row mb-3 numbers-details">
-
     <div class="col-12">
-
       <div class="row">
-
         <div class="col p-3 rounded my-1 mx-2 d-flex align-items-center justify-content-center shadow"
-             *ngFor="let label of detailsBarLabels.labels"
+             *ngFor="let label of detailsBarLabels"
              [ngStyle]="{'background-color': label.color}">
           <span>{{label.quantity}} {{label.label}}</span>
         </div>
-
       </div>
-
-
-
     </div>
   </div>
 
   <div class="row">
-
     <div class="selector col-auto">
       <div class="row no-gutters">
         <div class="col-auto">
@@ -43,17 +35,7 @@
 
     <div class="selector col-auto" [ngSwitch]="panelMode">
       <div class="row no-gutters position-relative" *ngSwitchCase="'year'">
-        <div class="col-auto" *ngIf="multipleSelect">
-          <span>Items: </span>
-        </div>
-
-        <div class="selector-button col-auto d-flex align-items-center p-2 ml-1 text-white font-weight-lighter bg-weekend rounded-bottom"
-             *ngIf="multipleSelect"
-             (click)="toggleActive()">
-          <i class="fa fa-chevron-down"></i>
-        </div>
-
-        <div class="col-auto" *ngIf="!multipleSelect">
+        <!--<div class="col-auto" *ngIf="!multipleSelect">
           <span>Item: </span>
         </div>
 
@@ -71,16 +53,40 @@
              *ngIf="!multipleSelect"
              (click)="incrementItem()">
           <i class="fa fa-chevron-right"></i>
-        </div>
+        </div>-->
 
-        <div class="items-dropdown border border-dark" [ngClass]="{'active': activeStatus}">
-            <div class="form-check my-2" *ngFor="let item of detailsBarLabels.itemsAvailables">
-              <input class="form-check-input" type="checkbox" name="itemsSelection" [checked]="itemChecked(item)" (change)="itemCheckedChange(item)">
+        <ng-container *ngIf="multipleSelect">
+          <ng-container *ngTemplateOutlet="itemsSelector; context: {myDataSet: dataSets, layerIdx: 1}"></ng-container>
+        </ng-container>
+
+        <ng-template #itemsSelector let-dataSet="myDataSet" let-layerIdx="layerIdx">
+          <div class="col-auto">
+            <span>{{dataSet.title}}: </span>
+          </div>
+
+          <div class="selector-button col-auto d-flex align-items-center p-2 ml-1 text-white font-weight-lighter bg-weekend rounded-bottom"
+               *ngIf="multipleSelect"
+               (click)="toggleActive()">
+            <i class="fa fa-chevron-down"></i>
+          </div>
+
+          <div class="items-dropdown border border-dark" [ngClass]="{'active': activeStatus}">
+            <div class="form-check my-2" *ngFor="let data of dataSet.layers">
+              <input class="form-check-input" type="checkbox" name="itemsSelection" [(ngModel)]="data._checked">
               <label class="form-check-label">
-                {{item}}
+                {{data.title}}
               </label>
             </div>
-        </div>
+          </div>
+
+          <!-- Esta secçãode recursividade não está bem feita ainda...esperar para meter componentes do pl-comps -->
+          <ng-container *ngFor="let data of dataSet.layers">
+            <ng-container *ngIf="data.nextDataSet && data._checked">
+              <ng-container *ngTemplateOutlet="itemsSelector; context: {myDataSet: generateNextDataSet(layerIdx)}"></ng-container>
+            </ng-container>
+          </ng-container>
+
+        </ng-template>
 
       </div>
 
@@ -102,7 +108,7 @@
     <div class="col ml-auto">
       <div class="row d-flex justify-content-end">
         <div class="col-auto py-1 d-flex align-content-center"
-             *ngFor="let label of detailsBarLabels.labels">
+             *ngFor="let label of detailsBarLabels">
           <div class="color-marker shadow"
                [ngStyle]="{'background-color': label.color}"></div>
           <span>{{label.label}}</span>

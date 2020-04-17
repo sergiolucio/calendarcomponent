@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap, Route, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, ParamMap, Router} from '@angular/router';
 import {
-  ICalendar, ICalendarLabels,
+  ICalendar, ICalendarDataSet,
+  ICalendarLabel,
   ICalendarMonthClicked,
   IMonthlyCalendarDayClicked
 } from '../../components/calendar/calendar.component.interface';
@@ -21,7 +22,8 @@ export class CalendarMonthStateComponent implements OnInit {
   public activeYear: number;
   public activeMonth: number;
   public monthlyCalendarData: ICalendar<any>;
-  public detailsBarLabels: ICalendarLabels;
+  public detailsBarLabels: Array<ICalendarLabel>;
+  public dataSets: ICalendarDataSet;
   public evtDraggable: IMonthlyCalendarDayClicked<any>;
   public evtMonthlyCalendarDay: IMonthlyCalendarDayClicked<any>;
 
@@ -54,6 +56,7 @@ export class CalendarMonthStateComponent implements OnInit {
       monthlyData => this.monthlyCalendarData = monthlyData
     );
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
+    this.dataSets = this._calendarUtilsService.dataSets;
 
     this._location.replaceState(`/month-view/${this.activeYear}/${this.activeMonth}`);
 
@@ -94,7 +97,7 @@ export class CalendarMonthStateComponent implements OnInit {
 
   public evtDraggableClicked(value: IMonthlyCalendarDayClicked<any>): void {
     this.evtDraggable = value;
-    const instance = this._modalService.showVanilla(MonthDraggableModalComponent,{
+    const instance = this._modalService.showVanilla(MonthDraggableModalComponent, {
       modalSize: 'lg'
     });
     instance.componentInstance.evtDraggable = this.evtDraggable;
