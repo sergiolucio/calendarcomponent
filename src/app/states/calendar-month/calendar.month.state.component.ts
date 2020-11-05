@@ -52,9 +52,7 @@ export class CalendarMonthStateComponent implements OnInit {
       this.activeYear = moment().year();
     }
 
-    this._calendarUtilsService.getMonthlyCalendar().subscribe(
-      monthlyData => this.monthlyCalendarData = monthlyData
-    );
+    this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
     this.dataSets = this._calendarUtilsService.dataSets;
 
@@ -74,9 +72,7 @@ export class CalendarMonthStateComponent implements OnInit {
 
   public dateChanged(value: ICalendarMonthClicked): void {
 
-    this._calendarUtilsService.getMonthlyCalendar().subscribe(
-      monthlyData => this.monthlyCalendarData = monthlyData
-    );
+    this.monthlyCalendarData = this._calendarUtilsService.montlhyCalendar;
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
 
     this.activeYear = value.year;

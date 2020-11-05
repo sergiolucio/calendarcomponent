@@ -1,24 +1,12 @@
-<ng-sidebar-container style="height: 100vh;">
-  <ng-sidebar [(opened)]="_opened" mode="push" closeOnClickBackdrop="true">
-    <header class="demo-header-sidebar">
-      <h2>CG-Comps</h2>
-    </header>
-
-    <ul class="list-unstyled">
-      <li><a routerLink="/month-view">Calendar Month</a></li>
-      <li><a routerLink="/year-view">Calendar Year</a></li>
+<div>
+  <header class="demo-header">
+    <ul class="ml-5">
+      <li><a class="text-white" routerLink="/month-view">Calendar Month</a></li>
+      <li><a class="text-white" routerLink="/year-view">Calendar Year</a></li>
     </ul>
-  </ng-sidebar>
+  </header>
 
-
-  <div ng-sidebar-content>
-    <header class="demo-header">
-      <button class="demo-header__toggle" (click)="_toggleSidebar()">Toggle sidebar</button>
-      <img width="230" src="../assets/centralgest-logo-white.png">
-    </header>
-
-    <section class="demo-contents">
-      <router-outlet></router-outlet>
-    </section>
-  </div>
-</ng-sidebar-container>
+  <section class="demo-contents">
+    <router-outlet></router-outlet>
+  </section>
+</div>

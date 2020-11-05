@@ -38,9 +38,7 @@ export class CalendarYearStateComponent implements OnInit {
       this.activeYear = moment().year();
     }
 
-    this._calendarUtilsService.getAnualCalendar().subscribe(
-      response => (this.anualCalendarData = response)
-    );
+    this.anualCalendarData = this._calendarUtilsService.anualCalendar;
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
     this.dataSets = this._calendarUtilsService.dataSets;
 
@@ -56,9 +54,7 @@ export class CalendarYearStateComponent implements OnInit {
 
   public dateChanged(value: ICalendarMonthClicked): void {
 
-    this._calendarUtilsService.getAnualCalendar().subscribe(
-      response => (this.anualCalendarData = response)
-    );
+    this.anualCalendarData = this._calendarUtilsService.anualCalendar;
     this.detailsBarLabels = this._calendarUtilsService.labelsAvailables;
 
     // this.activeYear = value.year;

@@ -136,10 +136,6 @@ export class DetailsBarComponent implements OnInit {
     }*/
   }
 
-  public generateNextDataSet(layerIdx: number): ICalendarDataSet {
-
-  }
-
   private _initDataSets(): void {
     const fnTurnOff = (myDataSet: ICalendarDataSet, layerIdx: number = 1) => {
       for (const layer of myDataSet.layers) {

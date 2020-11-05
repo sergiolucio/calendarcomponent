@@ -1,16 +1,19 @@
-import {cloneDeep} from 'lodash';
-import {Injectable} from '@angular/core';
+import { cloneDeep } from 'lodash';
+import { Injectable } from '@angular/core';
 import {
+  ECalendarWeekDays,
   IAnualCalendar,
+  IAnualCalendarMonths,
   ICalendar,
   ICalendarDataSet,
   ICalendarDataSetLayer,
-  ICalendarLabel
+  ICalendarLabel,
+  EPriority,
+  ECalendarMonths,
+  ICalendarItems
 } from '../components/calendar/calendar.component.interface';
-import {moment} from '../../environments/environment';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import { moment } from '../../environments/environment';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +23,10 @@ export class CalendarUtilsService {
   private _yearRequested = 2019;
   private _labelsAvailables: Array<ICalendarLabel>;
   private _dataSets: ICalendarDataSet;
-  private _calendarRestAPI = 'http://localhost:8080/CalendarRestAPI_war/';
+  private _anualCalendar: IAnualCalendar<any>;
+  private _montlhyCalendar: ICalendar<any>;
 
-  constructor(
-    private _http: HttpClient
-  ) {
+  constructor() {
   }
 
   public get labelsAvailables(): Array<ICalendarLabel> {
@@ -37,41 +39,15 @@ export class CalendarUtilsService {
     return cloneDeep(this._dataSets);
   }
 
-  public getMonthlyCalendar(): Observable<ICalendar<any>> {
-    return this._http.get<ICalendar<any>>(this._calendarRestAPI + 'getMonthly').pipe(
-      catchError(this._handleError)
-    );
+  public get anualCalendar(): IAnualCalendar<any> {
+    this._generateAnual();
+    return cloneDeep(this._anualCalendar);
   }
 
-  public getAnualCalendar(): Observable<IAnualCalendar<any>> {
-    return this._http.get<IAnualCalendar<any>>(this._calendarRestAPI + 'getAnual').pipe(
-      catchError(this._handleError)
-    );
+  public get montlhyCalendar(): ICalendar<any> {
+    this._generateMontlhy();
+    return cloneDeep(this._montlhyCalendar);
   }
-
-  private _handleError(err: HttpErrorResponse) {
-    let myErrorMessage: string;
-
-    if (err.error instanceof ErrorEvent) {
-      myErrorMessage = `Error: ${err.error.message}`;
-    } else {
-      myErrorMessage = `Server return code: ${err.status}, error message is: ${err.message}`;
-    }
-
-    console.log(myErrorMessage);
-    return throwError(myErrorMessage);
-  }
-
-  // public get anualCalendar(): IAnualCalendar<any> {
-  //   this._generateAnual();
-  //   return cloneDeep(this._anualCalendar);
-  // }
-
-
-  // public get montlhyCalendar(): ICalendar<any> {
-  //   this._generateMontlhy();
-  //   return cloneDeep(this._montlhyCalendar);
-  // }
 
   public get monthRequested(): number {
     return this._monthRequested;
@@ -125,159 +101,141 @@ export class CalendarUtilsService {
     }
   }
 
-  // =================================================
-  //
-  // Código que gerava dados antes de implementar pedido http
-  //
-  // private _generateMontlhy(): void {
-  //   const items: ICalendarItems<any> = {};
-  //   const itemsArray: Array<object> = [];
-  //
-  //
-  //
-  //   for (let i = 1; i <= Math.floor((Math.random() * 20 ) + 1); i++) {
-  //     const daysOff: Array<number> = [];
-  //     const daysArray: Array<object> = [];
-  //     const days: object = {};
-  //
-  //     for (let j = 1; j <= Math.floor((Math.random() * 10) + 1); j++) {
-  //       const randomDay: number = Math.floor((Math.random() * this._generateDaysOfMonth()) + 1 );
-  //       const eventsArray: Array<object> = [];
-  //
-  //       if (findIndex(daysOff, randomDay) === -1) {
-  //         for (let k = 1; k <= Math.floor((Math.random() * 3) + 1); k++) {
-  //           const eventDesc = 'Evento ' + k;
-  //           const code: number = Math.floor((Math.random() * 4) + 1);
-  //           const color: Array<string> = ['#f2a654', '#57c7d4', '#8daaba', '#46be8a'];
-  //           const event: object = {
-  //             body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
-  //             type: {
-  //               codigo: code,
-  //               color: color[Math.floor(Math.random() * 3 + 1)],
-  //               descricao: eventDesc,
-  //               prioridade: EPriority[k]
-  //             }
-  //           };
-  //           eventsArray.push(event);
-  //         }
-  //
-  //         const daysAux = {
-  //           [randomDay]: {
-  //             day: randomDay,
-  //             isHoliday: false,
-  //             isWeekend: false,
-  //             events: eventsArray
-  //           }
-  //
-  //         };
-  //         daysArray.push(daysAux);
-  //         daysOff.push(randomDay);
-  //       }
-  //     }
-  //
-  //     forEach(daysArray, value => {
-  //       Object.assign(days, value);
-  //     });
-  //
-  //     const itemName: string = 'Empregado ' + i;
-  //
-  //     const itemAux = {
-  //       [itemName]: {
-  //         days: days
-  //       }
-  //     };
-  //     itemsArray.push(itemAux);
-  //
-  //   }
-  //
-  //
-  //   forEach(itemsArray,  (value) => {
-  //     Object.assign(items, value);
-  //   });
-  //
-  //   this._montlhyCalendar = {
-  //     weekStartDay: ECalendarWeekDays.MONDAY,
-  //     items: items
-  //   };
-  // }
-  //
-  //
-  // ======================================================
-  //
-  //
-  // private _generateAnual(): void {
-  //   const items: IAnualCalendarMonths<any> = {};
-  //   const itemsArray: Array<object> = [];
-  //
-  //
-  //
-  //   for (let i = 1; i <= Math.floor((Math.random() * 20 ) + 1); i++) {
-  //     const daysOff: Array<number> = [];
-  //     const daysArray: Array<object> = [];
-  //     const days: object = {};
-  //
-  //
-  //     for (let j = 1; j <= Math.floor((Math.random() * 10) + 1); j++) {
-  //       const randomDay: number = Math.floor((Math.random() * this._generateDaysOfMonth()) + 1 );
-  //       const eventsArray: Array<object> = [];
-  //
-  //       if (findIndex(daysOff, randomDay) === -1) {
-  //
-  //         for (let k = 1; k <= Math.floor((Math.random() * 5) + 1); k++) {
-  //           const eventDesc = 'Evento ' + k;
-  //           const code: number = Math.floor((Math.random() * 4) + 1);
-  //           const color: Array<string> = ['#f2a654', '#57c7d4', '#8daaba', '#46be8a'];
-  //           const event: object = {
-  //             body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
-  //             type: {
-  //               codigo: code,
-  //               color: color[Math.floor(Math.random() * 3 + 1)],
-  //               descricao: eventDesc,
-  //               prioridade: EPriority[k]
-  //             }
-  //           };
-  //           eventsArray.push(event);
-  //         }
-  //
-  //         const daysAux: object = {
-  //           [randomDay]: {
-  //             day: randomDay,
-  //             isHoliday: false,
-  //             isWeekend: false,
-  //             events: eventsArray
-  //           }
-  //         };
-  //
-  //         daysArray.push(daysAux);
-  //         daysOff.push(randomDay);
-  //       }
-  //     }
-  //
-  //     forEach(daysArray,  (value) => {
-  //       Object.assign(days, value);
-  //     });
-  //
-  //     const itemName: string = 'Empregado ' + i;
-  //
-  //     const itemAux = {
-  //       [itemName]: {
-  //         month: ECalendarMonths[ECalendarMonths[Math.floor(Math.random() * 12 + 1)]],
-  //         days: days
-  //       }
-  //     };
-  //     itemsArray.push(itemAux);
-  //
-  //   }
-  //
-  //
-  //   forEach(itemsArray, (value) => {
-  //     Object.assign(items, value);
-  //   });
-  //
-  //   this._anualCalendar = {
-  //     year: this._yearRequested,
-  //     weekStartDay: ECalendarWeekDays.MONDAY,
-  //     items: items
-  //   };
-  // }
+  private _generateMontlhy(): void {
+    const items: ICalendarItems<any> = {};
+    const itemsArray: Array<object> = [];
+
+
+
+    for (let i = 1; i <= Math.floor((Math.random() * 20 ) + 1); i++) {
+      const daysOff: Array<number> = [];
+      const daysArray: Array<object> = [];
+      const days: object = {};
+
+      for (let j = 1; j <= Math.floor((Math.random() * 10) + 1); j++) {
+        const randomDay: number = Math.floor((Math.random() * this._generateDaysOfMonth()) + 1 );
+        const eventsArray: Array<object> = [];
+
+        if (daysOff.indexOf(randomDay) === -1) {
+          for (let k = 1; k <= Math.floor((Math.random() * 3) + 1); k++) {
+            const eventDesc = 'Evento ' + k;
+            const code: number = Math.floor((Math.random() * 4) + 1);
+            const color: Array<string> = ['#f2a654', '#57c7d4', '#8daaba', '#46be8a'];
+            const event: object = {
+              body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
+              type: {
+                codigo: code,
+                color: color[Math.floor(Math.random() * 3 + 1)],
+                descricao: eventDesc,
+                prioridade: EPriority[k]
+              }
+            };
+            eventsArray.push(event);
+          }
+
+          const daysAux = {
+            [randomDay]: {
+              day: randomDay,
+              isHoliday: false,
+              isWeekend: false,
+              events: eventsArray
+            }
+
+          };
+          daysArray.push(daysAux);
+          daysOff.push(randomDay);
+        }
+      }
+
+      daysArray.forEach(value => Object.assign(days, value));
+
+      const itemName: string = 'Empregado ' + i;
+
+      const itemAux = {
+        [itemName]: {
+          days: days
+        }
+      };
+      itemsArray.push(itemAux);
+
+    }
+
+    itemsArray.forEach(value => Object.assign(items, value));
+
+    this._montlhyCalendar = {
+      weekStartDay: ECalendarWeekDays.MONDAY,
+      items: items
+    };
+  }
+  
+  private _generateAnual(): void {
+    const items: IAnualCalendarMonths<any> = {};
+    const itemsArray: Array<object> = [];
+
+
+
+    for (let i = 1; i <= Math.floor((Math.random() * 20 ) + 1); i++) {
+      const daysOff: Array<number> = [];
+      const daysArray: Array<object> = [];
+      const days: object = {};
+
+
+      for (let j = 1; j <= Math.floor((Math.random() * 10) + 1); j++) {
+        const randomDay: number = Math.floor((Math.random() * this._generateDaysOfMonth()) + 1 );
+        const eventsArray: Array<object> = [];
+
+        if (daysOff.indexOf(randomDay) === -1) {
+
+          for (let k = 1; k <= Math.floor((Math.random() * 5) + 1); k++) {
+            const eventDesc = 'Evento ' + k;
+            const code: number = Math.floor((Math.random() * 4) + 1);
+            const color: Array<string> = ['#f2a654', '#57c7d4', '#8daaba', '#46be8a'];
+            const event: object = {
+              body: 'I\'m the body of the event. I\'m just a string for now but, in the future, I could be an object with multiples keys-values!',
+              type: {
+                codigo: code,
+                color: color[Math.floor(Math.random() * 3 + 1)],
+                descricao: eventDesc,
+                prioridade: EPriority[k]
+              }
+            };
+            eventsArray.push(event);
+          }
+
+          const daysAux: object = {
+            [randomDay]: {
+              day: randomDay,
+              isHoliday: false,
+              isWeekend: false,
+              events: eventsArray
+            }
+          };
+
+          daysArray.push(daysAux);
+          daysOff.push(randomDay);
+        }
+      }
+
+      daysArray.forEach((value) => Object.assign(days, value));
+
+      const itemName: string = 'Empregado ' + i;
+
+      const itemAux = {
+        [itemName]: {
+          month: ECalendarMonths[ECalendarMonths[Math.floor(Math.random() * 12 + 1)]],
+          days: days
+        }
+      };
+      itemsArray.push(itemAux);
+
+    }
+
+    itemsArray.forEach(value => Object.assign(items, value));
+
+    this._anualCalendar = {
+      year: this._yearRequested,
+      weekStartDay: ECalendarWeekDays.MONDAY,
+      items: items
+    };
+  }
 }
