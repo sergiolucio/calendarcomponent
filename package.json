@@ -29,6 +29,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "multiple-select": "^1.2.2",
+    "ng-sidebar": "^9.4.2",
     "node-sass": "^4.13.1",
     "popper.js": "^1.14.7",
     "rxjs": "~6.3.3",
