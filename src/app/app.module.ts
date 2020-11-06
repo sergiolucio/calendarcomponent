@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
-import {SidebarModule} from 'ng-sidebar';
 import {YearViewComponent} from './components/calendar/year-view/year-view.component';
 import {DetailsBarComponent} from './components/calendar/details-bar/details-bar.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -49,7 +48,6 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     NgbModule,
     HttpClientModule,
-    SidebarModule.forRoot(),
     RouterModule.forRoot(
       appRoutes
     )

@@ -4960,12 +4960,7 @@ neo-async@^2.5.0, neo-async@^2.6.0:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
-
-ng-sidebar@^8.0.0:
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/ng-sidebar/-/ng-sidebar-8.1.1.tgz#3536d4c0833f3d6ab8f85a6afdd3f5af0ae0676a"
-  integrity sha512-8ChcNbm59MoYKuXkQhA3aoE2yBc60klfTaevyFaTbWBM2WP/RLDxLixBlnGhcubKpZ2OofAuoyANshBl1N1dEw==
-
+  
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
